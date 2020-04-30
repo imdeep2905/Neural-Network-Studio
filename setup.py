@@ -1,0 +1,1 @@
+from NeuralNetworkStudio import app 
