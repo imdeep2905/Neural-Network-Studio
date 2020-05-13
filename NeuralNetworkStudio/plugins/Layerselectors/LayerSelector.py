@@ -33,6 +33,7 @@ class LayersList(QWidget):
         self.main_layout.addWidget(self.layer_list, 0, Qt.AlignTop)
         self.expand_button.clicked.connect(self.expand)
         self.setLayout(self.main_layout)
+        self.resized_size = 19 * len(layers)
         self.set_styling()
         
         
@@ -43,14 +44,14 @@ class LayersList(QWidget):
             self.expand_button.setIcon(QIcon(str(Path('NeuralNetworkStudio/img_src/LayersList_Down.png'))))
             self.currently_expanded = False
         else:
-            self.layer_list.setMaximumHeight(150)
+            self.layer_list.setMaximumHeight(self.resized_size)
             self.expand_button.setIcon(QIcon(str(Path('NeuralNetworkStudio/img_src/LayersList_Up.png'))))
             self.currently_expanded = True
             
     def set_styling(self):
         self.setStyleSheet("background-color:aliceblue ;")
         self.expand_button.setStyleSheet("text-align:left;")
-        self.layer_list.setStyleSheet("background-color:lightblue;")
+        self.layer_list.setStyleSheet("background-color:aliceblue; border:1px solid;border-style: ridge;")
 
 class LayersSelectorWidget(QWidget):
     '''
@@ -70,4 +71,4 @@ class LayersSelectorWidget(QWidget):
         self.set_styling()
         
     def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
+        self.setStyleSheet("background-color:aliceblue; border:0px solid;border-style: solid;")
