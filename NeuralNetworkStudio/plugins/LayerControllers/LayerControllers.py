@@ -1,5 +1,10 @@
-import tensorflow import keras
-from keras import layers, Sequential
+'''
+TODO
+# Add proper scaling, arrangement, styling
+# optimize code
+'''
+#from tensorflow import keras
+#from keras import layers, Sequential
 from PySide2.QtCore import *
 from PySide2.QtWidgets import QDesktopWidget, QWidget, QMainWindow, QApplication, QLineEdit, QGridLayout, QLabel, QPushButton, QComboBox, QHBoxLayout, QStackedWidget,QStackedLayout,QStackedWidget,  QScrollBar, QScrollArea, QVBoxLayout
 from PySide2.QtGui import *
@@ -12,7 +17,7 @@ Random uniform class provide UI of random Uniform
 class RandomUniformUI(QWidget):
     def __init__(self):
         super().__init__()
-
+        
     def layout(self):
         RandomUniformLayout = QGridLayout()
         self.minval = QLineEdit("-0.05")
@@ -457,7 +462,7 @@ class DenseLayerControl(QWidget):
 
         self.kernelInitializer = QComboBox()
         self.kernelInitializer.addItems(["RandomUniform","Zeros","Ones","Constant","RandomNormal","TruncatedNormal","VarianceScaling","Orthogonal","Identity","lecun_uniform","glorot_normal","glorot_uniform","he_normal","lecun_normal","he_uniform"])
-        self.kernelInitializer.currentIndexChanged[int].connect(self.display)
+        self.kernelInitializer.currentIndexChanged[int].connect(lambda index: self.stack.setCurrentIndex(index))
 
         self.RandomUniformArg = QWidget()
         self.ZerosArg = QWidget()
@@ -534,7 +539,7 @@ class DenseLayerControl(QWidget):
 
         self.BatchInitializer = QComboBox()
         self.BatchInitializer.addItems(["RandomUniform","Zeros","Ones","Constant","RandomNormal","TruncatedNormal","VarianceScaling","Orthogonal","Identity","lecun_uniform","glorot_normal","glorot_uniform","he_normal","lecun_normal","he_uniform"])
-        self.BatchInitializer.currentIndexChanged[int].connect(self.display_batch)
+        self.BatchInitializer.currentIndexChanged[int].connect(lambda index : self.stack_batch.setCurrentIndex(index))
 
         self.RandomUniformArg_batch = QWidget()
         self.ZerosArg_batch = QWidget()
@@ -595,7 +600,7 @@ class DenseLayerControl(QWidget):
 
         self.kernelRegularizer = QComboBox()
         self.kernelRegularizer.addItems(["None","l1","l2","l1_l2"])
-        self.kernelRegularizer.currentIndexChanged[int].connect(self.display_kernelRegularizer)
+        self.kernelRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_kernelRegularizer.setCurrentIndex(index))
 
         self.stack_kernelRegularizer = QStackedLayout()
         self.l1 = QWidget()
@@ -621,7 +626,7 @@ class DenseLayerControl(QWidget):
 
         self.biasRegularizer = QComboBox()
         self.biasRegularizer.addItems(["None","l1","l2","l1_l2"])
-        self.biasRegularizer.currentIndexChanged[int].connect(self.display_biasRegularizer)
+        self.biasRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_biasRegularizer.setCurrentIndex(index))
 
         self.stack_biasRegularizer = QStackedLayout()
         self.l1_bias = QWidget()
@@ -647,7 +652,7 @@ class DenseLayerControl(QWidget):
 
         self.activityRegularizer = QComboBox()
         self.activityRegularizer.addItems(["None","l1","l2","l1_l2"])
-        self.activityRegularizer.currentIndexChanged[int].connect(self.display_activityRegularizer)
+        self.activityRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_activityRegularizer.setCurrentIndex(index))
 
         self.stack_activityRegularizer = QStackedLayout()
         self.l1_activity = QWidget()
@@ -674,7 +679,7 @@ class DenseLayerControl(QWidget):
 
         self.kernelConstraint = QComboBox()
         self.kernelConstraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.kernelConstraint.currentIndexChanged[int].connect(self.display_kernelConstraint)
+        self.kernelConstraint.currentIndexChanged[int].connect(lambda index : self.stack_kernelConstraint.setCurrentIndex(index))
 
         self.stack_kernelConstraint = QStackedWidget()
 
@@ -705,7 +710,7 @@ class DenseLayerControl(QWidget):
 
         self.biasConstraint = QComboBox()
         self.biasConstraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.biasConstraint.currentIndexChanged[int].connect(self.display_biasConstraint)
+        self.biasConstraint.currentIndexChanged[int].connect(lambda index : self.stack_biasConstraint.setCurrentIndex(index))
 
         self.stack_biasConstraint = QStackedWidget()
 
@@ -787,12 +792,11 @@ class DenseLayerControl(QWidget):
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_area.setWidget(self.scroll_panel)
 
-        self.vbox = QVBoxLayout()
+        self.vbox = QVBoxLayout(self)
         self.vbox.setContentsMargins(5,5,5,5)
         self.vbox.addWidget(self.scroll_area)
         
-        
-
+    
         self.passValue.clicked.connect(self.passArguments)
         self.scroll_panel_layout.addLayout(layout,0,0)
         self.set_styling()
@@ -806,31 +810,3 @@ class DenseLayerControl(QWidget):
         print(self.activation.currentText())
         print(self.useBias.currentText())
         print(self.kernelInitializer.currentText())
-
-
-
-    def display(self,index):
-        self.stack.setCurrentIndex(index)
-
-    def display_batch(self,index):
-        self.stack_batch.setCurrentIndex(index)
-
-    def display_kernelRegularizer(self,index):
-        self.stack_kernelRegularizer.setCurrentIndex(index)
-
-    def display_biasRegularizer(self,index):
-        self.stack_biasRegularizer.setCurrentIndex(index)
-
-    def display_activityRegularizer(self,index):
-        self.stack_activityRegularizer.setCurrentIndex(index)
-
-    def display_kernelConstraint(self,index):
-
-        self.stack_kernelConstraint.setCurrentIndex(index)
-
-
-    def display_biasConstraint(self,index):
-
-        self.stack_biasConstraint.setCurrentIndex(index)
-
-
