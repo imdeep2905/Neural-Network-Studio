@@ -13,7 +13,402 @@ import sys
 Random uniform class provide UI of random Uniform
 
 """
+class DenseLayerControlWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__()
+        
+        self.neuron = QLineEdit("0")
 
+        self.activation = QComboBox()
+        self.activation.addItems([
+            "sigmoid",
+            "tanh",
+            "relu",
+            "softmax",
+            "linear",
+            "exponential",
+            "hard_sigmoid",
+            "softsign",
+            "selu",
+            "elu",
+            "softplus"])
+        
+        self.useBias = QComboBox()
+        self.useBias.addItems(["True","False"])
+
+        """
+        Kernel Initializer
+
+        """
+        self.RandomUniform = RandomUniformUI()
+        self.Zeros = ZerosUI()
+        self.Ones = OnesUI()
+        self.Constant = ConstantUI()
+        self.RandomNormal = RandomNormalUI()
+        self.TruncatedNormal = TruncatedNormalUI()
+        self.VarianceScaling = VarianceScalingUI()
+        self.Orthogonal = OrthogonalUI()
+        self.Identity = IdentityUI()
+        self.lecun_uniform = lecunUniformUI()
+        self.glorot_normal = glorotNormalUI()
+        self.glorot_uniform = glorotUniformUI()
+        self.he_normal = heNormalUI()
+        self.lecun_normal = lecunNormalUI()
+        self.he_uniform = heUniformUI()
+
+        self.kernelInitializer = QComboBox()
+        self.kernelInitializer.addItems(["RandomUniform","Zeros","Ones","Constant","RandomNormal","TruncatedNormal","VarianceScaling","Orthogonal","Identity","lecun_uniform","glorot_normal","glorot_uniform","he_normal","lecun_normal","he_uniform"])
+        self.kernelInitializer.currentIndexChanged[int].connect(lambda index: self.stack.setCurrentIndex(index))
+
+        self.RandomUniformArg = QWidget()
+        self.ZerosArg = QWidget()
+        self.OnesArg = QWidget()
+        self.ConstantArg = QWidget()
+        self.RandomNormalArg = QWidget()
+        self.TruncatedNormalArg = QWidget()
+        self.VarianceScalingArg = QWidget()
+        self.OrthogonalArg = QWidget()
+        self.IdentityArg = QWidget()
+        self.lecun_uniformArg =QWidget()
+        self.glorot_normalArg = QWidget()
+        self.glorot_uniformArg = QWidget()
+        self.he_normalArg = QWidget()
+        self.lecun_normalArg = QWidget()
+        self.he_uniformArg = QWidget()
+
+
+
+        self.RandomUniformArg.setLayout(self.RandomUniform.layout())
+        self.ZerosArg.setLayout(self.Zeros.layout())
+        self.OnesArg.setLayout(self.Ones.layout())
+        self.ConstantArg.setLayout(self.Constant.layout())
+        self.RandomNormalArg.setLayout(self.RandomNormal.layout())
+        self.TruncatedNormalArg.setLayout(self.TruncatedNormal.layout())
+        self.VarianceScalingArg.setLayout(self.VarianceScaling.layout())
+        self.OrthogonalArg.setLayout(self.Orthogonal.layout())
+        self.IdentityArg.setLayout(self.Identity.layout())
+        self.lecun_uniformArg.setLayout(self.lecun_uniform.layout())
+        self.glorot_normalArg.setLayout(self.glorot_normal.layout())
+        self.glorot_uniformArg.setLayout(self.glorot_uniform.layout())
+        self.he_normalArg.setLayout(self.he_normal.layout())
+        self.lecun_normalArg.setLayout(self.lecun_normal.layout())
+        self.he_uniformArg.setLayout(self.he_uniform.layout())
+
+    
+
+        self.stack = QStackedWidget()
+        self.stack.addWidget(self.RandomUniformArg)
+        self.stack.addWidget(self.ZerosArg)
+        self.stack.addWidget(self.OnesArg)
+        self.stack.addWidget(self.ConstantArg)
+        self.stack.addWidget(self.RandomNormalArg)
+        self.stack.addWidget(self.TruncatedNormalArg)
+        self.stack.addWidget(self.VarianceScalingArg)
+        self.stack.addWidget(self.OrthogonalArg)
+        self.stack.addWidget(self.IdentityArg)
+        self.stack.addWidget(self.lecun_uniformArg)
+        self.stack.addWidget(self.glorot_normalArg)
+        self.stack.addWidget(self.glorot_uniformArg)
+        self.stack.addWidget(self.he_normalArg)
+        self.stack.addWidget(self.lecun_normalArg)
+        self.stack.addWidget(self.he_uniformArg)
+
+        """
+        Batch Initializer
+
+        """
+        self.RandomUniform_batch = RandomUniformUI()
+        self.Zeros_batch = ZerosUI()
+        self.Ones_batch = OnesUI()
+        self.Constant_batch = ConstantUI()
+        self.RandomNormal_batch = RandomNormalUI()
+        self.TruncatedNormal_batch = TruncatedNormalUI()
+        self.VarianceScaling_batch = VarianceScalingUI()
+        self.Orthogonal_batch = OrthogonalUI()
+        self.Identity_batch = IdentityUI()
+        self.lecun_uniform_batch = lecunUniformUI()
+        self.glorot_normal_batch = glorotNormalUI()
+        self.glorot_uniform_batch = glorotUniformUI()
+        self.he_normal_batch = heNormalUI()
+        self.lecun_normal_batch = lecunNormalUI()
+        self.he_uniform_batch = heUniformUI()
+
+        self.BatchInitializer = QComboBox()
+        self.BatchInitializer.addItems(["RandomUniform","Zeros","Ones","Constant","RandomNormal","TruncatedNormal","VarianceScaling","Orthogonal","Identity","lecun_uniform","glorot_normal","glorot_uniform","he_normal","lecun_normal","he_uniform"])
+        self.BatchInitializer.currentIndexChanged[int].connect(lambda index : self.stack_batch.setCurrentIndex(index))
+
+        self.RandomUniformArg_batch = QWidget()
+        self.ZerosArg_batch = QWidget()
+        self.OnesArg_batch = QWidget()
+        self.ConstantArg_batch = QWidget()
+        self.RandomNormalArg_batch = QWidget()
+        self.TruncatedNormalArg_batch = QWidget()
+        self.VarianceScalingArg_batch = QWidget()
+        self.OrthogonalArg_batch = QWidget()
+        self.IdentityArg_batch = QWidget()
+        self.lecun_uniformArg_batch =QWidget()
+        self.glorot_normalArg_batch = QWidget()
+        self.glorot_uniformArg_batch = QWidget()
+        self.he_normalArg_batch = QWidget()
+        self.lecun_normalArg_batch = QWidget()
+        self.he_uniformArg_batch = QWidget()
+
+
+        self.RandomUniformArg_batch.setLayout(self.RandomUniform_batch.layout())
+        self.ZerosArg_batch.setLayout(self.Zeros_batch.layout())
+        self.OnesArg_batch.setLayout(self.Ones_batch.layout())
+        self.ConstantArg_batch.setLayout(self.Constant_batch.layout())
+        self.RandomNormalArg_batch.setLayout(self.RandomNormal_batch.layout())
+        self.TruncatedNormalArg_batch.setLayout(self.TruncatedNormal_batch.layout())
+        self.VarianceScalingArg_batch.setLayout(self.VarianceScaling_batch.layout())
+        self.OrthogonalArg_batch.setLayout(self.Orthogonal_batch.layout())
+        self.IdentityArg_batch.setLayout(self.Identity_batch.layout())
+        self.lecun_uniformArg_batch.setLayout(self.lecun_uniform_batch.layout())
+        self.glorot_normalArg_batch.setLayout(self.glorot_normal_batch.layout())
+        self.glorot_uniformArg_batch.setLayout(self.glorot_uniform_batch.layout())
+        self.he_normalArg_batch.setLayout(self.he_normal_batch.layout())
+        self.lecun_normalArg_batch.setLayout(self.lecun_normal_batch.layout())
+        self.he_uniformArg_batch.setLayout(self.he_uniform_batch.layout())
+
+        self.stack_batch = QStackedWidget()
+        self.stack_batch.addWidget(self.RandomUniformArg_batch)
+        self.stack_batch.addWidget(self.ZerosArg_batch)
+        self.stack_batch.addWidget(self.OnesArg_batch)
+        self.stack_batch.addWidget(self.ConstantArg_batch)
+        self.stack_batch.addWidget(self.RandomNormalArg_batch)
+        self.stack_batch.addWidget(self.TruncatedNormalArg_batch)
+        self.stack_batch.addWidget(self.VarianceScalingArg_batch)
+        self.stack_batch.addWidget(self.OrthogonalArg_batch)
+        self.stack_batch.addWidget(self.IdentityArg_batch)
+        self.stack_batch.addWidget(self.lecun_uniformArg_batch)
+        self.stack_batch.addWidget(self.glorot_normalArg_batch)
+        self.stack_batch.addWidget(self.glorot_uniformArg_batch)
+        self.stack_batch.addWidget(self.he_normalArg_batch)
+        self.stack_batch.addWidget(self.lecun_normalArg_batch)
+        self.stack_batch.addWidget(self.he_uniformArg_batch)
+        """
+        Kernal regularizer
+
+        """
+        self.l1_kernelRegularizer = l1UI()
+        self.l2_kernelRegularizer = l2UI()
+        self.l1_l2_kernelRegularizer = l1_l2UI()
+
+        self.kernelRegularizer = QComboBox()
+        self.kernelRegularizer.addItems(["None","l1","l2","l1_l2"])
+        self.kernelRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_kernelRegularizer.setCurrentIndex(index))
+
+        self.stack_kernelRegularizer = QStackedLayout()
+        self.l1 = QWidget()
+        self.l2 = QWidget()
+        self.l1_l2 = QWidget()
+
+        self.l1.setLayout(self.l1_kernelRegularizer.layout())
+        self.l2.setLayout(self.l2_kernelRegularizer.layout())
+        self.l1_l2.setLayout(self.l1_l2_kernelRegularizer.layout())
+
+        self.stack_kernelRegularizer.addWidget(QLabel("None"))
+        self.stack_kernelRegularizer.addWidget(self.l1)
+        self.stack_kernelRegularizer.addWidget(self.l2)
+        self.stack_kernelRegularizer.addWidget(self.l1_l2)
+
+        """
+        Bias regularizer
+
+        """
+        self.l1_biasRegularizer = l1UI()
+        self.l2_biasRegularizer = l2UI()
+        self.l1_l2_biasRegularizer = l1_l2UI()
+
+        self.biasRegularizer = QComboBox()
+        self.biasRegularizer.addItems(["None","l1","l2","l1_l2"])
+        self.biasRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_biasRegularizer.setCurrentIndex(index))
+
+        self.stack_biasRegularizer = QStackedLayout()
+        self.l1_bias = QWidget()
+        self.l2_bias = QWidget()
+        self.l1_l2_bias = QWidget()
+
+        self.l1_bias.setLayout(self.l1_biasRegularizer.layout())
+        self.l2_bias.setLayout(self.l2_biasRegularizer.layout())
+        self.l1_l2_bias.setLayout(self.l1_l2_kernelRegularizer.layout())
+
+        self.stack_biasRegularizer.addWidget(QLabel("None"))
+        self.stack_biasRegularizer.addWidget(self.l1_bias)
+        self.stack_biasRegularizer.addWidget(self.l2_bias)
+        self.stack_biasRegularizer.addWidget(self.l1_l2_bias)
+
+        """
+        activity_regularizer
+
+        """
+        self.l1_activityRegularizer = l1UI()
+        self.l2_activityRegularizer = l2UI()
+        self.l1_l2_activityRegularizer = l1_l2UI()
+
+        self.activityRegularizer = QComboBox()
+        self.activityRegularizer.addItems(["None","l1","l2","l1_l2"])
+        self.activityRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_activityRegularizer.setCurrentIndex(index))
+
+        self.stack_activityRegularizer = QStackedLayout()
+        self.l1_activity = QWidget()
+        self.l2_activity = QWidget()
+        self.l1_l2_activity = QWidget()
+
+        self.l1_activity.setLayout(self.l1_biasRegularizer.layout())
+        self.l2_activity.setLayout(self.l2_biasRegularizer.layout())
+        self.l1_l2_activity.setLayout(self.l1_l2_kernelRegularizer.layout())
+        
+        self.stack_activityRegularizer.addWidget(QLabel("None"))
+        self.stack_activityRegularizer.addWidget(self.l1_activity)
+        self.stack_activityRegularizer.addWidget(self.l2_activity)
+        self.stack_activityRegularizer.addWidget(self.l1_l2_activity)
+
+        """
+        kernel_constraint
+
+        """
+        self.MaxNorm_kernelConstraint = MaxNormUI()
+        self.NonNeg_kernelConstraint = NonNegUI()
+        self.UnitNorm_kernelConstraint = UnitNormUI()
+        self.MinMaxNorm_kernelConstraint = MinMaxNormUI()
+
+        self.kernelConstraint = QComboBox()
+        self.kernelConstraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.kernelConstraint.currentIndexChanged[int].connect(lambda index : self.stack_kernelConstraint.setCurrentIndex(index))
+
+        self.stack_kernelConstraint = QStackedWidget()
+
+        self.MaxNorm_kernel = QWidget()
+        self.NonNeg_kernel = QWidget()
+        self.UnitNorm_kernel = QWidget()
+        self.MinMaxNorm_kernel = QWidget()
+
+        self.MaxNorm_kernel.setLayout(self.MaxNorm_kernelConstraint.layout())
+        self.NonNeg_kernel.setLayout(self.NonNeg_kernelConstraint.layout())
+        self.UnitNorm_kernel.setLayout(self.UnitNorm_kernelConstraint.layout())
+        self.MinMaxNorm_kernel.setLayout(self.MinMaxNorm_kernelConstraint.layout())
+
+        self.stack_kernelConstraint.addWidget(QLabel("None"))
+        self.stack_kernelConstraint.addWidget(self.MaxNorm_kernel)
+        self.stack_kernelConstraint.addWidget(self.NonNeg_kernel)
+        self.stack_kernelConstraint.addWidget(self.UnitNorm_kernel)
+        self.stack_kernelConstraint.addWidget(self.MinMaxNorm_kernel)
+
+        """
+        bias_constraint
+
+        """
+        self.MaxNorm_biasConstraint = MaxNormUI()
+        self.NonNeg_biasConstraint = NonNegUI()
+        self.UnitNorm_biasConstraint = UnitNormUI()
+        self.MinMaxNorm_biasConstraint = MinMaxNormUI()
+
+        self.biasConstraint = QComboBox()
+        self.biasConstraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.biasConstraint.currentIndexChanged[int].connect(lambda index : self.stack_biasConstraint.setCurrentIndex(index))
+
+        self.stack_biasConstraint = QStackedWidget()
+
+        self.MaxNorm_bias = QWidget()
+        self.NonNeg_bias = QWidget()
+        self.UnitNorm_bias = QWidget()
+        self.MinMaxNorm_bias = QWidget()
+
+        self.MaxNorm_bias.setLayout(self.MaxNorm_biasConstraint.layout())
+        self.NonNeg_bias.setLayout(self.NonNeg_biasConstraint.layout())
+        self.UnitNorm_bias.setLayout(self.UnitNorm_biasConstraint.layout())
+        self.MinMaxNorm_bias.setLayout(self.MinMaxNorm_biasConstraint.layout())
+
+        self.stack_biasConstraint.addWidget(QLabel("None"))
+        self.stack_biasConstraint.addWidget(self.MaxNorm_bias)
+        self.stack_biasConstraint.addWidget(self.NonNeg_bias)
+        self.stack_biasConstraint.addWidget(self.UnitNorm_bias)
+        self.stack_biasConstraint.addWidget(self.MinMaxNorm_bias)
+
+        
+        """
+        Button
+
+        """
+
+        self.passValue = QPushButton("Done")
+        """
+        Layout
+
+        """
+        layout = QGridLayout()
+        layout.addWidget(QLabel('Neurons:'),0,0)
+        layout.addWidget(self.neuron,0,1)
+
+        layout.addWidget(QLabel("Activation:"),1,0)
+        layout.addWidget(self.activation,1,1)
+
+        layout.addWidget(QLabel("Use Bias:"),2,0)
+        layout.addWidget(self.useBias,2,1)
+
+        layout.addWidget(QLabel("kernelInitializer"),3,0)
+        layout.addWidget(self.kernelInitializer,3,1)
+        layout.addWidget(self.stack,4,1)
+
+        layout.addWidget(QLabel("Batch Initializer"),5,0)
+        layout.addWidget(self.BatchInitializer,5,1)
+        layout.addWidget(self.stack_batch,6,1)
+
+        layout.addWidget(QLabel("kernel_regularizer"),7,0)
+        layout.addWidget(self.kernelRegularizer,7,1)
+        layout.addLayout(self.stack_kernelRegularizer,8,1)
+
+        layout.addWidget(QLabel("bias_regularizer"),9,0)
+        layout.addWidget(self.biasRegularizer,9,1)
+        layout.addLayout(self.stack_biasRegularizer,10,1)
+
+        layout.addWidget(QLabel("activity_regularizer"),11,0)
+        layout.addWidget(self.activityRegularizer,11,1)
+        layout.addLayout(self.stack_activityRegularizer,12,1)
+
+        layout.addWidget(QLabel("kernel_constraint"),13,0)
+        layout.addWidget(self.kernelConstraint,13,1)
+        layout.addWidget(self.stack_kernelConstraint,14,1)
+
+        layout.addWidget(QLabel("bias_constraint"),15,0)
+        layout.addWidget(self.biasConstraint,15,1)
+        layout.addWidget(self.stack_biasConstraint,16,1)
+    
+        layout.addWidget(self.passValue,17,1)
+        
+       
+        self.scroll_panel = QWidget()
+        self.scroll_panel_layout = QGridLayout(self.scroll_panel)
+        self.scroll_panel_layout.setContentsMargins(0,0,0,0)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidget(self.scroll_panel)
+
+        self.vbox = QVBoxLayout(self)
+        self.vbox.setContentsMargins(5,5,5,5)
+        self.vbox.addWidget(self.scroll_area)
+        
+    
+        self.passValue.clicked.connect(self.parse_arguments())
+        self.scroll_panel_layout.addLayout(layout,0,0)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+
+    def parse_arguments(self):
+        '''
+        Should be changed to parse arguments
+        '''
+        Units = int(self.neuron.text())
+        print(self.activation.currentText())
+        print(self.useBias.currentText())
+        print(self.kernelInitializer.currentText())
+        
 class RandomUniformUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -21,18 +416,17 @@ class RandomUniformUI(QWidget):
     def layout(self):
         RandomUniformLayout = QGridLayout()
         self.minval = QLineEdit("-0.05")
-        self.minval_batch = self.minval
         self.maxval = QLineEdit("0.05")
         self.seed = QLineEdit("None")
 
         RandomUniformLayout.addWidget(QLabel("Arguments"),0,1)
-        RandomUniformLayout.addWidget(QLabel("minval"),1,0)
+        RandomUniformLayout.addWidget(QLabel("Minval"),1,0)
         RandomUniformLayout.addWidget(self.minval,1,1)
 
-        RandomUniformLayout.addWidget(QLabel("maxval"),2,0)
+        RandomUniformLayout.addWidget(QLabel("Maxval"),2,0)
         RandomUniformLayout.addWidget(self.maxval,2,1)
 
-        RandomUniformLayout.addWidget(QLabel("seed"),3,0)
+        RandomUniformLayout.addWidget(QLabel("Seed"),3,0)
         RandomUniformLayout.addWidget(self.seed,3,1)
 
         return RandomUniformLayout
@@ -421,392 +815,3 @@ class MinMaxNormUI(QWidget):
         MinMaxNormLayout.addWidget(self.axis,4,1)
 
         return MinMaxNormLayout
-"""
-class DenceLayerControl which is cntroler of DenseLayer
-"""
-
-class DenseLayerControl(QWidget):
-    def __init__(self, parent=None):
-        super().__init__()
-        
-        self.neuron = QLineEdit("0")
-        neuronLabel = QLabel('Neurons')
-
-        self.activation = QComboBox()
-        self.activation.addItems(["sigmoid","tanh","relu","softmax","linear","exponential","hard_sigmoid","softsign","selu","elu","softplus"])
-        activationLabel = QLabel("Activation")
-
-        self.useBias = QComboBox()
-        self.useBias.addItems(["True","False"])
-        useBiasLabel = QLabel("use_bias")
-
-        """
-        Kernel Initializer
-
-        """
-        self.RandomUniform = RandomUniformUI()
-        self.Zeros = ZerosUI()
-        self.Ones = OnesUI()
-        self.Constant = ConstantUI()
-        self.RandomNormal = RandomNormalUI()
-        self.TruncatedNormal = TruncatedNormalUI()
-        self.VarianceScaling = VarianceScalingUI()
-        self.Orthogonal = OrthogonalUI()
-        self.Identity = IdentityUI()
-        self.lecun_uniform = lecunUniformUI()
-        self.glorot_normal = glorotNormalUI()
-        self.glorot_uniform = glorotUniformUI()
-        self.he_normal = heNormalUI()
-        self.lecun_normal = lecunNormalUI()
-        self.he_uniform = heUniformUI()
-
-        self.kernelInitializer = QComboBox()
-        self.kernelInitializer.addItems(["RandomUniform","Zeros","Ones","Constant","RandomNormal","TruncatedNormal","VarianceScaling","Orthogonal","Identity","lecun_uniform","glorot_normal","glorot_uniform","he_normal","lecun_normal","he_uniform"])
-        self.kernelInitializer.currentIndexChanged[int].connect(lambda index: self.stack.setCurrentIndex(index))
-
-        self.RandomUniformArg = QWidget()
-        self.ZerosArg = QWidget()
-        self.OnesArg = QWidget()
-        self.ConstantArg = QWidget()
-        self.RandomNormalArg = QWidget()
-        self.TruncatedNormalArg = QWidget()
-        self.VarianceScalingArg = QWidget()
-        self.OrthogonalArg = QWidget()
-        self.IdentityArg = QWidget()
-        self.lecun_uniformArg =QWidget()
-        self.glorot_normalArg = QWidget()
-        self.glorot_uniformArg = QWidget()
-        self.he_normalArg = QWidget()
-        self.lecun_normalArg = QWidget()
-        self.he_uniformArg = QWidget()
-
-
-
-        self.RandomUniformArg.setLayout(self.RandomUniform.layout())
-        self.ZerosArg.setLayout(self.Zeros.layout())
-        self.OnesArg.setLayout(self.Ones.layout())
-        self.ConstantArg.setLayout(self.Constant.layout())
-        self.RandomNormalArg.setLayout(self.RandomNormal.layout())
-        self.TruncatedNormalArg.setLayout(self.TruncatedNormal.layout())
-        self.VarianceScalingArg.setLayout(self.VarianceScaling.layout())
-        self.OrthogonalArg.setLayout(self.Orthogonal.layout())
-        self.IdentityArg.setLayout(self.Identity.layout())
-        self.lecun_uniformArg.setLayout(self.lecun_uniform.layout())
-        self.glorot_normalArg.setLayout(self.glorot_normal.layout())
-        self.glorot_uniformArg.setLayout(self.glorot_uniform.layout())
-        self.he_normalArg.setLayout(self.he_normal.layout())
-        self.lecun_normalArg.setLayout(self.lecun_normal.layout())
-        self.he_uniformArg.setLayout(self.he_uniform.layout())
-
-    
-
-        self.stack = QStackedWidget()
-        self.stack.addWidget(self.RandomUniformArg)
-        self.stack.addWidget(self.ZerosArg)
-        self.stack.addWidget(self.OnesArg)
-        self.stack.addWidget(self.ConstantArg)
-        self.stack.addWidget(self.RandomNormalArg)
-        self.stack.addWidget(self.TruncatedNormalArg)
-        self.stack.addWidget(self.VarianceScalingArg)
-        self.stack.addWidget(self.OrthogonalArg)
-        self.stack.addWidget(self.IdentityArg)
-        self.stack.addWidget(self.lecun_uniformArg)
-        self.stack.addWidget(self.glorot_normalArg)
-        self.stack.addWidget(self.glorot_uniformArg)
-        self.stack.addWidget(self.he_normalArg)
-        self.stack.addWidget(self.lecun_normalArg)
-        self.stack.addWidget(self.he_uniformArg)
-
-        """
-        Batch Initializer
-
-        """
-        self.RandomUniform_batch = RandomUniformUI()
-        self.Zeros_batch = ZerosUI()
-        self.Ones_batch = OnesUI()
-        self.Constant_batch = ConstantUI()
-        self.RandomNormal_batch = RandomNormalUI()
-        self.TruncatedNormal_batch = TruncatedNormalUI()
-        self.VarianceScaling_batch = VarianceScalingUI()
-        self.Orthogonal_batch = OrthogonalUI()
-        self.Identity_batch = IdentityUI()
-        self.lecun_uniform_batch = lecunUniformUI()
-        self.glorot_normal_batch = glorotNormalUI()
-        self.glorot_uniform_batch = glorotUniformUI()
-        self.he_normal_batch = heNormalUI()
-        self.lecun_normal_batch = lecunNormalUI()
-        self.he_uniform_batch = heUniformUI()
-
-        self.BatchInitializer = QComboBox()
-        self.BatchInitializer.addItems(["RandomUniform","Zeros","Ones","Constant","RandomNormal","TruncatedNormal","VarianceScaling","Orthogonal","Identity","lecun_uniform","glorot_normal","glorot_uniform","he_normal","lecun_normal","he_uniform"])
-        self.BatchInitializer.currentIndexChanged[int].connect(lambda index : self.stack_batch.setCurrentIndex(index))
-
-        self.RandomUniformArg_batch = QWidget()
-        self.ZerosArg_batch = QWidget()
-        self.OnesArg_batch = QWidget()
-        self.ConstantArg_batch = QWidget()
-        self.RandomNormalArg_batch = QWidget()
-        self.TruncatedNormalArg_batch = QWidget()
-        self.VarianceScalingArg_batch = QWidget()
-        self.OrthogonalArg_batch = QWidget()
-        self.IdentityArg_batch = QWidget()
-        self.lecun_uniformArg_batch =QWidget()
-        self.glorot_normalArg_batch = QWidget()
-        self.glorot_uniformArg_batch = QWidget()
-        self.he_normalArg_batch = QWidget()
-        self.lecun_normalArg_batch = QWidget()
-        self.he_uniformArg_batch = QWidget()
-
-
-        self.RandomUniformArg_batch.setLayout(self.RandomUniform_batch.layout())
-        self.ZerosArg_batch.setLayout(self.Zeros_batch.layout())
-        self.OnesArg_batch.setLayout(self.Ones_batch.layout())
-        self.ConstantArg_batch.setLayout(self.Constant_batch.layout())
-        self.RandomNormalArg_batch.setLayout(self.RandomNormal_batch.layout())
-        self.TruncatedNormalArg_batch.setLayout(self.TruncatedNormal_batch.layout())
-        self.VarianceScalingArg_batch.setLayout(self.VarianceScaling_batch.layout())
-        self.OrthogonalArg_batch.setLayout(self.Orthogonal_batch.layout())
-        self.IdentityArg_batch.setLayout(self.Identity_batch.layout())
-        self.lecun_uniformArg_batch.setLayout(self.lecun_uniform_batch.layout())
-        self.glorot_normalArg_batch.setLayout(self.glorot_normal_batch.layout())
-        self.glorot_uniformArg_batch.setLayout(self.glorot_uniform_batch.layout())
-        self.he_normalArg_batch.setLayout(self.he_normal_batch.layout())
-        self.lecun_normalArg_batch.setLayout(self.lecun_normal_batch.layout())
-        self.he_uniformArg_batch.setLayout(self.he_uniform_batch.layout())
-
-        self.stack_batch = QStackedWidget()
-        self.stack_batch.addWidget(self.RandomUniformArg_batch)
-        self.stack_batch.addWidget(self.ZerosArg_batch)
-        self.stack_batch.addWidget(self.OnesArg_batch)
-        self.stack_batch.addWidget(self.ConstantArg_batch)
-        self.stack_batch.addWidget(self.RandomNormalArg_batch)
-        self.stack_batch.addWidget(self.TruncatedNormalArg_batch)
-        self.stack_batch.addWidget(self.VarianceScalingArg_batch)
-        self.stack_batch.addWidget(self.OrthogonalArg_batch)
-        self.stack_batch.addWidget(self.IdentityArg_batch)
-        self.stack_batch.addWidget(self.lecun_uniformArg_batch)
-        self.stack_batch.addWidget(self.glorot_normalArg_batch)
-        self.stack_batch.addWidget(self.glorot_uniformArg_batch)
-        self.stack_batch.addWidget(self.he_normalArg_batch)
-        self.stack_batch.addWidget(self.lecun_normalArg_batch)
-        self.stack_batch.addWidget(self.he_uniformArg_batch)
-        """
-        Kernal regularizer
-
-        """
-        self.l1_kernelRegularizer = l1UI()
-        self.l2_kernelRegularizer = l2UI()
-        self.l1_l2_kernelRegularizer = l1_l2UI()
-
-        self.kernelRegularizer = QComboBox()
-        self.kernelRegularizer.addItems(["None","l1","l2","l1_l2"])
-        self.kernelRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_kernelRegularizer.setCurrentIndex(index))
-
-        self.stack_kernelRegularizer = QStackedLayout()
-        self.l1 = QWidget()
-        self.l2 = QWidget()
-        self.l1_l2 = QWidget()
-
-        self.l1.setLayout(self.l1_kernelRegularizer.layout())
-        self.l2.setLayout(self.l2_kernelRegularizer.layout())
-        self.l1_l2.setLayout(self.l1_l2_kernelRegularizer.layout())
-
-        self.stack_kernelRegularizer.addWidget(QLabel("None"))
-        self.stack_kernelRegularizer.addWidget(self.l1)
-        self.stack_kernelRegularizer.addWidget(self.l2)
-        self.stack_kernelRegularizer.addWidget(self.l1_l2)
-
-        """
-        Bias regularizer
-
-        """
-        self.l1_biasRegularizer = l1UI()
-        self.l2_biasRegularizer = l2UI()
-        self.l1_l2_biasRegularizer = l1_l2UI()
-
-        self.biasRegularizer = QComboBox()
-        self.biasRegularizer.addItems(["None","l1","l2","l1_l2"])
-        self.biasRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_biasRegularizer.setCurrentIndex(index))
-
-        self.stack_biasRegularizer = QStackedLayout()
-        self.l1_bias = QWidget()
-        self.l2_bias = QWidget()
-        self.l1_l2_bias = QWidget()
-
-        self.l1_bias.setLayout(self.l1_biasRegularizer.layout())
-        self.l2_bias.setLayout(self.l2_biasRegularizer.layout())
-        self.l1_l2_bias.setLayout(self.l1_l2_kernelRegularizer.layout())
-
-        self.stack_biasRegularizer.addWidget(QLabel("None"))
-        self.stack_biasRegularizer.addWidget(self.l1_bias)
-        self.stack_biasRegularizer.addWidget(self.l2_bias)
-        self.stack_biasRegularizer.addWidget(self.l1_l2_bias)
-
-        """
-        activity_regularizer
-
-        """
-        self.l1_activityRegularizer = l1UI()
-        self.l2_activityRegularizer = l2UI()
-        self.l1_l2_activityRegularizer = l1_l2UI()
-
-        self.activityRegularizer = QComboBox()
-        self.activityRegularizer.addItems(["None","l1","l2","l1_l2"])
-        self.activityRegularizer.currentIndexChanged[int].connect(lambda index : self.stack_activityRegularizer.setCurrentIndex(index))
-
-        self.stack_activityRegularizer = QStackedLayout()
-        self.l1_activity = QWidget()
-        self.l2_activity = QWidget()
-        self.l1_l2_activity = QWidget()
-
-        self.l1_activity.setLayout(self.l1_biasRegularizer.layout())
-        self.l2_activity.setLayout(self.l2_biasRegularizer.layout())
-        self.l1_l2_activity.setLayout(self.l1_l2_kernelRegularizer.layout())
-        
-        self.stack_activityRegularizer.addWidget(QLabel("None"))
-        self.stack_activityRegularizer.addWidget(self.l1_activity)
-        self.stack_activityRegularizer.addWidget(self.l2_activity)
-        self.stack_activityRegularizer.addWidget(self.l1_l2_activity)
-
-        """
-        kernel_constraint
-
-        """
-        self.MaxNorm_kernelConstraint = MaxNormUI()
-        self.NonNeg_kernelConstraint = NonNegUI()
-        self.UnitNorm_kernelConstraint = UnitNormUI()
-        self.MinMaxNorm_kernelConstraint = MinMaxNormUI()
-
-        self.kernelConstraint = QComboBox()
-        self.kernelConstraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.kernelConstraint.currentIndexChanged[int].connect(lambda index : self.stack_kernelConstraint.setCurrentIndex(index))
-
-        self.stack_kernelConstraint = QStackedWidget()
-
-        self.MaxNorm_kernel = QWidget()
-        self.NonNeg_kernel = QWidget()
-        self.UnitNorm_kernel = QWidget()
-        self.MinMaxNorm_kernel = QWidget()
-
-        self.MaxNorm_kernel.setLayout(self.MaxNorm_kernelConstraint.layout())
-        self.NonNeg_kernel.setLayout(self.NonNeg_kernelConstraint.layout())
-        self.UnitNorm_kernel.setLayout(self.UnitNorm_kernelConstraint.layout())
-        self.MinMaxNorm_kernel.setLayout(self.MinMaxNorm_kernelConstraint.layout())
-
-        self.stack_kernelConstraint.addWidget(QLabel("None"))
-        self.stack_kernelConstraint.addWidget(self.MaxNorm_kernel)
-        self.stack_kernelConstraint.addWidget(self.NonNeg_kernel)
-        self.stack_kernelConstraint.addWidget(self.UnitNorm_kernel)
-        self.stack_kernelConstraint.addWidget(self.MinMaxNorm_kernel)
-
-        """
-        bias_constraint
-
-        """
-        self.MaxNorm_biasConstraint = MaxNormUI()
-        self.NonNeg_biasConstraint = NonNegUI()
-        self.UnitNorm_biasConstraint = UnitNormUI()
-        self.MinMaxNorm_biasConstraint = MinMaxNormUI()
-
-        self.biasConstraint = QComboBox()
-        self.biasConstraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.biasConstraint.currentIndexChanged[int].connect(lambda index : self.stack_biasConstraint.setCurrentIndex(index))
-
-        self.stack_biasConstraint = QStackedWidget()
-
-        self.MaxNorm_bias = QWidget()
-        self.NonNeg_bias = QWidget()
-        self.UnitNorm_bias = QWidget()
-        self.MinMaxNorm_bias = QWidget()
-
-        self.MaxNorm_bias.setLayout(self.MaxNorm_biasConstraint.layout())
-        self.NonNeg_bias.setLayout(self.NonNeg_biasConstraint.layout())
-        self.UnitNorm_bias.setLayout(self.UnitNorm_biasConstraint.layout())
-        self.MinMaxNorm_bias.setLayout(self.MinMaxNorm_biasConstraint.layout())
-
-        self.stack_biasConstraint.addWidget(QLabel("None"))
-        self.stack_biasConstraint.addWidget(self.MaxNorm_bias)
-        self.stack_biasConstraint.addWidget(self.NonNeg_bias)
-        self.stack_biasConstraint.addWidget(self.UnitNorm_bias)
-        self.stack_biasConstraint.addWidget(self.MinMaxNorm_bias)
-
-        
-        """
-        Button
-
-        """
-
-        self.passValue = QPushButton("Done")
-        """
-        Layout
-
-        """
-        layout = QGridLayout()
-        layout.addWidget(neuronLabel,0,0)
-        layout.addWidget(self.neuron,0,1)
-
-        layout.addWidget(activationLabel,1,0)
-        layout.addWidget(self.activation,1,1)
-
-        layout.addWidget(useBiasLabel,2,0)
-        layout.addWidget(self.useBias,2,1)
-
-        layout.addWidget(QLabel("kernelInitializer"),3,0)
-        layout.addWidget(self.kernelInitializer,3,1)
-        layout.addWidget(self.stack,4,1)
-
-        layout.addWidget(QLabel("Batch Initializer"),5,0)
-        layout.addWidget(self.BatchInitializer,5,1)
-        layout.addWidget(self.stack_batch,6,1)
-
-        layout.addWidget(QLabel("kernel_regularizer"),7,0)
-        layout.addWidget(self.kernelRegularizer,7,1)
-        layout.addLayout(self.stack_kernelRegularizer,8,1)
-
-        layout.addWidget(QLabel("bias_regularizer"),9,0)
-        layout.addWidget(self.biasRegularizer,9,1)
-        layout.addLayout(self.stack_biasRegularizer,10,1)
-
-        layout.addWidget(QLabel("activity_regularizer"),11,0)
-        layout.addWidget(self.activityRegularizer,11,1)
-        layout.addLayout(self.stack_activityRegularizer,12,1)
-
-        layout.addWidget(QLabel("kernel_constraint"),13,0)
-        layout.addWidget(self.kernelConstraint,13,1)
-        layout.addWidget(self.stack_kernelConstraint,14,1)
-
-        layout.addWidget(QLabel("bias_constraint"),15,0)
-        layout.addWidget(self.biasConstraint,15,1)
-        layout.addWidget(self.stack_biasConstraint,16,1)
-    
-        layout.addWidget(self.passValue,17,1)
-        
-       
-        self.scroll_panel = QWidget()
-        self.scroll_panel_layout = QGridLayout(self.scroll_panel)
-        self.scroll_panel_layout.setContentsMargins(0,0,0,0)
-
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scroll_area.setWidget(self.scroll_panel)
-
-        self.vbox = QVBoxLayout(self)
-        self.vbox.setContentsMargins(5,5,5,5)
-        self.vbox.addWidget(self.scroll_area)
-        
-    
-        self.passValue.clicked.connect(self.passArguments)
-        self.scroll_panel_layout.addLayout(layout,0,0)
-        self.set_styling()
-
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-
-        
-    def passArguments(self):
-        Units = int(self.neuron.text())
-        print(self.activation.currentText())
-        print(self.useBias.currentText())
-        print(self.kernelInitializer.currentText())
