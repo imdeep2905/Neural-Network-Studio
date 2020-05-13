@@ -7,7 +7,7 @@ from PySide2.QtWidgets import QWidget, QPushButton, QTabWidget ,QFormLayout, QLa
 from PySide2.QtGui import QDoubleValidator, QStandardItem, QFontMetrics, QPalette 
 from PySide2.QtCore import Qt, QEvent 
 
-class NetworkController(QWidget):   
+class NetworkControllerWidget(QWidget):   
     def __init__(self):
         super().__init__() 
         self.main_layout = QGridLayout()
