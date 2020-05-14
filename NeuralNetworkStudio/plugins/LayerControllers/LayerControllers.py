@@ -6,7 +6,7 @@ TODO
 #from tensorflow import keras
 #from keras import layers, Sequential
 from PySide2.QtCore import *
-from PySide2.QtWidgets import QDesktopWidget, QWidget, QMainWindow, QApplication, QLineEdit, QGridLayout, QLabel, QPushButton, QComboBox, QHBoxLayout, QStackedWidget,QStackedLayout,QStackedWidget,  QScrollBar, QScrollArea, QVBoxLayout
+from PySide2.QtWidgets import QDesktopWidget, QWidget, QMainWindow, QApplication, QLineEdit, QGridLayout, QLabel, QPushButton, QComboBox, QHBoxLayout, QStackedWidget,QStackedLayout,QStackedWidget,  QScrollBar, QScrollArea, QVBoxLayout, QFormLayout
 from PySide2.QtGui import *
 import sys
 """
@@ -407,7 +407,43 @@ class DenseLayerControlWidget(QWidget):
         print(self.activation.currentText())
         print(self.useBias.currentText())
         print(self.kernelInitializer.currentText())
-        
+
+class DropoutLayerControl(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        layout = QGridLayout(self)
+
+        self.rate = QLineEdit("0")
+        layout.addWidget(QLabel("rate"),0,0)
+        layout.addWidget(self.rate,0,1)
+
+        self.seed = QLineEdit("0")
+        layout.addWidget(QLabel("seed"),1,0)
+        layout.addWidget(self.seed,1,1)
+
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+
+class FlattenLayerControl(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        vbox = QFormLayout(self)
+        vbox.addRow(QLabel("data_format"),self.data_format)
+        self.btn = QPushButton("Done")
+        vbox.addWidget(self.btn)  
+
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+
 class RandomUniformUI(QWidget):
     def __init__(self):
         super().__init__()
