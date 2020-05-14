@@ -18,7 +18,6 @@ class DenseLayerControlWidget(QWidget):
         super().__init__()
         
         self.neuron = QLineEdit("0")
-
         self.activation = QComboBox()
         self.activation.addItems([
             "sigmoid",
@@ -473,7 +472,6 @@ class ConstantUI(QWidget):
         ConstantLayout.addWidget(QLabel("Arguments"),0,1)
         ConstantLayout.addWidget(QLabel("value"))
         ConstantLayout.addWidget(self.value)
-
         return ConstantLayout
 """
 class of random normal which provide UI of random normal
