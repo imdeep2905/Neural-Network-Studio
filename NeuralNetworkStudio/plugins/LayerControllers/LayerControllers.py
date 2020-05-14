@@ -297,6 +297,22 @@ class FlattenLayerControlWidget(QWidget):
     def parse_arguments(self):
         pass
 
+class ReshapeLayerControl(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.target_shape = QLineEdit("(0,0)")
+        self.main_layout = QFormLayout()
+        self.main_layout.addRow(QLabel("target_shape"),self.target_shape)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass
+
 class RandomUniformUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -319,21 +335,7 @@ class RandomUniformUI(QWidget):
     def get_initializer(self):
         return None
 
-class ReshapeLayerControl(QWidget):
-    def __init__(self):
-        super().__init__()
 
-        self.target_shape = QLineEdit("(0,0)")
-        self.main_layout = QFormLayout()
-        self.main_layout.addRow(QLabel("target_shape"),self.target_shape)
-        self.setLayout(self.main_layout)
-        self.set_styling()
-
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-    
-    def parse_arguments(self):
-        pass
         
 """
 Zeros class provide UI of zeros
