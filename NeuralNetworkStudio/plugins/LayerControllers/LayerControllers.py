@@ -309,11 +309,11 @@ class RandomUniformUI(QWidget):
         self.seed = QLineEdit("None")        
         
         self.main_layout.addWidget(QLabel("Minval"),0,0)
-        self.main_layout.addWidget(self.minval,1,1)
+        self.main_layout.addWidget(self.minval,0,1)
         self.main_layout.addWidget(QLabel("Maxval"),1,0)
-        self.main_layout.addWidget(self.maxval,2,1)
+        self.main_layout.addWidget(self.maxval,1,1)
         self.main_layout.addWidget(QLabel("Seed"),2,0)
-        self.main_layout.addWidget(self.seed,3,1)
+        self.main_layout.addWidget(self.seed,2,1)
         self.setLayout(self.main_layout)
         
     def get_initializer(self):
