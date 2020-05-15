@@ -912,6 +912,25 @@ class DropoutLayerControlWidget(QWidget):
     
     def parse_arguments(self):
         pass
+
+class AlphaDropoutLayerControlWidget(QWidget):
+    def __init__(self):
+        self.main_layout = QGridLayout()
+        self.rate = QLineEdit("0.0")
+        self.rate.setValidator(QDoubleValidator(0. , 1e6, 3))
+        self.seed = QLineEdit("0")
+        self.main_layout.addWidget(QLabel("Rate:"), 0, 0)
+        self.main_layout.addWidget(self.rate, 0, 1)
+        self.main_layout.addWidget(QLabel("Seed:"), 1, 0)
+        self.main_layout.addWidget(self.seed, 1, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass        
     
 #############################################################################
 
