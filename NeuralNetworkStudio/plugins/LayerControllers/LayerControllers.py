@@ -527,8 +527,140 @@ class BatchNormalizationLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.main_layout = QGridLayout()
-        pass
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.axis = QLineEdit("-1")
+        self.momentum = QLineEdit("0.99")
+        self.epsilon = 0.001
+        self.center = QComboBox()
+        self.center.addItems(["True", "False"])
+        self.scale = QComboBox()
+        self.scale.addItems(["True", "False"])
+        self.beta_initializer = QComboBox()
+        self.beta_initializer.addItems(["zeroes", "ones"])
+        self.gamma_initializer = QComboBox()
+        self.gamma_initializer.addItems(["ones", "zeroes"])
+        self.moving_mean_initializer = QComboBox()
+        self.moving_mean_initializer.addItems(["zeroes", "ones"])
+        self.moving_variance_initializer= QComboBox()
+        self.moving_variance_initializer.addItems(["ones", "zeroes"])
+        """
+        beta_regularizer
+        """
+        self.beta_regularizer = QComboBox()
+        self.beta_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.beta_regularizer.currentIndexChanged[int].connect(lambda index : self.beta_regularizer_stack.setCurrentIndex(index))
+
+        self.beta_regularizer_stack = QStackedWidget()
+        self.beta_regularizer_stack.addWidget(QLabel("None"))
+        self.beta_regularizer_stack.addWidget(l1UI())
+        self.beta_regularizer_stack.addWidget(l2UI())
+        self.beta_regularizer_stack.addWidget(l1_l2UI())        
+
+        """
+        gamma_regularizer
+        """
+        self.gamma_regularizer = QComboBox()
+        self.gamma_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.gamma_regularizer.currentIndexChanged[int].connect(lambda index : self.gamma_regularizer_stack.setCurrentIndex(index))
+
+        self.gamma_regularizer_stack = QStackedWidget()
+        self.gamma_regularizer_stack.addWidget(QLabel("None"))
+        self.gamma_regularizer_stack.addWidget(l1UI())
+        self.gamma_regularizer_stack.addWidget(l2UI())
+        self.gamma_regularizer_stack.addWidget(l1_l2UI()) 
+
+        """
+        beta_constraint
+        """
+        self.beta_constraint = QComboBox()
+        self.beta_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.beta_constraint.currentIndexChanged[int].connect(lambda index : self.beta_constraint_stack.setCurrentIndex(index))
+        self.beta_constraint_stack = QStackedWidget()
+        self.beta_constraint_stack.addWidget(QLabel("None"))
+        self.beta_constraint_stack.addWidget(MaxNormUI())
+        self.beta_constraint_stack.addWidget(NonNegUI())
+        self.beta_constraint_stack.addWidget(UnitNormUI())
+        self.beta_constraint_stack.addWidget(MinMaxNormUI())
+
+        """
+        gamma constraint
+        """
+        self.gamma_constraint = QComboBox()
+        self.gamma_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.gamma_constraint.currentIndexChanged[int].connect(lambda index : self.gamma_constraint_stack.setCurrentIndex(index))
+        self.gamma_constraint_stack = QStackedWidget()
+        self.gamma_constraint_stack.addWidget(QLabel("None"))
+        self.gamma_constraint_stack.addWidget(MaxNormUI())
+        self.gamma_constraint_stack.addWidget(NonNegUI())
+        self.gamma_constraint_stack.addWidget(UnitNormUI())
+        self.gamma_constraint_stack.addWidget(MinMaxNormUI())  
+        
+        self.renorm = QComboBox()
+        self.renorm.addItems(["False", "True"])
+        self.renorm_clipping = QLineEdit("None")
+        self.fused = QComboBox()
+        self.renorm_momentum = QLineEdit("0.99")
+        self.fused.addItems(["None", "True", "False"])
+        self.trainable = QComboBox()
+        self.trainable.addItems(["True", "False"])
+        self.virtual_batch_size = QLineEdit("None")
+        self.adjustment = QLineEdit("None")
+        '''
+        Gearing up main layout
+        '''
+        self.main_layout.addWidget(QLabel("axis:"), 0 ,0)
+        self.main_layout.addWidget(self.axis,0 , 1)
+        self.main_layout.addWidget(QLabel("momentum:"), 1, 0)
+        self.main_layout.addWidget(self.momentum, 1, 1)
+        self.main_layout.addWidget(QLabel("Center:"),2 ,0)
+        self.main_layout.addWidget(self.center, 2, 1)
+        self.main_layout.addWidget(QLabel("Scale:"), 3, 0)
+        self.main_layout.addWidget(self.scale, 3, 1)
+        self.main_layout.addWidget(QLabel("beta_initializer"), 4, 0)
+        self.main_layout.addWidget(self.beta_initializer, 4, 1)
+        self.main_layout.addWidget(QLabel("gamma_initializer"), 5, 0)
+        self.main_layout.addWidget(self.gamma_initializer, 5, 1)
+        self.main_layout.addWidget(QLabel("moving_mean_initializer"), 6, 0)
+        self.main_layout.addWidget(self.moving_mean_initializer, 6 , 1)
+        self.main_layout.addWidget(QLabel("moving_variance_initializer"), 7, 0)
+        self.main_layout.addWidget(self.moving_variance_initializer, 7 , 1)
+        self.main_layout.addWidget(QLabel("beta_regularizer:"), 8 , 0)
+        self.main_layout.addWidget(self.beta_regularizer, 8 , 1)
+        self.main_layout.addWidget(self.beta_regularizer_stack, 9 , 1)
+        self.main_layout.addWidget(QLabel("gamma_regularizer:"),10 , 0)
+        self.main_layout.addWidget(self.gamma_regularizer, 10, 1)
+        self.main_layout.addWidget(self.gamma_regularizer_stack, 11, 1)
+        self.main_layout.addWidget(QLabel("beta_constraint:"), 12, 0)
+        self.main_layout.addWidget(self.beta_constraint, 12 ,1)
+        self.main_layout.addWidget(self.beta_constraint_stack, 13, 1)
+        self.main_layout.addWidget(QLabel("gamma_constratint"), 13, 0)
+        self.main_layout.addWidget(self.gamma_constraint, 13, 1)
+        self.main_layout.addWidget(self.gamma_constraint_stack, 14 ,1)
+        self.main_layout.addWidget(QLabel("renorm:"), 15, 0)
+        self.main_layout.addWidget(self.renorm, 15 ,1)
+        self.main_layout.addWidget(QLabel("renorm_clipping"), 16, 0)
+        self.main_layout.addWidget(self.renorm_clipping, 16 , 1)
+        self.main_layout.addWidget(QLabel("renorm_momentum"), 17, 0)
+        self.main_layout.addWidget(self.renorm_momentum, 17,1)
+        self.main_layout.addWidget(QLabel("Fused:"), 18, 0)
+        self.main_layout.addWidget(self.fused, 18 , 1)
+        self.main_layout.addWidget(QLabel("Trainable:"), 19, 0)
+        self.main_layout.addWidget(self.trainable, 19 , 1)
+        self.main_layout.addWidget(QLabel("virtual_batch_size:"), 20, 0)
+        self.main_layout.addWidget(self.virtual_batch_size, 20, 1)
+        self.main_layout.addWidget(QLabel("Adjustment:"), 21, 0)
+        self.main_layout.addWidget(self.adjustment, 21, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
     
+    def parse_arguments(self):
+        pass
+        
 class LayerNormalizationLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
