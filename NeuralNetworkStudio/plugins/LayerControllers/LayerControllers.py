@@ -517,6 +517,22 @@ class Conv3DLayerControlWidget(Conv1DLayerControlWidget):
     def parse_arguments(self):
         pass
        
+class Conv2DTransposeLayerControlWidget(Conv1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+        self.output_padding = QLineEdit("None")
+        self.main_layout.addWidget(QLabel("Output Padding"), 21, 0)
+        self.main_layout.addWidget(self.output_padding, 21, 1)
+    
+    def parse_arguments(self):
+        pass    
+
+class Conv3DTransposeLayerControlWidget(Conv2DTransposeLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass        
 #############################################################################
 
 ######################## Normalization layers ############################### 
