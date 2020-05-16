@@ -969,6 +969,8 @@ class FlattenLayerControlWidget(QWidget):
         
     def parse_arguments(self):
         pass
+#############################################################################
+
 
 ##############################Pooling Layers#################################
 class MaxPooling1DLayerControlWidget(QWidget):
