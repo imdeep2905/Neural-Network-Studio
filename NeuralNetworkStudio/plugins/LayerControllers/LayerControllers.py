@@ -973,6 +973,9 @@ class FlattenLayerControlWidget(QWidget):
 
 
 ##############################Pooling Layers#################################
+'''
+DONE
+'''
 class MaxPooling1DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -1048,7 +1051,7 @@ class GlobalMaxPooling1DLayerControlWidget(QWidget):
         super().__init__()
 
         self.data_format = QComboBox()
-        self.data_format.addItems(["channels_last","channels_first"])
+        self.data_format.addItems(["None", "channels_last", "channels_first"])
 
         self.main_layout = QFormLayout()
         self.main_layout.setAlignment(Qt.AlignTop)        
@@ -1065,6 +1068,7 @@ class GlobalMaxPooling1DLayerControlWidget(QWidget):
     
     def parse_arguments(self):
         pass
+    
 class GlobalMaxPooling2DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
     def __init__(self):
         super().__init__()
@@ -1073,6 +1077,27 @@ class GlobalMaxPooling2DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget)
         pass
 
 class GlobalMaxPooling3DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass
+    
+class GlobalAveragePooling1DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass
+
+class GlobalAveragePooling2DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass
+
+class GlobalAveragePooling3DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
     def __init__(self):
         super().__init__()
     
