@@ -969,6 +969,7 @@ class FlattenLayerControlWidget(QWidget):
         
     def parse_arguments(self):
         pass
+    
 #############################################################################
 
 
@@ -1004,7 +1005,7 @@ class MaxPooling1DLayerControlWidget(QWidget):
     def set_styling(self):
         self.setStyleSheet("background-color:aliceblue;")
     
-    def parse_argument(self):
+    def parse_arguments(self):
         pass
 
 class MaxPooling2DLayerControlWidget(MaxPooling1DLayerControlWidget):
@@ -1020,25 +1021,25 @@ class MaxPooling3DLayerControlWidget(MaxPooling1DLayerControlWidget):
         super().__init__()
         self.pool_size.setText("(2,2,2)")
 
-    def parse_argument(self):
+    def parse_arguments(self):
         pass
     
 class AveragePooling1DLayerControlWidget(MaxPooling1DLayerControlWidget):
     def __init__(self):
         super().__init__()
-    def parse_argument(self):
+    def parse_arguments(self):
         pass
 
 class AveragePooling2DLayerControlWidget(MaxPooling2DLayerControlWidget):
     def __init__(self):
         super().__init__()
-    def parse_argument(self):
+    def parse_arguments(self):
         pass
 
 class AveragePooling3DLayerControlWidget(MaxPooling3DLayerControlWidget):
     def __init__(self):
         super().__init__()
-    def parse_argument(self):
+    def parse_arguments(self):
         pass
 #############################################################################
 
@@ -1494,4 +1495,8 @@ class MinMaxNormUI(QWidget):
         self.setLayout(self.main_layout)
         
     def get_regularizer(self):
+<<<<<<< HEAD
         return None
+=======
+        return None
+>>>>>>> 512b3b5fd2e7aa63a34f4160729ac30e0468d01a
