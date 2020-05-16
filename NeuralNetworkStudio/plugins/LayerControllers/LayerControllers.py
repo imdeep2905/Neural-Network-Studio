@@ -1021,6 +1021,23 @@ class MaxPooling3DLayerControlWidget(MaxPooling1DLayerControlWidget):
     def parse_argument(self):
         pass
     
+class AveragePooling1DLayerControlWidget(MaxPooling1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    def parse_argument(self):
+        pass
+
+class AveragePooling2DLayerControlWidget(MaxPooling2DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    def parse_argument(self):
+        pass
+
+class AveragePooling3DLayerControlWidget(MaxPooling3DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    def parse_argument(self):
+        pass
 #############################################################################
 
 class RandomUniformUI(QWidget):
@@ -1476,3 +1493,4 @@ class MinMaxNormUI(QWidget):
         
     def get_regularizer(self):
         return None
+
