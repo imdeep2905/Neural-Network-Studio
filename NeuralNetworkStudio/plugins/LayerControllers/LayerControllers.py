@@ -1041,6 +1041,42 @@ class AveragePooling3DLayerControlWidget(MaxPooling3DLayerControlWidget):
         super().__init__()
     def parse_arguments(self):
         pass
+    
+class GlobalMaxPooling1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
+
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass
+class GlobalMaxPooling2DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass
+
+class GlobalMaxPooling3DLayerControlWidget(GlobalMaxPooling1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass
 #############################################################################
 
 class RandomUniformUI(QWidget):
@@ -1495,8 +1531,10 @@ class MinMaxNormUI(QWidget):
         self.setLayout(self.main_layout)
         
     def get_regularizer(self):
-<<<<<<< HEAD
         return None
-=======
-        return None
->>>>>>> 512b3b5fd2e7aa63a34f4160729ac30e0468d01a
+
+myapp = QApplication(sys.argv)
+win = GlobalMaxPooling1DLayerControlWidget()
+win.show()
+myapp.exec_()
+sys.exit(0)
