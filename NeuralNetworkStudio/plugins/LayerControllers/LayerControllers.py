@@ -969,6 +969,109 @@ class FlattenLayerControlWidget(QWidget):
         
     def parse_arguments(self):
         pass
+
+##############################Pooling Layers#################################
+class MaxPooling1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.pool_size = QLineEdit("2")
+        self.stride = QLineEdit("None")
+        self.padding = QComboBox()
+        self.padding.addItems(["valid","same"])
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        self.main_layout.addWidget(QLabel("pool_size:"),0,0)
+        self.main_layout.addWidget(self.pool_size,0,1)
+        self.main_layout.addWidget(QLabel("stride:"),1,0)
+        self.main_layout.addWidget(self.stride,1,1)
+        self.main_layout.addWidget(QLabel("padding"),2,0)
+        self.main_layout.addWidget(self.padding,2,1)
+        self.main_layout.addWidget(QLabel("data_format:"),3,0)
+        self.main_layout.addWidget(self.data_format,3,1)
+
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_argument(self):
+        pass
+
+class MaxPooling2DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.pool_size = QLineEdit("(2,2)")
+        self.stride = QLineEdit("None")
+        self.padding = QComboBox()
+        self.padding.addItems(["valid","same"])
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        self.main_layout.addWidget(QLabel("pool_size:"),0,0)
+        self.main_layout.addWidget(self.pool_size,0,1)
+        self.main_layout.addWidget(QLabel("stride:"),1,0)
+        self.main_layout.addWidget(self.stride,1,1)
+        self.main_layout.addWidget(QLabel("padding"),2,0)
+        self.main_layout.addWidget(self.padding,2,1)
+        self.main_layout.addWidget(QLabel("data_format:"),3,0)
+        self.main_layout.addWidget(self.data_format,3,1)
+
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_argument(self):
+        pass
+
+class MaxPooling3DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.pool_size = QLineEdit("(2,2,2)")
+        self.stride = QLineEdit("None")
+        self.padding = QComboBox()
+        self.padding.addItems(["valid","same"])
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        self.main_layout.addWidget(QLabel("pool_size:"),0,0)
+        self.main_layout.addWidget(self.pool_size,0,1)
+        self.main_layout.addWidget(QLabel("stride:"),1,0)
+        self.main_layout.addWidget(self.stride,1,1)
+        self.main_layout.addWidget(QLabel("padding"),2,0)
+        self.main_layout.addWidget(self.padding,2,1)
+        self.main_layout.addWidget(QLabel("data_format:"),3,0)
+        self.main_layout.addWidget(self.data_format,3,1)
+
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_argument(self):
+        pass
     
 #############################################################################
 
