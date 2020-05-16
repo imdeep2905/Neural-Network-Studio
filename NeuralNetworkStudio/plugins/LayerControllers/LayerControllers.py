@@ -118,7 +118,6 @@ class DenseLayerControlWidget(QWidget):
         self.bias_initializer_stack.addWidget(heUniformUI())
         """
         Kernal regularizer
-
         """
         self.kernel_regularizer = QComboBox()
         self.kernel_regularizer.addItems(["None","l1","l2","l1_l2"])
@@ -1031,14 +1030,123 @@ class AveragePooling1DLayerControlWidget(MaxPooling1DLayerControlWidget):
 class AveragePooling2DLayerControlWidget(MaxPooling2DLayerControlWidget):
     def __init__(self):
         super().__init__()
+    
     def parse_arguments(self):
         pass
 
 class AveragePooling3DLayerControlWidget(MaxPooling3DLayerControlWidget):
     def __init__(self):
         super().__init__()
+    
     def parse_arguments(self):
         pass
+#############################################################################
+
+######################## Recurrent layers ################################### 
+class SimpleRNNLayerWidget(DenseLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+        """
+        recurrent_initializer
+        """
+        self.recurrent_initializer = QComboBox()
+        self.recurrent_initializer.addItems(["RandomUniform",
+                                        "Zeros",
+                                        "Ones",
+                                        "Constant",
+                                        "RandomNormal",
+                                        "TruncatedNormal",
+                                        "VarianceScaling",
+                                        "Orthogonal",
+                                        "Identity",
+                                        "lecun_uniform",
+                                        "glorot_normal",
+                                        "glorot_uniform",
+                                        "he_normal",
+                                        "lecun_normal",
+                                        "he_uniform"])
+        self.recurrent_initializer.currentIndexChanged[int].connect(lambda index : self.recurrent_initializer_stack.setCurrentIndex(index))
+        self.recurrent_initializer_stack = QStackedWidget()
+        self.recurrent_initializer_stack.addWidget(RandomUniformUI())
+        self.recurrent_initializer_stack.addWidget(ZerosUI())
+        self.recurrent_initializer_stack.addWidget(OnesUI())
+        self.recurrent_initializer_stack.addWidget(ConstantUI())
+        self.recurrent_initializer_stack.addWidget(RandomNormalUI())
+        self.recurrent_initializer_stack.addWidget(TruncatedNormalUI())
+        self.recurrent_initializer_stack.addWidget(VarianceScalingUI())
+        self.recurrent_initializer_stack.addWidget(OrthogonalUI())
+        self.recurrent_initializer_stack.addWidget(IdentityUI())
+        self.recurrent_initializer_stack.addWidget(lecunUniformUI())
+        self.recurrent_initializer_stack.addWidget(glorotNormalUI())
+        self.recurrent_initializer_stack.addWidget(glorotUniformUI())
+        self.recurrent_initializer_stack.addWidget(heNormalUI())
+        self.recurrent_initializer_stack.addWidget(lecunNormalUI())
+        self.recurrent_initializer_stack.addWidget(heUniformUI())      
+        """
+        Recurrent regularizer
+        """
+        self.recurrent_regularizer = QComboBox()
+        self.recurrent_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.recurrent_regularizer.currentIndexChanged[int].connect(lambda index : self.recurrent_regularizer_stack.setCurrentIndex(index))
+
+        self.recurrent_regularizer_stack = QStackedWidget()
+        self.recurrent_regularizer_stack.addWidget(QLabel("None"))
+        self.recurrent_regularizer_stack.addWidget(l1UI())
+        self.recurrent_regularizer_stack.addWidget(l2UI())
+        self.recurrent_regularizer_stack.addWidget(l1_l2UI())
+        """
+        Recurrent constraint
+        """
+        self.recurrent_constraint = QComboBox()
+        self.recurrent_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.recurrent_constraint.currentIndexChanged[int].connect(lambda index : self.recurrent_constraint_stack.setCurrentIndex(index))
+        self.recurrent_constraint_stack = QStackedWidget()
+        self.recurrent_constraint_stack.addWidget(QLabel("None"))
+        self.recurrent_constraint_stack.addWidget(MaxNormUI())
+        self.recurrent_constraint_stack.addWidget(NonNegUI())
+        self.recurrent_constraint_stack.addWidget(UnitNormUI())
+        self.recurrent_constraint_stack.addWidget(MinMaxNormUI())       
+        
+        self.dropout = QLineEdit("0.0")
+        self.recurrent_dropout = QLineEdit("0.0")
+        self.return_sequences = QComboBox()
+        self.return_sequences.addItems(["False", "True"])
+        self.return_state = QComboBox()
+        self.return_state.addItems(["False", "True"])
+        self.go_backwards = QComboBox()
+        self.go_backwards.addItems(["False", "True"])
+        self.stateful = QComboBox()
+        self.stateful.addItems(["False", "True"])
+        self.unroll = QComboBox()
+        self.unroll.addItems(["False", "True"])      
+        self.main_layout.addWidget(QLabel("Recurrent initializer") ,17, 0)
+        self.main_layout.addWidget(self.recurrent_initializer, 17, 1)
+        self.main_layout.addWidget(self.recurrent_constraint_stack, 18, 1)
+        self.main_layout.addWidget(QLabel("Recurrent Regularizer: "), 19, 0)
+        self.main_layout.addWidget(self.recurrent_regularizer, 19, 1)
+        self.main_layout.addWidget(self.recurrent_regularizer_stack, 20, 1)
+        self.main_layout.addWidget(QLabel("Recurrent_constraint:"), 21, 0)
+        self.main_layout.addWidget(self.recurrent_constraint, 21, 1)
+        self.main_layout.addWidget(self.recurrent_constraint_stack, 22, 1)
+        self.main_layout.addWidget(QLabel("dropout:"), 23, 0)  
+        self.main_layout.addWidget(self.dropout, 23, 1)
+        self.main_layout.addWidget(QLabel("Return Sequance:"), 24, 0)
+        self.main_layout.addWidget(self.return_sequences, 24 , 1)
+        self.main_layout.addWidget(QLabel("Return State:"), 25, 0)
+        self.main_layout.addWidget(self.return_state, 25, 1)
+        self.main_layout.addWidget(QLabel("go Backwards"), 26, 0)
+        self.main_layout.addWidget(self.go_backwards, 26, 1)
+        self.main_layout.addWidget(QLabel("Stateful:"), 27, 0)
+        self.main_layout.addWidget(self.stateful, 27, 1)
+        self.main_layout.addWidget(QLabel("Unrool:"), 28, 0)
+        self.main_layout.addWidget(self.unroll, 28, 1)
+        
+    def set_styling(self):
+        pass 
+    
+    def parse_arguments(self):
+        pass
+
 #############################################################################
 
 class RandomUniformUI(QWidget):
@@ -1062,9 +1170,7 @@ class RandomUniformUI(QWidget):
         
     def get_initializer(self):
         return None
-
-
-        
+            
 """
 Zeros class provide UI of zeros
 
