@@ -1010,6 +1010,7 @@ class MaxPooling1DLayerControlWidget(QWidget):
 class MaxPooling2DLayerControlWidget(MaxPooling1DLayerControlWidget):
     def __init__(self):
         super().__init__()
+        self.pool_size.setText("(2,2)")
 
     def parse_argument(self):
         pass
@@ -1017,6 +1018,7 @@ class MaxPooling2DLayerControlWidget(MaxPooling1DLayerControlWidget):
 class MaxPooling3DLayerControlWidget(MaxPooling1DLayerControlWidget):
     def __init__(self):
         super().__init__()
+        self.pool_size.setText("(2,2,2)")
 
     def parse_argument(self):
         pass
@@ -1493,4 +1495,3 @@ class MinMaxNormUI(QWidget):
         
     def get_regularizer(self):
         return None
-
