@@ -251,6 +251,9 @@ class DenseLayerControlWidget(QWidget):
 #############################################################################
 
 ######################## Convolution layers #################################   
+'''
+DONE
+'''
 class Conv1DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -505,10 +508,532 @@ class Conv3DLayerControlWidget(Conv1DLayerControlWidget):
     def parse_arguments(self):
         pass
 
-class SeparableConv1DLayerWidget():
+class SeparableConv1DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
-       
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.filters = QLineEdit("(0)")
+        self.kernal_size = QLineEdit("(0)")
+        self.strides = QLineEdit("1")
+        self.padding = QComboBox()
+        self.padding.addItems(["same", "valid", "casual"])
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_first", "channels_last"])
+        self.dilation_rate = QLineEdit("0")
+        self.activation = QComboBox()
+        self.activation.addItems([
+            "sigmoid",
+            "tanh",
+            "relu",
+            "softmax",
+            "linear",
+            "exponential",
+            "hard_sigmoid",
+            "softsign",
+            "selu",
+            "elu",
+            "softplus",
+            "Custom_my1"])
+        self.use_bias = QComboBox()
+        self.use_bias.addItems(["True","False"])
+        """
+        Bias Initializer
+
+        """
+        self.bias_initializer = QComboBox()
+        self.bias_initializer.addItems(["RandomUniform",
+                                        "Zeros",
+                                        "Ones",
+                                        "Constant",
+                                        "RandomNormal",
+                                        "TruncatedNormal",
+                                        "VarianceScaling",
+                                        "Orthogonal",
+                                        "Identity",
+                                        "lecun_uniform",
+                                        "glorot_normal",
+                                        "glorot_uniform",
+                                        "he_normal",
+                                        "lecun_normal",
+                                        "he_uniform"])
+        self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
+        self.bias_initializer_stack = QStackedWidget()
+        self.bias_initializer_stack.addWidget(RandomUniformUI())
+        self.bias_initializer_stack.addWidget(ZerosUI())
+        self.bias_initializer_stack.addWidget(OnesUI())
+        self.bias_initializer_stack.addWidget(ConstantUI())
+        self.bias_initializer_stack.addWidget(RandomNormalUI())
+        self.bias_initializer_stack.addWidget(TruncatedNormalUI())
+        self.bias_initializer_stack.addWidget(VarianceScalingUI())
+        self.bias_initializer_stack.addWidget(OrthogonalUI())
+        self.bias_initializer_stack.addWidget(IdentityUI())
+        self.bias_initializer_stack.addWidget(lecunUniformUI())
+        self.bias_initializer_stack.addWidget(glorotNormalUI())
+        self.bias_initializer_stack.addWidget(glorotUniformUI())
+        self.bias_initializer_stack.addWidget(heNormalUI())
+        self.bias_initializer_stack.addWidget(lecunNormalUI())
+        self.bias_initializer_stack.addWidget(heUniformUI())
+        """
+        depthwise_initializer
+        """
+        self.depthwise_initializer = QComboBox()
+        self.depthwise_initializer.addItems(["RandomUniform",
+                                        "Zeros",
+                                        "Ones",
+                                        "Constant",
+                                        "RandomNormal",
+                                        "TruncatedNormal",
+                                        "VarianceScaling",
+                                        "Orthogonal",
+                                        "Identity",
+                                        "lecun_uniform",
+                                        "glorot_normal",
+                                        "glorot_uniform",
+                                        "he_normal",
+                                        "lecun_normal",
+                                        "he_uniform"])
+        self.depthwise_initializer.currentIndexChanged[int].connect(lambda index : self.depthwise_initializer_stack.setCurrentIndex(index))
+        self.depthwise_initializer_stack = QStackedWidget()
+        self.depthwise_initializer_stack.addWidget(RandomUniformUI())
+        self.depthwise_initializer_stack.addWidget(ZerosUI())
+        self.depthwise_initializer_stack.addWidget(OnesUI())
+        self.depthwise_initializer_stack.addWidget(ConstantUI())
+        self.depthwise_initializer_stack.addWidget(RandomNormalUI())
+        self.depthwise_initializer_stack.addWidget(TruncatedNormalUI())
+        self.depthwise_initializer_stack.addWidget(VarianceScalingUI())
+        self.depthwise_initializer_stack.addWidget(OrthogonalUI())
+        self.depthwise_initializer_stack.addWidget(IdentityUI())
+        self.depthwise_initializer_stack.addWidget(lecunUniformUI())
+        self.depthwise_initializer_stack.addWidget(glorotNormalUI())
+        self.depthwise_initializer_stack.addWidget(glorotUniformUI())
+        self.depthwise_initializer_stack.addWidget(heNormalUI())
+        self.depthwise_initializer_stack.addWidget(lecunNormalUI())
+        self.depthwise_initializer_stack.addWidget(heUniformUI())
+        """
+        pointwise_initializer
+        """
+        self.pointwise_initializer = QComboBox()
+        self.pointwise_initializer.addItems(["RandomUniform",
+                                        "Zeros",
+                                        "Ones",
+                                        "Constant",
+                                        "RandomNormal",
+                                        "TruncatedNormal",
+                                        "VarianceScaling",
+                                        "Orthogonal",
+                                        "Identity",
+                                        "lecun_uniform",
+                                        "glorot_normal",
+                                        "glorot_uniform",
+                                        "he_normal",
+                                        "lecun_normal",
+                                        "he_uniform"])
+        self.pointwise_initializer.currentIndexChanged[int].connect(lambda index : self.pointwise_initializer_stack.setCurrentIndex(index))
+        self.pointwise_initializer_stack = QStackedWidget()
+        self.pointwise_initializer_stack.addWidget(RandomUniformUI())
+        self.pointwise_initializer_stack.addWidget(ZerosUI())
+        self.pointwise_initializer_stack.addWidget(OnesUI())
+        self.pointwise_initializer_stack.addWidget(ConstantUI())
+        self.pointwise_initializer_stack.addWidget(RandomNormalUI())
+        self.pointwise_initializer_stack.addWidget(TruncatedNormalUI())
+        self.pointwise_initializer_stack.addWidget(VarianceScalingUI())
+        self.pointwise_initializer_stack.addWidget(OrthogonalUI())
+        self.pointwise_initializer_stack.addWidget(IdentityUI())
+        self.pointwise_initializer_stack.addWidget(lecunUniformUI())
+        self.pointwise_initializer_stack.addWidget(glorotNormalUI())
+        self.pointwise_initializer_stack.addWidget(glorotUniformUI())
+        self.pointwise_initializer_stack.addWidget(heNormalUI())
+        self.pointwise_initializer_stack.addWidget(lecunNormalUI())
+        self.pointwise_initializer_stack.addWidget(heUniformUI())
+        """
+        Bias regularizer
+
+        """
+
+        self.bias_regularizer = QComboBox()
+        self.bias_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.bias_regularizer.currentIndexChanged[int].connect(lambda index : self.bias_regularizer_stack.setCurrentIndex(index))
+
+        self.bias_regularizer_stack = QStackedWidget()
+        self.bias_regularizer_stack.addWidget(QLabel("None"))
+        self.bias_regularizer_stack.addWidget(l1UI())
+        self.bias_regularizer_stack.addWidget(l2UI())
+        self.bias_regularizer_stack.addWidget(l1_l2UI())
+
+        """
+        activity_regularizer
+
+        """
+        self.activity_regularizer = QComboBox()
+        self.activity_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.activity_regularizer.currentIndexChanged[int].connect(lambda index : self.activity_regularizer_stack.setCurrentIndex(index))
+
+        self.activity_regularizer_stack = QStackedWidget()
+        self.activity_regularizer_stack.addWidget(QLabel("None"))
+        self.activity_regularizer_stack.addWidget(l1UI())
+        self.activity_regularizer_stack.addWidget(l2UI())
+        self.activity_regularizer_stack.addWidget(l1_l2UI())
+        """
+        activity_regularizer
+
+        """
+        self.depthwise_regularizer = QComboBox()
+        self.depthwise_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.depthwise_regularizer.currentIndexChanged[int].connect(lambda index : self.depthwise_regularizer_stack.setCurrentIndex(index))
+
+        self.depthwise_regularizer_stack = QStackedWidget()
+        self.depthwise_regularizer_stack.addWidget(QLabel("None"))
+        self.depthwise_regularizer_stack.addWidget(l1UI())
+        self.depthwise_regularizer_stack.addWidget(l2UI())
+        self.depthwise_regularizer_stack.addWidget(l1_l2UI())
+        """
+        activity_regularizer
+
+        """
+        self.pointwise_regularizer = QComboBox()
+        self.pointwise_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.pointwise_regularizer.currentIndexChanged[int].connect(lambda index : self.pointwise_regularizer_stack.setCurrentIndex(index))
+
+        self.pointwise_regularizer_stack = QStackedWidget()
+        self.pointwise_regularizer_stack.addWidget(QLabel("None"))
+        self.pointwise_regularizer_stack.addWidget(l1UI())
+        self.pointwise_regularizer_stack.addWidget(l2UI())
+        self.pointwise_regularizer_stack.addWidget(l1_l2UI())
+        """
+        bias_constraint
+
+        """
+        self.pointwise_constraint = QComboBox()
+        self.pointwise_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.pointwise_constraint.currentIndexChanged[int].connect(lambda index : self.pointwise_constraint_stack.setCurrentIndex(index))
+        self.pointwise_constraint_stack = QStackedWidget()
+        self.pointwise_constraint_stack.setContentsMargins(0, 0, 0, 0)
+        self.pointwise_constraint_stack.addWidget(MaxNormUI())
+        self.pointwise_constraint_stack.addWidget(NonNegUI())
+        self.pointwise_constraint_stack.addWidget(UnitNormUI())
+        self.pointwise_constraint_stack.addWidget(MinMaxNormUI())        
+        """
+        bias_constraint
+
+        """
+        self.depthwise_constraint = QComboBox()
+        self.depthwise_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.depthwise_constraint.currentIndexChanged[int].connect(lambda index : self.depthwise_constraint_stack.setCurrentIndex(index))
+        self.depthwise_constraint_stack = QStackedWidget()
+        self.depthwise_constraint_stack.setContentsMargins(0, 0, 0, 0)
+        self.depthwise_constraint_stack.addWidget(MaxNormUI())
+        self.depthwise_constraint_stack.addWidget(NonNegUI())
+        self.depthwise_constraint_stack.addWidget(UnitNormUI())
+        self.depthwise_constraint_stack.addWidget(MinMaxNormUI())        
+        """
+        bias_constraint
+
+        """
+        self.bias_constraint = QComboBox()
+        self.bias_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.bias_constraint.currentIndexChanged[int].connect(lambda index : self.bias_constraint_stack.setCurrentIndex(index))
+        self.bias_constraint_stack = QStackedWidget()
+        self.bias_constraint_stack.setContentsMargins(0, 0, 0, 0)
+        self.bias_constraint_stack.addWidget(MaxNormUI())
+        self.bias_constraint_stack.addWidget(NonNegUI())
+        self.bias_constraint_stack.addWidget(UnitNormUI())
+        self.bias_constraint_stack.addWidget(MinMaxNormUI())        
+        self.init_GUI()
+        
+    def init_GUI(self):
+        """
+        Gearup main layout
+        """
+        self.main_layout.addWidget(QLabel("Filters:"), 0, 0)
+        self.main_layout.addWidget(self.filters, 0 , 1)
+        self.main_layout.addWidget(QLabel("Kernal Size:"), 1, 0)
+        self.main_layout.addWidget(self.kernal_size, 1, 1)
+        self.main_layout.addWidget(QLabel("Strides:"), 2, 0)
+        self.main_layout.addWidget(self.strides, 2 ,1)
+        self.main_layout.addWidget(QLabel("Padding:"), 3, 0)
+        self.main_layout.addWidget(self.padding, 3, 1)
+        self.main_layout.addWidget(QLabel("Data Format:"), 4, 0)
+        self.main_layout.addWidget(self.data_format, 4 ,1)
+        self.main_layout.addWidget(QLabel("Dilation rate:"), 5, 0)
+        self.main_layout.addWidget(self.dilation_rate, 5, 1)
+        self.main_layout.addWidget(QLabel("Activation"), 6, 0)
+        self.main_layout.addWidget(self.activation, 6 ,1)
+        self.main_layout.addWidget(QLabel("Use Bias:"), 7 , 0)
+        self.main_layout.addWidget(self.use_bias, 7, 1)
+        self.main_layout.addWidget(QLabel("depthwise_initializer"), 8, 0)
+        self.main_layout.addWidget(self.depthwise_initializer, 8, 1)
+        self.main_layout.addWidget(self.depthwise_initializer_stack, 9, 1)
+        self.main_layout.addWidget(QLabel("pointwise_initializer"), 10, 0)
+        self.main_layout.addWidget(self.pointwise_initializer, 10, 1)
+        self.main_layout.addWidget(self.pointwise_initializer_stack, 11 , 1)
+        self.main_layout.addWidget(QLabel("bias_initializer"), 12, 0)
+        self.main_layout.addWidget(self.bias_initializer, 12, 1)
+        self.main_layout.addWidget(self.bias_initializer_stack, 13 , 1)
+        self.main_layout.addWidget(QLabel("depthwise_regularizer"),14,0)
+        self.main_layout.addWidget(self.depthwise_regularizer,14,1)
+        self.main_layout.addWidget(self.depthwise_regularizer_stack,15,1)
+
+        self.main_layout.addWidget(QLabel("pointwise_regularizer"),16,0)
+        self.main_layout.addWidget(self.pointwise_regularizer,16,1)
+        self.main_layout.addWidget(self.pointwise_regularizer_stack,17,1)
+
+        self.main_layout.addWidget(QLabel("activity_regularizer"),18, 0)
+        self.main_layout.addWidget(self.activity_regularizer,18,1)
+        self.main_layout.addWidget(self.activity_regularizer_stack,19, 1)
+        self.main_layout.addWidget(QLabel("bias_regularizer"),18, 0)
+        self.main_layout.addWidget(self.bias_regularizer,18,1)
+        self.main_layout.addWidget(self.bias_regularizer_stack,19, 1)
+        
+        self.main_layout.addWidget(QLabel("depthwise_constraint"),20,0)
+        self.main_layout.addWidget(self.depthwise_constraint,20,1)
+        self.main_layout.addWidget(self.depthwise_constraint_stack,21,1)
+        self.main_layout.addWidget(QLabel("pointwise_constraint"),22,0)
+        self.main_layout.addWidget(self.pointwise_constraint,22,1)
+        self.main_layout.addWidget(self.pointwise_constraint_stack,23,1)
+        self.main_layout.addWidget(QLabel("bias_constraint"),24,0)
+        self.main_layout.addWidget(self.bias_constraint,24,1)
+        self.main_layout.addWidget(self.bias_constraint_stack,25, 1)
+        
+        self.setLayout(self.main_layout)
+        self.set_styling()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class SeparableConv2DLayerControlWidget(SeparableConv1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()       
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class DepthwiseConv2DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.kernal_size = QLineEdit("(0)")
+        self.strides = QLineEdit("1")
+        self.padding = QComboBox()
+        self.padding.addItems(["same", "valid", "casual"])
+        self.depth_multiplier = QLineEdit("1")
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_first", "channels_last"])
+        self.dilation_rate = QLineEdit("0")
+        self.activation = QComboBox()
+        self.activation.addItems([
+            "sigmoid",
+            "tanh",
+            "relu",
+            "softmax",
+            "linear",
+            "exponential",
+            "hard_sigmoid",
+            "softsign",
+            "selu",
+            "elu",
+            "softplus",
+            "Custom_my1"])
+        self.use_bias = QComboBox()
+        self.use_bias.addItems(["True","False"])
+        """
+        Bias Initializer
+
+        """
+        self.bias_initializer = QComboBox()
+        self.bias_initializer.addItems(["RandomUniform",
+                                        "Zeros",
+                                        "Ones",
+                                        "Constant",
+                                        "RandomNormal",
+                                        "TruncatedNormal",
+                                        "VarianceScaling",
+                                        "Orthogonal",
+                                        "Identity",
+                                        "lecun_uniform",
+                                        "glorot_normal",
+                                        "glorot_uniform",
+                                        "he_normal",
+                                        "lecun_normal",
+                                        "he_uniform"])
+        self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
+        self.bias_initializer_stack = QStackedWidget()
+        self.bias_initializer_stack.addWidget(RandomUniformUI())
+        self.bias_initializer_stack.addWidget(ZerosUI())
+        self.bias_initializer_stack.addWidget(OnesUI())
+        self.bias_initializer_stack.addWidget(ConstantUI())
+        self.bias_initializer_stack.addWidget(RandomNormalUI())
+        self.bias_initializer_stack.addWidget(TruncatedNormalUI())
+        self.bias_initializer_stack.addWidget(VarianceScalingUI())
+        self.bias_initializer_stack.addWidget(OrthogonalUI())
+        self.bias_initializer_stack.addWidget(IdentityUI())
+        self.bias_initializer_stack.addWidget(lecunUniformUI())
+        self.bias_initializer_stack.addWidget(glorotNormalUI())
+        self.bias_initializer_stack.addWidget(glorotUniformUI())
+        self.bias_initializer_stack.addWidget(heNormalUI())
+        self.bias_initializer_stack.addWidget(lecunNormalUI())
+        self.bias_initializer_stack.addWidget(heUniformUI())
+        """
+        depthwise_initializer
+        """
+        self.depthwise_initializer = QComboBox()
+        self.depthwise_initializer.addItems(["RandomUniform",
+                                        "Zeros",
+                                        "Ones",
+                                        "Constant",
+                                        "RandomNormal",
+                                        "TruncatedNormal",
+                                        "VarianceScaling",
+                                        "Orthogonal",
+                                        "Identity",
+                                        "lecun_uniform",
+                                        "glorot_normal",
+                                        "glorot_uniform",
+                                        "he_normal",
+                                        "lecun_normal",
+                                        "he_uniform"])
+        self.depthwise_initializer.currentIndexChanged[int].connect(lambda index : self.depthwise_initializer_stack.setCurrentIndex(index))
+        self.depthwise_initializer_stack = QStackedWidget()
+        self.depthwise_initializer_stack.addWidget(RandomUniformUI())
+        self.depthwise_initializer_stack.addWidget(ZerosUI())
+        self.depthwise_initializer_stack.addWidget(OnesUI())
+        self.depthwise_initializer_stack.addWidget(ConstantUI())
+        self.depthwise_initializer_stack.addWidget(RandomNormalUI())
+        self.depthwise_initializer_stack.addWidget(TruncatedNormalUI())
+        self.depthwise_initializer_stack.addWidget(VarianceScalingUI())
+        self.depthwise_initializer_stack.addWidget(OrthogonalUI())
+        self.depthwise_initializer_stack.addWidget(IdentityUI())
+        self.depthwise_initializer_stack.addWidget(lecunUniformUI())
+        self.depthwise_initializer_stack.addWidget(glorotNormalUI())
+        self.depthwise_initializer_stack.addWidget(glorotUniformUI())
+        self.depthwise_initializer_stack.addWidget(heNormalUI())
+        self.depthwise_initializer_stack.addWidget(lecunNormalUI())
+        self.depthwise_initializer_stack.addWidget(heUniformUI())
+        """
+        Bias regularizer
+        """
+        self.bias_regularizer = QComboBox()
+        self.bias_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.bias_regularizer.currentIndexChanged[int].connect(lambda index : self.bias_regularizer_stack.setCurrentIndex(index))
+
+        self.bias_regularizer_stack = QStackedWidget()
+        self.bias_regularizer_stack.addWidget(QLabel("None"))
+        self.bias_regularizer_stack.addWidget(l1UI())
+        self.bias_regularizer_stack.addWidget(l2UI())
+        self.bias_regularizer_stack.addWidget(l1_l2UI())
+
+        """
+        activity_regularizer
+
+        """
+        self.activity_regularizer = QComboBox()
+        self.activity_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.activity_regularizer.currentIndexChanged[int].connect(lambda index : self.activity_regularizer_stack.setCurrentIndex(index))
+
+        self.activity_regularizer_stack = QStackedWidget()
+        self.activity_regularizer_stack.addWidget(QLabel("None"))
+        self.activity_regularizer_stack.addWidget(l1UI())
+        self.activity_regularizer_stack.addWidget(l2UI())
+        self.activity_regularizer_stack.addWidget(l1_l2UI())
+        """
+        depthwise_regularizer
+        """
+        self.depthwise_regularizer = QComboBox()
+        self.depthwise_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.depthwise_regularizer.currentIndexChanged[int].connect(lambda index : self.depthwise_regularizer_stack.setCurrentIndex(index))
+
+        self.depthwise_regularizer_stack = QStackedWidget()
+        self.depthwise_regularizer_stack.addWidget(QLabel("None"))
+        self.depthwise_regularizer_stack.addWidget(l1UI())
+        self.depthwise_regularizer_stack.addWidget(l2UI())
+        self.depthwise_regularizer_stack.addWidget(l1_l2UI())      
+        """
+        bias_constraint
+        """
+        self.depthwise_constraint = QComboBox()
+        self.depthwise_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.depthwise_constraint.currentIndexChanged[int].connect(lambda index : self.depthwise_constraint_stack.setCurrentIndex(index))
+        self.depthwise_constraint_stack = QStackedWidget()
+        self.depthwise_constraint_stack.setContentsMargins(0, 0, 0, 0)
+        self.depthwise_constraint_stack.addWidget(MaxNormUI())
+        self.depthwise_constraint_stack.addWidget(NonNegUI())
+        self.depthwise_constraint_stack.addWidget(UnitNormUI())
+        self.depthwise_constraint_stack.addWidget(MinMaxNormUI())        
+        """
+        bias_constraint
+        """
+        self.bias_constraint = QComboBox()
+        self.bias_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.bias_constraint.currentIndexChanged[int].connect(lambda index : self.bias_constraint_stack.setCurrentIndex(index))
+        self.bias_constraint_stack = QStackedWidget()
+        self.bias_constraint_stack.setContentsMargins(0, 0, 0, 0)
+        self.bias_constraint_stack.addWidget(MaxNormUI())
+        self.bias_constraint_stack.addWidget(NonNegUI())
+        self.bias_constraint_stack.addWidget(UnitNormUI())
+        self.bias_constraint_stack.addWidget(MinMaxNormUI())        
+        self.init_GUI()
+            
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)  
+        self.main_layout.addWidget(QLabel("Kernal Size:"), 0, 0)
+        self.main_layout.addWidget(self.kernal_size, 0, 1)
+        self.main_layout.addWidget(QLabel("Strides:"), 1, 0)
+        self.main_layout.addWidget(self.strides, 1 ,1)
+        self.main_layout.addWidget(QLabel("Padding:"), 2, 0)
+        self.main_layout.addWidget(self.padding, 2, 1)
+        self.main_layout.addWidget(QLabel("Data Format:"), 3, 0)
+        self.main_layout.addWidget(self.data_format, 3 ,1)
+        self.main_layout.addWidget(QLabel("Dilation rate:"), 4, 0)
+        self.main_layout.addWidget(self.dilation_rate, 4, 1)
+        self.main_layout.addWidget(QLabel("Activation"), 5, 0)
+        self.main_layout.addWidget(self.activation, 5 ,1)
+        self.main_layout.addWidget(QLabel("Use Bias:"),6 , 0)
+        self.main_layout.addWidget(self.use_bias, 6, 1)
+        self.main_layout.addWidget(QLabel("depthwise_initializer:"), 7, 0)
+        self.main_layout.addWidget(self.depthwise_initializer, 7, 1)
+        self.main_layout.addWidget(self.depthwise_initializer_stack, 8, 1)
+        self.main_layout.addWidget(QLabel("bias_initializer:"), 9, 0)
+        self.main_layout.addWidget(self.bias_initializer, 9 ,1)
+        self.main_layout.addWidget(self.bias_initializer_stack, 10, 1)
+        
+        self.main_layout.addWidget(QLabel("depthwise_regularizer"),11,0)
+        self.main_layout.addWidget(self.depthwise_regularizer,11,1)
+        self.main_layout.addWidget(self.depthwise_regularizer_stack,12,1)
+
+        self.main_layout.addWidget(QLabel("bias_regularizer"),13, 0)
+        self.main_layout.addWidget(self.bias_regularizer,13,1)
+        self.main_layout.addWidget(self.bias_regularizer_stack,14, 1)
+
+        self.main_layout.addWidget(QLabel("activity_regularizer"),15, 0)
+        self.main_layout.addWidget(self.activity_regularizer,15,1)
+        self.main_layout.addWidget(self.activity_regularizer_stack,16, 1)
+        
+        self.main_layout.addWidget(QLabel("depthwise_constraint"),17,0)
+        self.main_layout.addWidget(self.depthwise_constraint,17,1)
+        self.main_layout.addWidget(self.depthwise_constraint_stack,18,1)
+
+        self.main_layout.addWidget(QLabel("bias_constraint"),19, 0)
+        self.main_layout.addWidget(self.bias_constraint,19, 1)
+        self.main_layout.addWidget(self.bias_constraint_stack,20, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+        
 class Conv2DTransposeLayerControlWidget(Conv1DLayerControlWidget):
     def __init__(self):
         super().__init__()
@@ -2283,4 +2808,3 @@ class MinMaxNormUI(QWidget):
         
     def get_regularizer(self):
         return None
-
