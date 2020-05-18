@@ -1830,6 +1830,90 @@ class LSTMLayerControlWidget(QWidget):
     def parse_argument(self):
         pass
 
+class GRULayerControlWidget(LSTMLayerControlWidget):
+    def __init__(self):
+        self.reset_after = QComboBox()
+        self.reset_after.addItems(["True","False"])
+        super().__init__()
+        
+
+    def init_GUI(self):
+        """
+        MAin Layout
+        """
+
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addRow(QLabel("units: "),self.units)
+
+        self.main_layout.addRow(QLabel("activation: "),self.activation)
+
+        self.main_layout.addRow(QLabel("recurrent_activation"),self.recurrent_activation)
+        self.main_layout.addRow(QLabel("use_bias"),self.use_bias)
+
+        self.main_layout.addRow(QLabel("kernel_initializer: "),self.kernel_initializer)
+        self.main_layout.addWidget(self.kernel_initializer_stack)
+
+        self.main_layout.addRow(QLabel("recurrent_initializer: "),self.recurrent_initializer)
+        self.main_layout.addWidget(self.recurrent_initializer_stack)
+
+        self.main_layout.addRow(QLabel("bias_initializer: "),self.bias_initializer)
+        self.main_layout.addWidget(self.bias_initializer_stack)
+
+        self.main_layout.addRow(QLabel("kernel_regularizer: "),self.kernel_regularizer)
+        self.main_layout.addWidget(self.kernel_regularizer_stack)
+
+        self.main_layout.addRow(QLabel("recurrent_regularizer: "),self.recurrent_regularizer)
+        self.main_layout.addWidget(self.recurrent_regularizer_stack)
+
+        self.main_layout.addRow(QLabel("bias_regularizer: "),self.bias_regularizer)
+        self.main_layout.addWidget(self.bias_regularizer_stack)
+
+        self.main_layout.addRow(QLabel("activity_regularizer: "),self.activity_regularizer)
+        self.main_layout.addWidget(self.activity_regularizer_stack)
+
+        self.main_layout.addRow(QLabel("kernel_constraint: "),self.kernel_constraint)
+        self.main_layout.addWidget(self.kernel_constraint_stack)
+
+        self.main_layout.addRow(QLabel("recurrent_constraint: "),self.recurrent_constraint)
+        self.main_layout.addWidget(self.recurrent_constraint_stack)
+
+        self.main_layout.addRow(QLabel("bias_constraint: "),self.bias_constraint)
+        self.main_layout.addWidget(self.bias_constraint_stack)
+
+        self.main_layout.addRow(QLabel("dropout: "),self.dropout)
+        self.main_layout.addRow(QLabel("recurrent_dropout: "),self.recurrent_dropout)
+        self.main_layout.addRow(QLabel("implementation: "),self.implementation)
+        self.main_layout.addRow(QLabel("return_sequences: "),self.return_sequences)
+        self.main_layout.addRow(QLabel("return_state: "),self.return_state)
+        self.main_layout.addRow(QLabel("go_backwards: "),self.go_backwards)
+        self.main_layout.addRow(QLabel("stateful: "),self.stateful)
+        self.main_layout.addRow(QLabel("unroll: "),self.unroll)
+        self.main_layout.addRow(QLabel("time_major: "),self.time_major)
+        self.main_layout.addRow(QLabel("reset_after: "),self.reset_after)
+        
+
+
+        self.scroll_panel = QWidget()
+        self.scroll_panel_layout = QGridLayout(self.scroll_panel)
+        self.scroll_panel_layout.setContentsMargins(0,0,0,0)
+
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidget(self.scroll_panel)
+
+        self.vbox = QVBoxLayout(self)
+        self.vbox.addWidget(self.scroll_area)
+        self.scroll_panel_layout.addLayout(self.main_layout,0,0)
+        self.set_styling()
+
+
 #############################################################################
 
 class RandomUniformUI(QWidget):
@@ -2284,3 +2368,8 @@ class MinMaxNormUI(QWidget):
     def get_regularizer(self):
         return None
 
+myapp = QApplication(sys.argv)
+win = GRULayerControlWidget()
+win.show()
+myapp.exec_()
+sys.exit(0)
