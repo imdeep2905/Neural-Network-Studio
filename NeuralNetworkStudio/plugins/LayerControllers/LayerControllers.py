@@ -2890,15 +2890,5 @@ class MinMaxNormUI(QWidget):
         self.main_layout.addWidget(self.axis,3,1)
         self.setLayout(self.main_layout)
         
-    def get_regularizer(self):
-<<<<<<< HEAD
+    def get_regularizer(self):  
         return None
-=======
-        return None
-
-myapp = QApplication(sys.argv)
-win = GRULayerControlWidget()
-win.show()
-myapp.exec_()
-sys.exit(0)
->>>>>>> 66ab2033f5fcf257b895a37560561cb093530380
