@@ -1100,6 +1100,61 @@ class Conv3DTransposeLayerControlWidget(Conv2DTransposeLayerControlWidget):
     
     def parse_arguments(self):
         pass        
+
+class UpSampling1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.size = QLineEdit("2")
+        self.init_GUI()
+    def init_GUI(self):
+        
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("size: "),self.size)
+        self.setLayout(self.main_layout)
+
+class UpSampling2DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.size = QLineEdit("(2,2)")
+
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        self.interpolation = QComboBox()
+        self.interpolation.addItems(["nearest","bilinear"])
+        self.init_GUI()
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("size: "),self.size)
+        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
+        self.main_layout.addRow(QLabel("interpolation: "),self.interpolation)
+        self.setLayout(self.main_layout)
+
+class UpSampling3DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.size = QLineEdit("(2,2,2)")
+
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("size: "),self.size)
+        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
+        self.setLayout(self.main_layout)
+
+
 #############################################################################
 
 ######################## Normalization layers ############################### 
@@ -3213,7 +3268,7 @@ class MinMaxNormUI(QWidget):
         return None
 
 myapp = QApplication(sys.argv)
-win = ConvLSTM2DLayerControlWidget()
+win = UpSampling3DLayerControlWidget()
 win.show()
 myapp.exec_()
 sys.exit(0)
