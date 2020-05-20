@@ -1170,632 +1170,7 @@ class Conv3DTransposeLayerControlWidget(Conv2DTransposeLayerControlWidget):
     def parse_arguments(self):
         pass        
 
-class UpSampling1DLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.size = QLineEdit("2")
-        self.init_GUI()
-    def init_GUI(self):
-        
-        self.main_layout = QFormLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.addRow(QLabel("size: "),self.size)
-        self.setLayout(self.main_layout)
-
-class UpSampling2DLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.size = QLineEdit("(2,2)")
-
-        self.data_format = QComboBox()
-        self.data_format.addItems(["channels_last","channels_first"])
-
-        self.interpolation = QComboBox()
-        self.interpolation.addItems(["nearest","bilinear"])
-        self.init_GUI()
-    def init_GUI(self):
-        self.main_layout = QFormLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.addRow(QLabel("size: "),self.size)
-        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
-        self.main_layout.addRow(QLabel("interpolation: "),self.interpolation)
-        self.setLayout(self.main_layout)
-
-class UpSampling3DLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.size = QLineEdit("(2,2,2)")
-
-        self.data_format = QComboBox()
-        self.data_format.addItems(["channels_last","channels_first"])
-        self.init_GUI()
-
-    def init_GUI(self):
-        self.main_layout = QFormLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.addRow(QLabel("size: "),self.size)
-        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
-        self.setLayout(self.main_layout)
-
-
 #############################################################################
-
-######################## Normalization layers ############################### 
-'''
-DONE
-'''
-class BatchNormalizationLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.main_layout = QGridLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.axis = QLineEdit("-1")
-        self.momentum = QLineEdit("0.99")
-        self.epsilon = 0.001
-        self.center = QComboBox()
-        self.center.addItems(["True", "False"])
-        self.scale = QComboBox()
-        self.scale.addItems(["True", "False"])
-        self.beta_initializer = QComboBox()
-        self.beta_initializer.addItems(["zeroes", "ones"])
-        self.gamma_initializer = QComboBox()
-        self.gamma_initializer.addItems(["ones", "zeroes"])
-        self.moving_mean_initializer = QComboBox()
-        self.moving_mean_initializer.addItems(["zeroes", "ones"])
-        self.moving_variance_initializer= QComboBox()
-        self.moving_variance_initializer.addItems(["ones", "zeroes"])
-        """
-        beta_regularizer
-        """
-        self.beta_regularizer = QComboBox()
-        self.beta_regularizer.addItems(["None","l1","l2","l1_l2"])
-        self.beta_regularizer.currentIndexChanged[int].connect(lambda index : self.beta_regularizer_stack.setCurrentIndex(index))
-
-        self.beta_regularizer_stack = QStackedWidget()
-        self.beta_regularizer_stack.addWidget(QLabel("None"))
-        self.beta_regularizer_stack.addWidget(l1UI())
-        self.beta_regularizer_stack.addWidget(l2UI())
-        self.beta_regularizer_stack.addWidget(l1_l2UI())        
-
-        """
-        gamma_regularizer
-        """
-        self.gamma_regularizer = QComboBox()
-        self.gamma_regularizer.addItems(["None","l1","l2","l1_l2"])
-        self.gamma_regularizer.currentIndexChanged[int].connect(lambda index : self.gamma_regularizer_stack.setCurrentIndex(index))
-
-        self.gamma_regularizer_stack = QStackedWidget()
-        self.gamma_regularizer_stack.addWidget(QLabel("None"))
-        self.gamma_regularizer_stack.addWidget(l1UI())
-        self.gamma_regularizer_stack.addWidget(l2UI())
-        self.gamma_regularizer_stack.addWidget(l1_l2UI()) 
-
-        """
-        beta_constraint
-        """
-        self.beta_constraint = QComboBox()
-        self.beta_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.beta_constraint.currentIndexChanged[int].connect(lambda index : self.beta_constraint_stack.setCurrentIndex(index))
-        self.beta_constraint_stack = QStackedWidget()
-        self.beta_constraint_stack.addWidget(QLabel("None"))
-        self.beta_constraint_stack.addWidget(MaxNormUI())
-        self.beta_constraint_stack.addWidget(NonNegUI())
-        self.beta_constraint_stack.addWidget(UnitNormUI())
-        self.beta_constraint_stack.addWidget(MinMaxNormUI())
-
-        """
-        gamma constraint
-        """
-        self.gamma_constraint = QComboBox()
-        self.gamma_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.gamma_constraint.currentIndexChanged[int].connect(lambda index : self.gamma_constraint_stack.setCurrentIndex(index))
-        self.gamma_constraint_stack = QStackedWidget()
-        self.gamma_constraint_stack.addWidget(QLabel("None"))
-        self.gamma_constraint_stack.addWidget(MaxNormUI())
-        self.gamma_constraint_stack.addWidget(NonNegUI())
-        self.gamma_constraint_stack.addWidget(UnitNormUI())
-        self.gamma_constraint_stack.addWidget(MinMaxNormUI())  
-        
-        self.renorm = QComboBox()
-        self.renorm.addItems(["False", "True"])
-        self.renorm_clipping = QLineEdit("None")
-        self.fused = QComboBox()
-        self.renorm_momentum = QLineEdit("0.99")
-        self.fused.addItems(["None", "True", "False"])
-        self.trainable = QComboBox()
-        self.trainable.addItems(["True", "False"])
-        self.virtual_batch_size = QLineEdit("None")
-        self.adjustment = QLineEdit("None")
-        self.init_GUI()
-
-    def init_GUI(self):
-        '''
-        Gearing up main layout
-        '''
-        self.main_layout.addWidget(QLabel("axis:"), 0 ,0)
-        self.main_layout.addWidget(self.axis,0 , 1)
-        self.main_layout.addWidget(QLabel("momentum:"), 1, 0)
-        self.main_layout.addWidget(self.momentum, 1, 1)
-        self.main_layout.addWidget(QLabel("Center:"),2 ,0)
-        self.main_layout.addWidget(self.center, 2, 1)
-        self.main_layout.addWidget(QLabel("Scale:"), 3, 0)
-        self.main_layout.addWidget(self.scale, 3, 1)
-        self.main_layout.addWidget(QLabel("beta_initializer"), 4, 0)
-        self.main_layout.addWidget(self.beta_initializer, 4, 1)
-        self.main_layout.addWidget(QLabel("gamma_initializer"), 5, 0)
-        self.main_layout.addWidget(self.gamma_initializer, 5, 1)
-        self.main_layout.addWidget(QLabel("moving_mean_initializer"), 6, 0)
-        self.main_layout.addWidget(self.moving_mean_initializer, 6 , 1)
-        self.main_layout.addWidget(QLabel("moving_variance_initializer"), 7, 0)
-        self.main_layout.addWidget(self.moving_variance_initializer, 7 , 1)
-        self.main_layout.addWidget(QLabel("beta_regularizer:"), 8 , 0)
-        self.main_layout.addWidget(self.beta_regularizer, 8 , 1)
-        self.main_layout.addWidget(self.beta_regularizer_stack, 9 , 1)
-        self.main_layout.addWidget(QLabel("gamma_regularizer:"),10 , 0)
-        self.main_layout.addWidget(self.gamma_regularizer, 10, 1)
-        self.main_layout.addWidget(self.gamma_regularizer_stack, 11, 1)
-        self.main_layout.addWidget(QLabel("beta_constraint:"), 12, 0)
-        self.main_layout.addWidget(self.beta_constraint, 12 ,1)
-        self.main_layout.addWidget(self.beta_constraint_stack, 13, 1)
-        self.main_layout.addWidget(QLabel("gamma_constratint"), 13, 0)
-        self.main_layout.addWidget(self.gamma_constraint, 13, 1)
-        self.main_layout.addWidget(self.gamma_constraint_stack, 14 ,1)
-        self.main_layout.addWidget(QLabel("renorm:"), 15, 0)
-        self.main_layout.addWidget(self.renorm, 15 ,1)
-        self.main_layout.addWidget(QLabel("renorm_clipping"), 16, 0)
-        self.main_layout.addWidget(self.renorm_clipping, 16 , 1)
-        self.main_layout.addWidget(QLabel("renorm_momentum"), 17, 0)
-        self.main_layout.addWidget(self.renorm_momentum, 17,1)
-        self.main_layout.addWidget(QLabel("Fused:"), 18, 0)
-        self.main_layout.addWidget(self.fused, 18 , 1)
-        self.main_layout.addWidget(QLabel("Trainable:"), 19, 0)
-        self.main_layout.addWidget(self.trainable, 19 , 1)
-        self.main_layout.addWidget(QLabel("virtual_batch_size:"), 20, 0)
-        self.main_layout.addWidget(self.virtual_batch_size, 20, 1)
-        self.main_layout.addWidget(QLabel("Adjustment:"), 21, 0)
-        self.main_layout.addWidget(self.adjustment, 21, 1)
-        self.setLayout(self.main_layout)
-        self.set_styling()
-        
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-    
-    def parse_arguments(self):
-        pass
-        
-class LayerNormalizationLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-
-        self.axis = QLineEdit("-1")
-        self.epsilon = QLineEdit("0.01")
-        self.center = QComboBox()
-        self.center.addItems(["True","False"])
-        self.scale = QComboBox()
-        self.scale.addItems(["True","False"])
-
-        self.beta_initializer = QComboBox()
-        self.beta_initializer.addItems([
-            "RandomUniform",
-            "Zeros",
-            "Ones",
-            "Constant",
-            "RandomNormal",
-            "TruncatedNormal",
-            "VarianceScaling",
-            "Orthogonal",
-            "Identity",
-            "lecun_uniform",
-            "glorot_normal",
-            "glorot_uniform",
-            "he_normal",
-            "lecun_normal",
-            "he_uniform",
-            "CUSTOM_my1"])
-        self.beta_initializer.currentIndexChanged[int].connect(lambda index: self.beta_stack.setCurrentIndex(index))
-    
-
-        self.beta_stack = QStackedWidget()
-        self.beta_stack.addWidget(RandomUniformUI())
-        self.beta_stack.addWidget(ZerosUI())
-        self.beta_stack.addWidget(OnesUI())
-        self.beta_stack.addWidget(ConstantUI())
-        self.beta_stack.addWidget(RandomNormalUI())
-        self.beta_stack.addWidget(TruncatedNormalUI())
-        self.beta_stack.addWidget(VarianceScalingUI())
-        self.beta_stack.addWidget(OrthogonalUI())
-        self.beta_stack.addWidget(IdentityUI())
-        self.beta_stack.addWidget(lecunUniformUI())
-        self.beta_stack.addWidget(glorotNormalUI())
-        self.beta_stack.addWidget(glorotUniformUI())
-        self.beta_stack.addWidget(heNormalUI())
-        self.beta_stack.addWidget(lecunNormalUI())
-        self.beta_stack.addWidget(heUniformUI())
-        """
-        gamma_initializer
-        """
-        self.gamma_initializer = QComboBox()
-        self.gamma_initializer.addItems([
-            "RandomUniform",
-            "Zeros",
-            "Ones",
-            "Constant",
-            "RandomNormal",
-            "TruncatedNormal",
-            "VarianceScaling",
-            "Orthogonal",
-            "Identity",
-            "lecun_uniform",
-            "glorot_normal",
-            "glorot_uniform",
-            "he_normal",
-            "lecun_normal",
-            "he_uniform",
-            "CUSTOM_my1"])
-        self.gamma_initializer.currentIndexChanged[int].connect(lambda index: self.gamma_stack.setCurrentIndex(index))
-    
-
-        self.gamma_stack = QStackedWidget()
-        self.gamma_stack.addWidget(RandomUniformUI())
-        self.gamma_stack.addWidget(ZerosUI())
-        self.gamma_stack.addWidget(OnesUI())
-        self.gamma_stack.addWidget(ConstantUI())
-        self.gamma_stack.addWidget(RandomNormalUI())
-        self.gamma_stack.addWidget(TruncatedNormalUI())
-        self.gamma_stack.addWidget(VarianceScalingUI())
-        self.gamma_stack.addWidget(OrthogonalUI())
-        self.gamma_stack.addWidget(IdentityUI())
-        self.gamma_stack.addWidget(lecunUniformUI())
-        self.gamma_stack.addWidget(glorotNormalUI())
-        self.gamma_stack.addWidget(glorotUniformUI())
-        self.gamma_stack.addWidget(heNormalUI())
-        self.gamma_stack.addWidget(lecunNormalUI())
-        self.gamma_stack.addWidget(heUniformUI())
-
-        """
-        beta_regularizer
-        """
-        self.beta_regularizer = QComboBox()
-        self.beta_regularizer.addItems(["None","l1","l2","l1_l2"])
-        self.beta_regularizer.currentIndexChanged[int].connect(lambda index : self.beta_regularizer_stack.setCurrentIndex(index))
-
-        self.beta_regularizer_stack = QStackedWidget()
-        self.beta_regularizer_stack.addWidget(QLabel("None"))
-        self.beta_regularizer_stack.addWidget(l1UI())
-        self.beta_regularizer_stack.addWidget(l2UI())
-        self.beta_regularizer_stack.addWidget(l1_l2UI())        
-
-        """
-        gamma_regularizer
-        """
-        self.gamma_regularizer = QComboBox()
-        self.gamma_regularizer.addItems(["None","l1","l2","l1_l2"])
-        self.gamma_regularizer.currentIndexChanged[int].connect(lambda index : self.gamma_regularizer_stack.setCurrentIndex(index))
-
-        self.gamma_regularizer_stack = QStackedWidget()
-        self.gamma_regularizer_stack.addWidget(QLabel("None"))
-        self.gamma_regularizer_stack.addWidget(l1UI())
-        self.gamma_regularizer_stack.addWidget(l2UI())
-        self.gamma_regularizer_stack.addWidget(l1_l2UI()) 
-
-        """
-        beta_constraint
-        """
-        self.beta_constraint = QComboBox()
-        self.beta_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.beta_constraint.currentIndexChanged[int].connect(lambda index : self.beta_constraint_stack.setCurrentIndex(index))
-        self.beta_constraint_stack = QStackedWidget()
-        self.beta_constraint_stack.addWidget(QLabel("None"))
-        self.beta_constraint_stack.addWidget(MaxNormUI())
-        self.beta_constraint_stack.addWidget(NonNegUI())
-        self.beta_constraint_stack.addWidget(UnitNormUI())
-        self.beta_constraint_stack.addWidget(MinMaxNormUI())
-
-        """
-        gamma constraint
-        """
-        self.gamma_constraint = QComboBox()
-        self.gamma_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
-        self.gamma_constraint.currentIndexChanged[int].connect(lambda index : self.gamma_constraint_stack.setCurrentIndex(index))
-        self.gamma_constraint_stack = QStackedWidget()
-        self.gamma_constraint_stack.addWidget(QLabel("None"))
-        self.gamma_constraint_stack.addWidget(MaxNormUI())
-        self.gamma_constraint_stack.addWidget(NonNegUI())
-        self.gamma_constraint_stack.addWidget(UnitNormUI())
-        self.gamma_constraint_stack.addWidget(MinMaxNormUI())
-
-        """
-        trainable
-        """
-        self.trainable = QComboBox()
-        self.trainable.addItems(["True","False"])
-        self.init_GUI()
-        
-
-    def init_GUI(self):
-        """
-        main_layout
-
-        """
-        self.main_layout = QGridLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.main_layout.addWidget(QLabel("axis:"),0,0)
-        self.main_layout.addWidget(self.axis,0,1)
-
-        self.main_layout.addWidget(QLabel("epsilon:"),1,0)
-        self.main_layout.addWidget(self.epsilon,1,1)
-
-        self.main_layout.addWidget(QLabel("center:"),2,0)
-        self.main_layout.addWidget(self.center,2,1)
-
-        self.main_layout.addWidget(QLabel("scale:"),3,0)
-        self.main_layout.addWidget(self.scale,3,1)
-
-        self.main_layout.addWidget(QLabel("beta_initializer:"),4,0)
-        self.main_layout.addWidget(self.beta_initializer,4,1)
-        self.main_layout.addWidget(self.beta_stack,5,1)
-
-        self.main_layout.addWidget(QLabel("gamma_initializer:"),6,0)
-        self.main_layout.addWidget(self.gamma_initializer,6,1)
-        self.main_layout.addWidget(self.gamma_stack,7,1)
-
-        self.main_layout.addWidget(QLabel("beta_regularizer"),8,0)
-        self.main_layout.addWidget(self.beta_regularizer,8,1)
-        self.main_layout.addWidget(self.beta_regularizer_stack,9,1)
-
-        self.main_layout.addWidget(QLabel("gamma_regularizer"),10,0)
-        self.main_layout.addWidget(self.gamma_regularizer,10,1)
-        self.main_layout.addWidget(self.gamma_regularizer_stack,11,1)
-
-        self.main_layout.addWidget(QLabel("beta_constraint"),12,0)
-        self.main_layout.addWidget(self.beta_constraint,12,1)
-        self.main_layout.addWidget(self.beta_constraint_stack,13,1)
-
-        self.main_layout.addWidget(QLabel("gamma_constraint"),14,0)
-        self.main_layout.addWidget(self.gamma_constraint,14,1)
-        self.main_layout.addWidget(self.gamma_constraint_stack,15,1)
-
-        self.main_layout.addWidget(QLabel("trainable:"),16,0)
-        self.main_layout.addWidget(self.trainable,16,1)
-
-        self.setLayout(self.main_layout)
-        self.set_styling()
-        
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-
-    def parse_arguments(self):
-        pass
-    
-##############################################################################
-
-######################## Regularization layers ###############################   
-class DropoutLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.rate = QLineEdit("0")
-        self.seed = QLineEdit("0")
-        self.rate.setValidator(QDoubleValidator(0.,1.,2))
-        self.init_GUI()
-
-    def init_GUI(self):
-        self.main_layout = QGridLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.main_layout.addWidget(QLabel("rate"), 0, 0)
-        self.main_layout.addWidget(self.rate, 0, 1)
-        
-        self.main_layout.addWidget(QLabel("seed"), 1, 0)
-        self.main_layout.addWidget(self.seed, 1, 1)
-        self.setLayout(self.main_layout)
-        self.set_styling()        
-    
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-    
-    def parse_arguments(self):
-        pass
-
-class AlphaDropoutLayerControlWidget(QWidget):
-    def __init__(self):
-        self.rate = QLineEdit("0.0")
-        self.rate.setValidator(QDoubleValidator(0. , 1e6, 3))
-        self.seed = QLineEdit("0")
-        self.init_GUI()
-
-    def init_GUI(self):
-        self.main_layout = QGridLayout()
-        self.main_layout.addWidget(QLabel("Rate:"), 0, 0)
-        self.main_layout.addWidget(self.rate, 0, 1)
-        self.main_layout.addWidget(QLabel("Seed:"), 1, 0)
-        self.main_layout.addWidget(self.seed, 1, 1)
-        self.setLayout(self.main_layout)
-        self.set_styling()
-
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-    
-    def parse_arguments(self):
-        pass        
-    
-#############################################################################
-
-######################## Reshaping layers ################################### 
-
-class ReshapeLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.target_shape = QLineEdit("(0,0)")
-        self.init_GUI()
-        
-    def init_GUI(self):
-        self.main_layout = QFormLayout()
-        self.main_layout.addRow(QLabel("target_shape"),self.target_shape)
-        self.setLayout(self.main_layout)
-        self.set_styling()
-
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-    
-    def parse_arguments(self):
-        pass
-
-class FlattenLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.data_format = QComboBox()
-        self.data_format.addItems(["channels_last","channels_first"])
-        self.init_GUI()
-
-    def init_GUI(self):
-        self.main_layout = QFormLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.addRow(QLabel("data_format"),self.data_format)
-        self.setLayout(self.main_layout)
-        self.set_styling()        
-
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-        
-    def parse_arguments(self):
-        pass
-
-class ZeroPadding1DLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.padding = QLineEdit("1")
-        self.init_GUI()
-    def init_GUI(self):
-        self.main_layout = QFormLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.main_layout.addRow(QLabel("padding: "),self.padding)
-        self.setLayout(self.main_layout)
-
-class ZeroPadding2DLayerControlWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.padding = QLineEdit("1")
-        self.data_format = QComboBox()
-        self.data_format.addItems(["channels_last","channels_first"])
-        self.init_GUI()
-
-    def init_GUI(self):
-        self.main_layout = QFormLayout()
-        self.main_layout.setAlignment(Qt.AlignTop)        
-        self.main_layout.setSpacing(0)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.main_layout.addRow(QLabel("padding: "),self.padding)
-        self.main_layout.addRow(QLabel("data_format"),self.data_format)
-        self.setLayout(self.main_layout)
-    
-class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
-    def __init__(self):
-        super().__init__()
-        self.padding.setText("(2,2,2)")
-
-#############################################################################
-
-
-######################## Locally-connected layers ########################### 
-'''
-DONE
-'''
-class LocallyConnected1DLayerControlWidget(Conv1DLayerControlWidget):
-    def __init__(self):
-        self.implementation = QComboBox()
-        self.implementation.addItems(["1", "2", "3"])  
-        super().__init__()
-    
-    def init_GUI(self):
-        """
-        Gearup main layout
-        """
-        self.main_layout.addWidget(QLabel("Filters:"), 0, 0)
-        self.main_layout.addWidget(self.filters, 0 , 1)
-        self.main_layout.addWidget(QLabel("Kernal Size:"), 1, 0)
-        self.main_layout.addWidget(self.kernal_size, 1, 1)
-        self.main_layout.addWidget(QLabel("Strides:"), 2, 0)
-        self.main_layout.addWidget(self.strides, 2 ,1)
-        self.main_layout.addWidget(QLabel("Padding:"), 3, 0)
-        self.main_layout.addWidget(self.padding, 3, 1)
-        self.main_layout.addWidget(QLabel("Data Format:"), 4, 0)
-        self.main_layout.addWidget(self.data_format, 4 ,1)
-        self.main_layout.addWidget(QLabel("implementation:"), 5, 0)
-        self.main_layout.addWidget(self.implementation, 5, 1)
-        self.main_layout.addWidget(QLabel("Activation"), 6, 0)
-        self.main_layout.addWidget(self.activation, 6 ,1)
-        self.main_layout.addWidget(QLabel("Use Bias:"), 7 , 0)
-        self.main_layout.addWidget(self.use_bias, 7, 1)
-        
-        self.main_layout.addWidget(QLabel("kernelInitializer"),8,0)
-        self.main_layout.addWidget(self.kernel_initializer,8,1)
-        self.main_layout.addWidget(self.kernel_initializer_stack,9,1)
-
-        self.main_layout.addWidget(QLabel("Bias Initializer"),9,0)
-        self.main_layout.addWidget(self.bias_initializer,9,1)
-        self.main_layout.addWidget(self.bias_initializer_stack,10,1)
-
-        self.main_layout.addWidget(QLabel("kernel_regularizer"),11,0)
-        self.main_layout.addWidget(self.kernel_regularizer,11,1)
-        self.main_layout.addLayout(self.kernel_regularizer_stack,12,1)
-
-        self.main_layout.addWidget(QLabel("bias_regularizer"),13,0)
-        self.main_layout.addWidget(self.bias_regularizer,13,1)
-        self.main_layout.addLayout(self.bias_regularizer_stack,14,1)
-
-        self.main_layout.addWidget(QLabel("activity_regularizer"),15,0)
-        self.main_layout.addWidget(self.activity_regularizer,15,1)
-        self.main_layout.addLayout(self.activity_regularizer_stack,16,1)
-
-        self.main_layout.addWidget(QLabel("kernel_constraint"),17,0)
-        self.main_layout.addWidget(self.kernel_constraint,17,1)
-        self.main_layout.addWidget(self.kernel_constraint_stack,18,1)
-
-        self.main_layout.addWidget(QLabel("bias_constraint"),19,0)
-        self.main_layout.addWidget(self.bias_constraint,19,1)
-        self.main_layout.addWidget(self.bias_constraint_stack,20,1)
-        
-        self.setLayout(self.main_layout)
-        self.set_styling()
-        
-    def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
-    
-    def parse_arguments(self):
-        pass 
-    
-class LocallyConnected2DLayerControlWidget(LocallyConnected1DLayerControlWidget):
-    def __init__(self):
-        super().__init__()
-    
-    def set_styling(self):
-        pass
-    
-    def parse_arguments(self):
-        pass               
-        
-#############################################################################
-
-
 ##############################Pooling Layers#################################
 '''
 DONE
@@ -1929,6 +1304,7 @@ class GlobalAveragePooling3DLayerControlWidget(GlobalMaxPooling1DLayerControlWid
     
     def parse_arguments(self):
         pass
+
 #############################################################################
 
 ######################## Recurrent layers ################################### 
@@ -2990,17 +2366,644 @@ class ConvLSTM2DLayerControlWidget(QWidget):
 
         self.setLayout(self.main_layout)
 
+#############################################################################
 
+######################## Preprocessing layers ############################### 
+'''
+Text -> vector
+Normalization
+'''
+#############################################################################
 
+######################## Normalization layers ############################### 
+'''
+DONE
+'''
+class BatchNormalizationLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.axis = QLineEdit("-1")
+        self.momentum = QLineEdit("0.99")
+        self.epsilon = 0.001
+        self.center = QComboBox()
+        self.center.addItems(["True", "False"])
+        self.scale = QComboBox()
+        self.scale.addItems(["True", "False"])
+        self.beta_initializer = QComboBox()
+        self.beta_initializer.addItems(["zeroes", "ones"])
+        self.gamma_initializer = QComboBox()
+        self.gamma_initializer.addItems(["ones", "zeroes"])
+        self.moving_mean_initializer = QComboBox()
+        self.moving_mean_initializer.addItems(["zeroes", "ones"])
+        self.moving_variance_initializer= QComboBox()
+        self.moving_variance_initializer.addItems(["ones", "zeroes"])
+        """
+        beta_regularizer
+        """
+        self.beta_regularizer = QComboBox()
+        self.beta_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.beta_regularizer.currentIndexChanged[int].connect(lambda index : self.beta_regularizer_stack.setCurrentIndex(index))
 
+        self.beta_regularizer_stack = QStackedWidget()
+        self.beta_regularizer_stack.addWidget(QLabel("None"))
+        self.beta_regularizer_stack.addWidget(l1UI())
+        self.beta_regularizer_stack.addWidget(l2UI())
+        self.beta_regularizer_stack.addWidget(l1_l2UI())        
 
+        """
+        gamma_regularizer
+        """
+        self.gamma_regularizer = QComboBox()
+        self.gamma_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.gamma_regularizer.currentIndexChanged[int].connect(lambda index : self.gamma_regularizer_stack.setCurrentIndex(index))
 
+        self.gamma_regularizer_stack = QStackedWidget()
+        self.gamma_regularizer_stack.addWidget(QLabel("None"))
+        self.gamma_regularizer_stack.addWidget(l1UI())
+        self.gamma_regularizer_stack.addWidget(l2UI())
+        self.gamma_regularizer_stack.addWidget(l1_l2UI()) 
 
+        """
+        beta_constraint
+        """
+        self.beta_constraint = QComboBox()
+        self.beta_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.beta_constraint.currentIndexChanged[int].connect(lambda index : self.beta_constraint_stack.setCurrentIndex(index))
+        self.beta_constraint_stack = QStackedWidget()
+        self.beta_constraint_stack.addWidget(QLabel("None"))
+        self.beta_constraint_stack.addWidget(MaxNormUI())
+        self.beta_constraint_stack.addWidget(NonNegUI())
+        self.beta_constraint_stack.addWidget(UnitNormUI())
+        self.beta_constraint_stack.addWidget(MinMaxNormUI())
+
+        """
+        gamma constraint
+        """
+        self.gamma_constraint = QComboBox()
+        self.gamma_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.gamma_constraint.currentIndexChanged[int].connect(lambda index : self.gamma_constraint_stack.setCurrentIndex(index))
+        self.gamma_constraint_stack = QStackedWidget()
+        self.gamma_constraint_stack.addWidget(QLabel("None"))
+        self.gamma_constraint_stack.addWidget(MaxNormUI())
+        self.gamma_constraint_stack.addWidget(NonNegUI())
+        self.gamma_constraint_stack.addWidget(UnitNormUI())
+        self.gamma_constraint_stack.addWidget(MinMaxNormUI())  
+        
+        self.renorm = QComboBox()
+        self.renorm.addItems(["False", "True"])
+        self.renorm_clipping = QLineEdit("None")
+        self.fused = QComboBox()
+        self.renorm_momentum = QLineEdit("0.99")
+        self.fused.addItems(["None", "True", "False"])
+        self.trainable = QComboBox()
+        self.trainable.addItems(["True", "False"])
+        self.virtual_batch_size = QLineEdit("None")
+        self.adjustment = QLineEdit("None")
+        self.init_GUI()
+
+    def init_GUI(self):
+        '''
+        Gearing up main layout
+        '''
+        self.main_layout.addWidget(QLabel("axis:"), 0 ,0)
+        self.main_layout.addWidget(self.axis,0 , 1)
+        self.main_layout.addWidget(QLabel("momentum:"), 1, 0)
+        self.main_layout.addWidget(self.momentum, 1, 1)
+        self.main_layout.addWidget(QLabel("Center:"),2 ,0)
+        self.main_layout.addWidget(self.center, 2, 1)
+        self.main_layout.addWidget(QLabel("Scale:"), 3, 0)
+        self.main_layout.addWidget(self.scale, 3, 1)
+        self.main_layout.addWidget(QLabel("beta_initializer"), 4, 0)
+        self.main_layout.addWidget(self.beta_initializer, 4, 1)
+        self.main_layout.addWidget(QLabel("gamma_initializer"), 5, 0)
+        self.main_layout.addWidget(self.gamma_initializer, 5, 1)
+        self.main_layout.addWidget(QLabel("moving_mean_initializer"), 6, 0)
+        self.main_layout.addWidget(self.moving_mean_initializer, 6 , 1)
+        self.main_layout.addWidget(QLabel("moving_variance_initializer"), 7, 0)
+        self.main_layout.addWidget(self.moving_variance_initializer, 7 , 1)
+        self.main_layout.addWidget(QLabel("beta_regularizer:"), 8 , 0)
+        self.main_layout.addWidget(self.beta_regularizer, 8 , 1)
+        self.main_layout.addWidget(self.beta_regularizer_stack, 9 , 1)
+        self.main_layout.addWidget(QLabel("gamma_regularizer:"),10 , 0)
+        self.main_layout.addWidget(self.gamma_regularizer, 10, 1)
+        self.main_layout.addWidget(self.gamma_regularizer_stack, 11, 1)
+        self.main_layout.addWidget(QLabel("beta_constraint:"), 12, 0)
+        self.main_layout.addWidget(self.beta_constraint, 12 ,1)
+        self.main_layout.addWidget(self.beta_constraint_stack, 13, 1)
+        self.main_layout.addWidget(QLabel("gamma_constratint"), 13, 0)
+        self.main_layout.addWidget(self.gamma_constraint, 13, 1)
+        self.main_layout.addWidget(self.gamma_constraint_stack, 14 ,1)
+        self.main_layout.addWidget(QLabel("renorm:"), 15, 0)
+        self.main_layout.addWidget(self.renorm, 15 ,1)
+        self.main_layout.addWidget(QLabel("renorm_clipping"), 16, 0)
+        self.main_layout.addWidget(self.renorm_clipping, 16 , 1)
+        self.main_layout.addWidget(QLabel("renorm_momentum"), 17, 0)
+        self.main_layout.addWidget(self.renorm_momentum, 17,1)
+        self.main_layout.addWidget(QLabel("Fused:"), 18, 0)
+        self.main_layout.addWidget(self.fused, 18 , 1)
+        self.main_layout.addWidget(QLabel("Trainable:"), 19, 0)
+        self.main_layout.addWidget(self.trainable, 19 , 1)
+        self.main_layout.addWidget(QLabel("virtual_batch_size:"), 20, 0)
+        self.main_layout.addWidget(self.virtual_batch_size, 20, 1)
+        self.main_layout.addWidget(QLabel("Adjustment:"), 21, 0)
+        self.main_layout.addWidget(self.adjustment, 21, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass
+        
+class LayerNormalizationLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.axis = QLineEdit("-1")
+        self.epsilon = QLineEdit("0.01")
+        self.center = QComboBox()
+        self.center.addItems(["True","False"])
+        self.scale = QComboBox()
+        self.scale.addItems(["True","False"])
+
+        self.beta_initializer = QComboBox()
+        self.beta_initializer.addItems([
+            "RandomUniform",
+            "Zeros",
+            "Ones",
+            "Constant",
+            "RandomNormal",
+            "TruncatedNormal",
+            "VarianceScaling",
+            "Orthogonal",
+            "Identity",
+            "lecun_uniform",
+            "glorot_normal",
+            "glorot_uniform",
+            "he_normal",
+            "lecun_normal",
+            "he_uniform",
+            "CUSTOM_my1"])
+        self.beta_initializer.currentIndexChanged[int].connect(lambda index: self.beta_stack.setCurrentIndex(index))
+    
+
+        self.beta_stack = QStackedWidget()
+        self.beta_stack.addWidget(RandomUniformUI())
+        self.beta_stack.addWidget(ZerosUI())
+        self.beta_stack.addWidget(OnesUI())
+        self.beta_stack.addWidget(ConstantUI())
+        self.beta_stack.addWidget(RandomNormalUI())
+        self.beta_stack.addWidget(TruncatedNormalUI())
+        self.beta_stack.addWidget(VarianceScalingUI())
+        self.beta_stack.addWidget(OrthogonalUI())
+        self.beta_stack.addWidget(IdentityUI())
+        self.beta_stack.addWidget(lecunUniformUI())
+        self.beta_stack.addWidget(glorotNormalUI())
+        self.beta_stack.addWidget(glorotUniformUI())
+        self.beta_stack.addWidget(heNormalUI())
+        self.beta_stack.addWidget(lecunNormalUI())
+        self.beta_stack.addWidget(heUniformUI())
+        """
+        gamma_initializer
+        """
+        self.gamma_initializer = QComboBox()
+        self.gamma_initializer.addItems([
+            "RandomUniform",
+            "Zeros",
+            "Ones",
+            "Constant",
+            "RandomNormal",
+            "TruncatedNormal",
+            "VarianceScaling",
+            "Orthogonal",
+            "Identity",
+            "lecun_uniform",
+            "glorot_normal",
+            "glorot_uniform",
+            "he_normal",
+            "lecun_normal",
+            "he_uniform",
+            "CUSTOM_my1"])
+        self.gamma_initializer.currentIndexChanged[int].connect(lambda index: self.gamma_stack.setCurrentIndex(index))
+    
+
+        self.gamma_stack = QStackedWidget()
+        self.gamma_stack.addWidget(RandomUniformUI())
+        self.gamma_stack.addWidget(ZerosUI())
+        self.gamma_stack.addWidget(OnesUI())
+        self.gamma_stack.addWidget(ConstantUI())
+        self.gamma_stack.addWidget(RandomNormalUI())
+        self.gamma_stack.addWidget(TruncatedNormalUI())
+        self.gamma_stack.addWidget(VarianceScalingUI())
+        self.gamma_stack.addWidget(OrthogonalUI())
+        self.gamma_stack.addWidget(IdentityUI())
+        self.gamma_stack.addWidget(lecunUniformUI())
+        self.gamma_stack.addWidget(glorotNormalUI())
+        self.gamma_stack.addWidget(glorotUniformUI())
+        self.gamma_stack.addWidget(heNormalUI())
+        self.gamma_stack.addWidget(lecunNormalUI())
+        self.gamma_stack.addWidget(heUniformUI())
+
+        """
+        beta_regularizer
+        """
+        self.beta_regularizer = QComboBox()
+        self.beta_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.beta_regularizer.currentIndexChanged[int].connect(lambda index : self.beta_regularizer_stack.setCurrentIndex(index))
+
+        self.beta_regularizer_stack = QStackedWidget()
+        self.beta_regularizer_stack.addWidget(QLabel("None"))
+        self.beta_regularizer_stack.addWidget(l1UI())
+        self.beta_regularizer_stack.addWidget(l2UI())
+        self.beta_regularizer_stack.addWidget(l1_l2UI())        
+
+        """
+        gamma_regularizer
+        """
+        self.gamma_regularizer = QComboBox()
+        self.gamma_regularizer.addItems(["None","l1","l2","l1_l2"])
+        self.gamma_regularizer.currentIndexChanged[int].connect(lambda index : self.gamma_regularizer_stack.setCurrentIndex(index))
+
+        self.gamma_regularizer_stack = QStackedWidget()
+        self.gamma_regularizer_stack.addWidget(QLabel("None"))
+        self.gamma_regularizer_stack.addWidget(l1UI())
+        self.gamma_regularizer_stack.addWidget(l2UI())
+        self.gamma_regularizer_stack.addWidget(l1_l2UI()) 
+
+        """
+        beta_constraint
+        """
+        self.beta_constraint = QComboBox()
+        self.beta_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.beta_constraint.currentIndexChanged[int].connect(lambda index : self.beta_constraint_stack.setCurrentIndex(index))
+        self.beta_constraint_stack = QStackedWidget()
+        self.beta_constraint_stack.addWidget(QLabel("None"))
+        self.beta_constraint_stack.addWidget(MaxNormUI())
+        self.beta_constraint_stack.addWidget(NonNegUI())
+        self.beta_constraint_stack.addWidget(UnitNormUI())
+        self.beta_constraint_stack.addWidget(MinMaxNormUI())
+
+        """
+        gamma constraint
+        """
+        self.gamma_constraint = QComboBox()
+        self.gamma_constraint.addItems(["None","MaxNorm","NonNeg","UnitNorm","MinMaxNorm"])
+        self.gamma_constraint.currentIndexChanged[int].connect(lambda index : self.gamma_constraint_stack.setCurrentIndex(index))
+        self.gamma_constraint_stack = QStackedWidget()
+        self.gamma_constraint_stack.addWidget(QLabel("None"))
+        self.gamma_constraint_stack.addWidget(MaxNormUI())
+        self.gamma_constraint_stack.addWidget(NonNegUI())
+        self.gamma_constraint_stack.addWidget(UnitNormUI())
+        self.gamma_constraint_stack.addWidget(MinMaxNormUI())
+
+        """
+        trainable
+        """
+        self.trainable = QComboBox()
+        self.trainable.addItems(["True","False"])
+        self.init_GUI()
         
 
+    def init_GUI(self):
+        """
+        main_layout
 
+        """
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addWidget(QLabel("axis:"),0,0)
+        self.main_layout.addWidget(self.axis,0,1)
+
+        self.main_layout.addWidget(QLabel("epsilon:"),1,0)
+        self.main_layout.addWidget(self.epsilon,1,1)
+
+        self.main_layout.addWidget(QLabel("center:"),2,0)
+        self.main_layout.addWidget(self.center,2,1)
+
+        self.main_layout.addWidget(QLabel("scale:"),3,0)
+        self.main_layout.addWidget(self.scale,3,1)
+
+        self.main_layout.addWidget(QLabel("beta_initializer:"),4,0)
+        self.main_layout.addWidget(self.beta_initializer,4,1)
+        self.main_layout.addWidget(self.beta_stack,5,1)
+
+        self.main_layout.addWidget(QLabel("gamma_initializer:"),6,0)
+        self.main_layout.addWidget(self.gamma_initializer,6,1)
+        self.main_layout.addWidget(self.gamma_stack,7,1)
+
+        self.main_layout.addWidget(QLabel("beta_regularizer"),8,0)
+        self.main_layout.addWidget(self.beta_regularizer,8,1)
+        self.main_layout.addWidget(self.beta_regularizer_stack,9,1)
+
+        self.main_layout.addWidget(QLabel("gamma_regularizer"),10,0)
+        self.main_layout.addWidget(self.gamma_regularizer,10,1)
+        self.main_layout.addWidget(self.gamma_regularizer_stack,11,1)
+
+        self.main_layout.addWidget(QLabel("beta_constraint"),12,0)
+        self.main_layout.addWidget(self.beta_constraint,12,1)
+        self.main_layout.addWidget(self.beta_constraint_stack,13,1)
+
+        self.main_layout.addWidget(QLabel("gamma_constraint"),14,0)
+        self.main_layout.addWidget(self.gamma_constraint,14,1)
+        self.main_layout.addWidget(self.gamma_constraint_stack,15,1)
+
+        self.main_layout.addWidget(QLabel("trainable:"),16,0)
+        self.main_layout.addWidget(self.trainable,16,1)
+
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+
+    def parse_arguments(self):
+        pass
+    
+##############################################################################
+
+######################## Regularization layers ###############################   
+class DropoutLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.rate = QLineEdit("0")
+        self.seed = QLineEdit("0")
+        self.rate.setValidator(QDoubleValidator(0.,1.,2))
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addWidget(QLabel("rate"), 0, 0)
+        self.main_layout.addWidget(self.rate, 0, 1)
+        
+        self.main_layout.addWidget(QLabel("seed"), 1, 0)
+        self.main_layout.addWidget(self.seed, 1, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()        
+    
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass
+
+class AlphaDropoutLayerControlWidget(QWidget):
+    def __init__(self):
+        self.rate = QLineEdit("0.0")
+        self.rate.setValidator(QDoubleValidator(0. , 1e6, 3))
+        self.seed = QLineEdit("0")
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel("Rate:"), 0, 0)
+        self.main_layout.addWidget(self.rate, 0, 1)
+        self.main_layout.addWidget(QLabel("Seed:"), 1, 0)
+        self.main_layout.addWidget(self.seed, 1, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass        
+    
+#############################################################################
+
+######################## Attention layers ################################### 
 
 #############################################################################
+
+######################## Reshaping layers ################################### 
+
+class ReshapeLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.target_shape = QLineEdit("(0,0)")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.addRow(QLabel("target_shape"),self.target_shape)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass
+
+class FlattenLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("data_format"),self.data_format)
+        self.setLayout(self.main_layout)
+        self.set_styling()        
+
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+        
+    def parse_arguments(self):
+        pass
+
+class ZeroPadding1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding = QLineEdit("1")
+        self.init_GUI()
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addRow(QLabel("padding: "),self.padding)
+        self.setLayout(self.main_layout)
+
+class ZeroPadding2DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding = QLineEdit("1")
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addRow(QLabel("padding: "),self.padding)
+        self.main_layout.addRow(QLabel("data_format"),self.data_format)
+        self.setLayout(self.main_layout)
+    
+class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding.setText("(2,2,2)")
+
+class UpSampling1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.size = QLineEdit("2")
+        self.init_GUI()
+    def init_GUI(self):
+        
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("size: "),self.size)
+        self.setLayout(self.main_layout)
+
+class UpSampling2DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.size = QLineEdit("(2,2)")
+
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+
+        self.interpolation = QComboBox()
+        self.interpolation.addItems(["nearest","bilinear"])
+        self.init_GUI()
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("size: "),self.size)
+        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
+        self.main_layout.addRow(QLabel("interpolation: "),self.interpolation)
+        self.setLayout(self.main_layout)
+
+class UpSampling3DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.size = QLineEdit("(2,2,2)")
+
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.addRow(QLabel("size: "),self.size)
+        self.main_layout.addRow(QLabel("data_format: "),self.data_format)
+        self.setLayout(self.main_layout)
+
+#############################################################################
+
+######################## Merging layers #################################### 
+
+#############################################################################
+
+######################## Locally-connected layers ########################### 
+'''
+DONE
+'''
+class LocallyConnected1DLayerControlWidget(Conv1DLayerControlWidget):
+    def __init__(self):
+        self.implementation = QComboBox()
+        self.implementation.addItems(["1", "2", "3"])  
+        super().__init__()
+    
+    def init_GUI(self):
+        """
+        Gearup main layout
+        """
+        self.main_layout.addWidget(QLabel("Filters:"), 0, 0)
+        self.main_layout.addWidget(self.filters, 0 , 1)
+        self.main_layout.addWidget(QLabel("Kernal Size:"), 1, 0)
+        self.main_layout.addWidget(self.kernal_size, 1, 1)
+        self.main_layout.addWidget(QLabel("Strides:"), 2, 0)
+        self.main_layout.addWidget(self.strides, 2 ,1)
+        self.main_layout.addWidget(QLabel("Padding:"), 3, 0)
+        self.main_layout.addWidget(self.padding, 3, 1)
+        self.main_layout.addWidget(QLabel("Data Format:"), 4, 0)
+        self.main_layout.addWidget(self.data_format, 4 ,1)
+        self.main_layout.addWidget(QLabel("implementation:"), 5, 0)
+        self.main_layout.addWidget(self.implementation, 5, 1)
+        self.main_layout.addWidget(QLabel("Activation"), 6, 0)
+        self.main_layout.addWidget(self.activation, 6 ,1)
+        self.main_layout.addWidget(QLabel("Use Bias:"), 7 , 0)
+        self.main_layout.addWidget(self.use_bias, 7, 1)
+        
+        self.main_layout.addWidget(QLabel("kernelInitializer"),8,0)
+        self.main_layout.addWidget(self.kernel_initializer,8,1)
+        self.main_layout.addWidget(self.kernel_initializer_stack,9,1)
+
+        self.main_layout.addWidget(QLabel("Bias Initializer"),9,0)
+        self.main_layout.addWidget(self.bias_initializer,9,1)
+        self.main_layout.addWidget(self.bias_initializer_stack,10,1)
+
+        self.main_layout.addWidget(QLabel("kernel_regularizer"),11,0)
+        self.main_layout.addWidget(self.kernel_regularizer,11,1)
+        self.main_layout.addLayout(self.kernel_regularizer_stack,12,1)
+
+        self.main_layout.addWidget(QLabel("bias_regularizer"),13,0)
+        self.main_layout.addWidget(self.bias_regularizer,13,1)
+        self.main_layout.addLayout(self.bias_regularizer_stack,14,1)
+
+        self.main_layout.addWidget(QLabel("activity_regularizer"),15,0)
+        self.main_layout.addWidget(self.activity_regularizer,15,1)
+        self.main_layout.addLayout(self.activity_regularizer_stack,16,1)
+
+        self.main_layout.addWidget(QLabel("kernel_constraint"),17,0)
+        self.main_layout.addWidget(self.kernel_constraint,17,1)
+        self.main_layout.addWidget(self.kernel_constraint_stack,18,1)
+
+        self.main_layout.addWidget(QLabel("bias_constraint"),19,0)
+        self.main_layout.addWidget(self.bias_constraint,19,1)
+        self.main_layout.addWidget(self.bias_constraint_stack,20,1)
+        
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass 
+    
+class LocallyConnected2DLayerControlWidget(LocallyConnected1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass               
+        
+#############################################################################
+
 
 class RandomUniformUI(QWidget):
     def __init__(self):
