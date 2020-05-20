@@ -2759,6 +2759,94 @@ class DropoutLayerControlWidget(QWidget):
     def parse_arguments(self):
         pass
 
+class SpatialDropout1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.rate = QLineEdit("0.0")
+        self.init_GUI()
+    
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel("Rate:"), 0, 0)
+        self.main_layout.addWidget(self.rate, 0 ,1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+        
+class SpatialDropout2DLayerControlWidget(SpatialDropout1DLayerControlWidget):
+    def __init__(self):
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last", "channels_first"])
+        super().__init__()
+    
+    def init_GUI(self):
+        super().init_GUI()
+        self.main_layout.addWidget(QLabel("data_format:"), 1, 0)
+        self.main_layout.addWidget(self.data_format, 1 ,1)
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class SpatialDropout3DLayerControlWidget(SpatialDropout2DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class GaussianDropoutLayerControlWidget(SpatialDropout1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+            
+class GaussianNoiseLayerControlWidget(SpatialDropout1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class ActivityRegularizationLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.l1 = QLineEdit("0.0")
+        self.l2 = QLineEdit("0.0")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel("l1"), 0, 0)
+        self.main_layout.addWidget(self.l1, 0, 1)
+        self.main_layout.addWidget(QLabel("l2"), 1, 0)
+        self.main_layout.addWidget(self.l2, 1, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+            
 class AlphaDropoutLayerControlWidget(QWidget):
     def __init__(self):
         self.rate = QLineEdit("0.0")
