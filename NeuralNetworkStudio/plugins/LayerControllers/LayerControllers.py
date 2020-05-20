@@ -1171,6 +1171,7 @@ class Conv3DTransposeLayerControlWidget(Conv2DTransposeLayerControlWidget):
         pass        
 
 #############################################################################
+
 ##############################Pooling Layers#################################
 '''
 DONE
@@ -2917,11 +2918,58 @@ class UpSampling3DLayerControlWidget(QWidget):
         self.main_layout.addRow(QLabel("size: "),self.size)
         self.main_layout.addRow(QLabel("data_format: "),self.data_format)
         self.setLayout(self.main_layout)
+        
+class ZeroPadding1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding = QLineEdit("1")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QHBoxLayout()
+        self.main_layout.addWidget(QLabel("Padding:"))
+        self.main_layout.addWidget(self.padding)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+
+class ZeroPadding2DLayerControlWidget(ZeroPadding1DLayerControlWidget):
+    def __init__(self):
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_first", "channels_last"])
+        super().__init__()
+        
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel("Padding:"), 0, 0)
+        self.main_layout.addWidget(self.padding, 0, 1)
+        self.main_layout.addWidget(QLabel("data_format:"), 1, 0)
+        self.main_layout.addWidget(self.data_format, 1, 1)
+        self.setLayout(self.main_layout)
+        self.set_styling()        
+    
+    def parse_arguments(self):
+        pass
+
+class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def parse_arguments(self):
+        pass
 
 #############################################################################
 
 ######################## Merging layers #################################### 
-
+'''
+I think no need to make layer control for mergings.
+Can be supported inbuilt in drag and drop
+'''
 #############################################################################
 
 ######################## Locally-connected layers ########################### 
