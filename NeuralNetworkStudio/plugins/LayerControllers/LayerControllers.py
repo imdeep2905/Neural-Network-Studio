@@ -2731,6 +2731,9 @@ class LayerNormalizationLayerControlWidget(QWidget):
 ##############################################################################
 
 ######################## Regularization layers ###############################   
+'''
+DONE
+'''
 class DropoutLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
