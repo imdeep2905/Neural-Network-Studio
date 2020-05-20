@@ -14,7 +14,9 @@ Random uniform class provide UI of random Uniform
 
 """
 ######################## Core layers ############################### 
-
+'''
+DONE
+'''
 class DenseLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -248,6 +250,73 @@ class DenseLayerControlWidget(QWidget):
         print(self.use_bias.currentText())
         print(self.kernel_initializer.currentText())
 
+class ActivationLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.activation = QComboBox()
+        self.activation.addItems([
+            "sigmoid",
+            "tanh",
+            "relu",
+            "softmax",
+            "linear",
+            "exponential",
+            "hard_sigmoid",
+            "softsign",
+            "selu",
+            "elu",
+            "softplus",
+            "Custom_my1"])
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QHBoxLayout()
+        self.main_layout.addWidget(QLabel("Activation:"))
+        self.main_layout.addWidget(self.activation)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass    
+    
+class EmbeddingLayerControlWidget(QWidget):
+    '''
+    Need to figure out it's usage in our app.
+    Because it can only be used as first Layer in network. 
+    '''
+    pass
+
+class MaskingLayerControlWidget(QWidget):    
+    def __init__(self):
+        super().__init__()
+        self.masking = QLineEdit("0.0")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QHBoxLayout()
+        self.main_layout.addWidget(QLabel("Masking value:"))
+        self.main_layout.addWidget(self.masking)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class LambdaLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        '''
+        Impliment it when doing custom activation, layer, optimizer etc...
+        Directly give text box to write function which will be wrapped to make layer
+        '''
+                
+        
 #############################################################################
 
 ######################## Convolution layers #################################   
