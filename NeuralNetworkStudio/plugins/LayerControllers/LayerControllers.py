@@ -2876,6 +2876,35 @@ class AlphaDropoutLayerControlWidget(QWidget):
 
 ######################## Attention layers ################################### 
 
+class AttentionLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.use_scale = QComboBox()
+        self.use_scale.addItems(["False","True"])
+        self.casual = QComboBox()
+        self.casual.addItems(["True","False"])
+        self.dropout = QLineEdit("0.")
+        self.init_GUI()
+    def init_GUI(self):
+
+        self.main_layout = QGridLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addWidget(QLabel("use_scale: "),0,0)
+        self.main_layout.addWidget(self.use_scale,0,1)
+        self.main_layout.addWidget(QLabel("casual: "),1,0)
+        self.main_layout.addWidget(self.casual,1,1)
+        self.main_layout.addWidget(QLabel("dropout: "),2,0)
+        self.main_layout.addWidget(self.dropout,2,1)
+        self.setLayout(self.main_layout)
+
+class AdditiveAttentionLayerControlWidget(AttentionLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+
 #############################################################################
 
 ######################## Reshaping layers ################################### 
