@@ -2374,6 +2374,37 @@ class ConvLSTM2DLayerControlWidget(QWidget):
 Text -> vector
 Normalization
 '''
+class TextVectorizationLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.max_tokens = QLineEdit("None")
+        self.standardize = QComboBox()
+        self.standardize.addItems(["lower_and_strip_punctuation","None","Callable"])
+        self.split = QComboBox()
+        self.split.addItems(["whitespace","None","Callable"])
+        self.ngrams = QLineEdit("None")
+        self.output_mode = QComboBox()
+        self.output_mode.addItems(["int","binary","count","tf-idf"])
+        self.output_sequence_length = QLineEdit("None")
+        self.pad_to_max_tokens = QComboBox()
+        self.pad_to_max_tokens.addItems(["True","False"])
+        self.init_GUI()
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel("max_tokens"),0,0)
+        self.main_layout.addWidget(self.max_tokens,0,1)
+        self.main_layout.addWidget(QLabel("standardize"),1,0)
+        self.main_layout.addWidget(self.standardize,1,1)
+        self.main_layout.addWidget(QLabel("split"),2,0)
+        self.main_layout.addWidget(self.split,2,1)
+        self.main_layout.addWidget(QLabel("ngrams"),3,0)
+        self.main_layout.addWidget(self.ngrams,3,1)
+        self.main_layout.addWidget(QLabel("output_mode"),4,0)
+        self.main_layout.addWidget(self.output_mode,4,1)
+        self.main_layout.addWidget(QLabel("output_sequence_length"),5,0)
+        self.main_layout.addWidget(self.output_sequence_length,5,1)
+        self.main_layout.addWidget(QLabel("pad_to_max_tokens"),6,0)
+        self.main_layout.addWidget(self.pad_to_max_tokens,6,1)
 #############################################################################
 
 ######################## Normalization layers ############################### 
