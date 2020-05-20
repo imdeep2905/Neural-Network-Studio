@@ -1646,6 +1646,87 @@ class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
 #############################################################################
 
 
+######################## Locally-connected layers ########################### 
+'''
+DONE
+'''
+class LocallyConnected1DLayerControlWidget(Conv1DLayerControlWidget):
+    def __init__(self):
+        self.implementation = QComboBox()
+        self.implementation.addItems(["1", "2", "3"])  
+        super().__init__()
+    
+    def init_GUI(self):
+        """
+        Gearup main layout
+        """
+        self.main_layout.addWidget(QLabel("Filters:"), 0, 0)
+        self.main_layout.addWidget(self.filters, 0 , 1)
+        self.main_layout.addWidget(QLabel("Kernal Size:"), 1, 0)
+        self.main_layout.addWidget(self.kernal_size, 1, 1)
+        self.main_layout.addWidget(QLabel("Strides:"), 2, 0)
+        self.main_layout.addWidget(self.strides, 2 ,1)
+        self.main_layout.addWidget(QLabel("Padding:"), 3, 0)
+        self.main_layout.addWidget(self.padding, 3, 1)
+        self.main_layout.addWidget(QLabel("Data Format:"), 4, 0)
+        self.main_layout.addWidget(self.data_format, 4 ,1)
+        self.main_layout.addWidget(QLabel("implementation:"), 5, 0)
+        self.main_layout.addWidget(self.implementation, 5, 1)
+        self.main_layout.addWidget(QLabel("Activation"), 6, 0)
+        self.main_layout.addWidget(self.activation, 6 ,1)
+        self.main_layout.addWidget(QLabel("Use Bias:"), 7 , 0)
+        self.main_layout.addWidget(self.use_bias, 7, 1)
+        
+        self.main_layout.addWidget(QLabel("kernelInitializer"),8,0)
+        self.main_layout.addWidget(self.kernel_initializer,8,1)
+        self.main_layout.addWidget(self.kernel_initializer_stack,9,1)
+
+        self.main_layout.addWidget(QLabel("Bias Initializer"),9,0)
+        self.main_layout.addWidget(self.bias_initializer,9,1)
+        self.main_layout.addWidget(self.bias_initializer_stack,10,1)
+
+        self.main_layout.addWidget(QLabel("kernel_regularizer"),11,0)
+        self.main_layout.addWidget(self.kernel_regularizer,11,1)
+        self.main_layout.addLayout(self.kernel_regularizer_stack,12,1)
+
+        self.main_layout.addWidget(QLabel("bias_regularizer"),13,0)
+        self.main_layout.addWidget(self.bias_regularizer,13,1)
+        self.main_layout.addLayout(self.bias_regularizer_stack,14,1)
+
+        self.main_layout.addWidget(QLabel("activity_regularizer"),15,0)
+        self.main_layout.addWidget(self.activity_regularizer,15,1)
+        self.main_layout.addLayout(self.activity_regularizer_stack,16,1)
+
+        self.main_layout.addWidget(QLabel("kernel_constraint"),17,0)
+        self.main_layout.addWidget(self.kernel_constraint,17,1)
+        self.main_layout.addWidget(self.kernel_constraint_stack,18,1)
+
+        self.main_layout.addWidget(QLabel("bias_constraint"),19,0)
+        self.main_layout.addWidget(self.bias_constraint,19,1)
+        self.main_layout.addWidget(self.bias_constraint_stack,20,1)
+        
+        self.setLayout(self.main_layout)
+        self.set_styling()
+        
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
+    
+    def parse_arguments(self):
+        pass 
+    
+class LocallyConnected2DLayerControlWidget(LocallyConnected1DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass               
+        
+#############################################################################
+
+
 ##############################Pooling Layers#################################
 '''
 DONE
