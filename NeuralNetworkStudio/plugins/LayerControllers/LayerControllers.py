@@ -1605,7 +1605,44 @@ class FlattenLayerControlWidget(QWidget):
         
     def parse_arguments(self):
         pass
+
+class ZeroPadding1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding = QLineEdit("1")
+        self.init_GUI()
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addRow(QLabel("padding: "),self.padding)
+        self.setLayout(self.main_layout)
+
+class ZeroPadding2DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding = QLineEdit("1")
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last","channels_first"])
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QFormLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)        
+        self.main_layout.setSpacing(0)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.main_layout.addRow(QLabel("padding: "),self.padding)
+        self.main_layout.addRow(QLabel("data_format"),self.data_format)
+        self.setLayout(self.main_layout)
     
+class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+        self.padding.setText("(2,2,2)")
+
 #############################################################################
 
 
@@ -3268,7 +3305,7 @@ class MinMaxNormUI(QWidget):
         return None
 
 myapp = QApplication(sys.argv)
-win = UpSampling3DLayerControlWidget()
+win = ZeroPadding3DLayerControlWidget()
 win.show()
 myapp.exec_()
 sys.exit(0)
