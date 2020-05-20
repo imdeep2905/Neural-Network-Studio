@@ -2788,7 +2788,9 @@ class AlphaDropoutLayerControlWidget(QWidget):
 #############################################################################
 
 ######################## Reshaping layers ################################### 
-
+'''
+DONE
+'''
 class ReshapeLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -2829,6 +2831,93 @@ class FlattenLayerControlWidget(QWidget):
     def parse_arguments(self):
         pass
 
+class RepeatVectorLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.n = QLineEdit("1")
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QHBoxLayout()
+        self.main_layout.addWidget(QLabel("n : "))
+        self.main_layout.addWidget(self.n)
+        self.set_styling(self)
+        self.setLayout(self.main_layout)
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class PermuteLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.permute = QLineEdit("1")
+        self.init_GUI()
+
+    def init_GUI(self):
+        self.main_layout = QHBoxLayout()
+        self.main_layout.addWidget(QLabel("Pattern: "))
+        self.main_layout.addWidget(self.permute)
+        self.set_styling(self)
+        self.setLayout(self.main_layout)
+    
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class Cropping1DLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.cropping = QLineEdit("(1, 1)")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel("Cropping:"),0 , 0)
+        self.main_layout.addWidget(self.cropping, 0 ,1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass    
+
+class Cropping2DLayerControlWidget(Cropping1DLayerControlWidget):
+    def __init__(self):
+        self.data_format = QComboBox()
+        self.data_format.addItems(["channels_last", "channels_first"])
+        super().__init__()
+
+        
+    def init_GUI(self):
+        super().init_GUI()
+        self.main_layout.addWidget(QLabel("data_format:"),1 , 0)
+        self.main_layout.addWidget(self.data_format, 1 ,1)
+        self.setLayout(self.main_layout)
+        self.set_styling()
+
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+        
+class Cropping3DLayerControlWidget(Cropping2DLayerControlWidget):
+    def __init__(self):
+        super().__init__()
+
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass    
+    
 class ZeroPadding1DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
