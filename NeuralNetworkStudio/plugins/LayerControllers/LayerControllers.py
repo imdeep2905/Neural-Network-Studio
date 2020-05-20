@@ -3303,9 +3303,3 @@ class MinMaxNormUI(QWidget):
         
     def get_regularizer(self):  
         return None
-
-myapp = QApplication(sys.argv)
-win = ZeroPadding3DLayerControlWidget()
-win.show()
-myapp.exec_()
-sys.exit(0)
