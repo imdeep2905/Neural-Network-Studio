@@ -2419,9 +2419,10 @@ class NormalizationLayerControlWidget(QWidget):
         self.init_GUI()
         
     def init_GUI(self):
-        self.main_layout = QHGidLayout()
+        self.main_layout = QHBoxLayout()
         self.main_layout.addWidget(QLabel("Axis:"))
         self.main_layout.addWidget(self.axis)
+        self.setLayout(self.main_layout)
         self.set_styling()
         
     def set_styling(self):
@@ -2874,9 +2875,17 @@ class GaussianDropoutLayerControlWidget(SpatialDropout1DLayerControlWidget):
     def parse_arguments(self):
         pass
             
-class GaussianNoiseLayerControlWidget(SpatialDropout1DLayerControlWidget):
+class GaussianNoiseLayerControlWidget(QWidget):
     def __init__(self):
-        super().__init__()
+        self.stddev = QLineEdit("0.0")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QHBoxLayout()
+        self.main_layout.addWidget(QLabel("stddev:"))
+        self.main_layout.addWidget(self.stddev)
+        self.setLayout(self.main_layout)
+        self.set_styling()
     
     def set_styling(self):
         pass
