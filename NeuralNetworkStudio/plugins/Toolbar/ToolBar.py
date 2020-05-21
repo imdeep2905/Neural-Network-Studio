@@ -14,6 +14,7 @@ class ToolBarWidget(QToolBar):
     '''
     def __init__(self, names, icons):
         super().__init__()
+        self.setMovable(False)
         for i in range(len(names)):
             self.addAction(QAction(QIcon(icons[i]), names[i], self))
         self.set_styling()
