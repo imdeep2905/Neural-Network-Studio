@@ -2371,8 +2371,7 @@ class ConvLSTM2DLayerControlWidget(QWidget):
 
 ######################## Preprocessing layers ############################### 
 '''
-Text -> vector
-Normalization
+DONE
 '''
 class TextVectorizationLayerControlWidget(QWidget):
     def __init__(self):
@@ -2389,6 +2388,7 @@ class TextVectorizationLayerControlWidget(QWidget):
         self.pad_to_max_tokens = QComboBox()
         self.pad_to_max_tokens.addItems(["True","False"])
         self.init_GUI()
+        
     def init_GUI(self):
         self.main_layout = QGridLayout()
         self.main_layout.addWidget(QLabel("max_tokens"),0,0)
@@ -2405,6 +2405,31 @@ class TextVectorizationLayerControlWidget(QWidget):
         self.main_layout.addWidget(self.output_sequence_length,5,1)
         self.main_layout.addWidget(QLabel("pad_to_max_tokens"),6,0)
         self.main_layout.addWidget(self.pad_to_max_tokens,6,1)
+
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
+class NormalizationLayerControlWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.axis = QLineEdit("-1")
+        self.init_GUI()
+        
+    def init_GUI(self):
+        self.main_layout = QHGidLayout()
+        self.main_layout.addWidget(QLabel("Axis:"))
+        self.main_layout.addWidget(self.axis)
+        self.set_styling()
+        
+    def set_styling(self):
+        pass
+    
+    def parse_arguments(self):
+        pass
+    
 #############################################################################
 
 ######################## Normalization layers ############################### 
