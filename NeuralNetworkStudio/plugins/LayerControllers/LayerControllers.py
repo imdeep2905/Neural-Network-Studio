@@ -3,8 +3,6 @@ TODO
 # Add proper scaling, arrangement, styling
 # optimize code
 '''
-#from tensorflow import keras
-#from keras import layers, Sequential
 from PySide2.QtCore import *
 from PySide2.QtWidgets import QDesktopWidget, QWidget, QMainWindow, QApplication, QLineEdit, QGridLayout, QLabel, QPushButton, QComboBox, QHBoxLayout, QStackedWidget,QStackedLayout,QStackedWidget,  QScrollBar, QScrollArea, QVBoxLayout, QFormLayout
 from PySide2.QtGui import *
