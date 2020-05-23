@@ -27,9 +27,10 @@ class LayersList(QWidget):
         self.container_model = QStandardItemModel()
         for l in layers:
             self.container_model.appendRow(QStandardItem(QIcon(str(Path('NeuralNetworkStudio/img_src/LayersList_Layer_Icon.png'))),l))
+        self.layer_list.setDragEnabled(True)
         self.layer_list.setModel(self.container_model)
         self.layer_list.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.main_layout.addWidget(self.expand_button, 0, Qt.AlignTop)
+        self.main_layout.addWidget(self.expand_button,0, Qt.AlignTop)
         self.main_layout.addWidget(self.layer_list, 0, Qt.AlignTop)
         self.expand_button.clicked.connect(self.expand)
         self.setLayout(self.main_layout)
