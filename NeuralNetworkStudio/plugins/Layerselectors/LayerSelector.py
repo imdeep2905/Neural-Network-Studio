@@ -7,12 +7,12 @@ import os
 import sys 
 from pathlib import Path
 from PySide2.QtWidgets import QPushButton, QVBoxLayout, QApplication ,QListWidget, QListView, QLabel, QWidget, QAbstractItemView, QSplitter 
-from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, Qt
+from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, Qt, QDrag
 from PySide2 import QtCore
 
-PATH = os.path.join('NeuralNetworkStudio','img_src')
+PATH = os.path.join('.','img_src')
 print('LayerSelector Loaded with path:' , PATH)
-
+        
 class LayersList(QWidget):
     '''
     LayerList class which acts as collapsable list.
@@ -28,21 +28,22 @@ class LayersList(QWidget):
         self.expand_button.setToolTip(f"List of {name} Layers")
         self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Up.png')))
         self.layer_list = QListView()
+        self.layer_list.setDragEnabled(True)
         self.container_model = QStandardItemModel()
         for l in layers:
-            self.container_model.appendRow(QStandardItem(QIcon(os.path.join(PATH,'LayersList_Layer_Icon.png')),l))
-        self.layer_list.setDragEnabled(True)
+            qs = CustomQStandardItem(QIcon(os.path.join(PATH,'LayersList_Layer_Icon.png')),l)
+            self.container_model.appendRow(qs)
         self.layer_list.setModel(self.container_model)
         self.layer_list.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.main_layout.addWidget(self.expand_button,0, Qt.AlignTop)
         self.main_layout.addWidget(self.layer_list, 0, Qt.AlignTop)
         self.expand_button.clicked.connect(self.expand)
         self.setLayout(self.main_layout)
-        self.resized_size = 17 * len(layers)
+        self.resized_size = 16.5 * len(layers)
         self.set_styling()
         if not expand:
             self.expand()
-        
+            
     @QtCore.Slot()
     def expand(self):
         if self.currently_expanded:
@@ -75,9 +76,9 @@ class LayersSelectorWidget(QWidget):
                  'Locally-Connected Layers'
                  ]
         layers = [
-            ['Dense', 'Activattion', 'Embedding', 'Masking', 'Lambda'],
+            ['Dense', 'Activation', 'Embedding', 'Masking', 'Lambda'],
             ['Conv1D', 'Conv2D', 'Conv3D', 'SeparableConv1D', 'SeparableConv2D', 'DepthwiseConv2D', 'Conv2DTranspose', 'Conv3Dtranspose'],
-            ['MaxPooling1D', 'MaxPooling2D', 'MaxPooling3D', 'AveragePooling1D', 'AveragePooling2D', 'AveragePooling3D', 'GlobalMAxPooling1D', 'GlobalMAxPooling2D', 'GlobalMAxPooling3D', 'GlobalAveragePooling1D', 'GlobalAveragePooling2D', 'GlobalAveragePooling3D'],
+            ['MaxPooling1D', 'MaxPooling2D', 'MaxPooling3D', 'AveragePooling1D', 'AveragePooling2D', 'AveragePooling3D', 'GlobalMaxPooling1D', 'GlobalMaxPooling2D', 'GlobalMaxPooling3D', 'GlobalAveragePooling1D', 'GlobalAveragePooling2D', 'GlobalAveragePooling3D'],
             ['LSTM', 'GRU', 'SimpleRNN', 'TimeDistributed', 'BiDirectional', 'ConvLSTM2D'],
             ['TextToVector', 'Normalization'],
             ['Attention', 'AdditiveAttention'],
