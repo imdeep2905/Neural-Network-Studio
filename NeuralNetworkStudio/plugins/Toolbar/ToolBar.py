@@ -9,7 +9,7 @@ import os
 from PySide2.QtGui import QIcon, QFont
 
 
-PATH = os.path.join('NeuralNetworkStudio','img_src')
+PATH = os.path.join('.','img_src')
 print('ToolBar Loaded with path:' , PATH)
 
 class ToolBarWidget(QToolBar):

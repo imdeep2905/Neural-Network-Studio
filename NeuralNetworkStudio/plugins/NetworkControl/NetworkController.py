@@ -7,6 +7,8 @@ from PySide2.QtWidgets import QWidget, QPushButton, QTabWidget ,QFormLayout, QLa
 from PySide2.QtGui import QDoubleValidator, QStandardItem, QFontMetrics, QPalette 
 from PySide2.QtCore import Qt, QEvent 
 
+print('Network Controller Loaded with path:' , '.')
+
 class NetworkControllerWidget(QWidget):   
     def __init__(self):
         super().__init__() 
@@ -107,7 +109,7 @@ class NetworkControllerWidget(QWidget):
         self.main_layout.addWidget(self.run_eagerly, 2, 1)
         self.main_layout.addWidget(QLabel("Optimizer:"), 3, 0)
         self.main_layout.addWidget(self.optimizer_selector, 3 , 1)
-        self.main_layout.addWidget(tmp,4, 0 , 1, 2)
+        self.main_layout.addWidget(tmp, 4, 1)
         self.setLayout(self.main_layout)
         self.set_styling()
         
