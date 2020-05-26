@@ -1,4 +1,5 @@
 from PySide2.QtWidgets import QWidget, QLabel, QGridLayout
+from PySide2 import QtCore
 #from NeuralNetworkStudio.plugins.LayerControllers.LayerControllers import *
 from plugins.LayerControllers.LayerControllers import *
     
@@ -7,13 +8,51 @@ class LayerBoxWidget(QWidget):
         super().__init__()
         self.control_widget = get_control_widget(name) 
         self.main_layout = QGridLayout()
+        self.main_layout.addWidget(QLabel(name), 0, 2)
+        self.setLayout(self.main_layout)
+        self.setGeometry(10, 10, 10, 10)
+        self.set_styling()
+        
+    def set_styling(self):
+        self.setStyleSheet("background-color:aliceblue;")
         
     def mouseDoubleClickEvent(self, event):
         print(event)
         
+    def mousePressEvent(self, event):
+        self.__mousePressPos = None
+        self.__mouseMovePos = None
+        if event.button() == QtCore.Qt.LeftButton:
+            self.__mousePressPos = event.globalPos()
+            self.__mouseMovePos = event.globalPos()
+
+        super(LayerBoxWidget, self).mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == QtCore.Qt.LeftButton:
+            # adjust offset from clicked point to origin of widget
+            currPos = self.mapToGlobal(self.pos())
+            globalPos = event.globalPos()
+            diff = globalPos - self.__mouseMovePos
+            newPos = self.mapFromGlobal(currPos + diff)
+            self.move(newPos)
+
+            self.__mouseMovePos = globalPos
+
+        super(LayerBoxWidget, self).mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if self.__mousePressPos is not None:
+            moved = event.globalPos() - self.__mousePressPos 
+            if moved.manhattanLength() > 3:
+                event.ignore()
+                return
+
+        super(LayerBoxWidget, self).mouseReleaseEvent(event)    
+        
 def get_control_widget(name):
     '''
-    Get Layer control according to name of dropped layer
+    Get Layer control widget according to name of dropped layer
     '''
     if name == 'Dense':
         return DenseLayerControlWidget()
