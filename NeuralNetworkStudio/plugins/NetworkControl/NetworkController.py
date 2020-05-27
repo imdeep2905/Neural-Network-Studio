@@ -112,6 +112,7 @@ class NetworkControllerWidget(QWidget):
         self.main_layout.addWidget(tmp, 4, 1)
         self.setLayout(self.main_layout)
         self.set_styling()
+        self.setMinimumWidth(50)
         
     def set_styling(self):
         self.setStyleSheet("background-color:aliceblue;")
