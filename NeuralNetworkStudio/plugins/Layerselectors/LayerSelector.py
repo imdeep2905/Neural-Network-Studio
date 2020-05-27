@@ -140,9 +140,3 @@ class LayersSelectorWidget(QWidget):
         
     def set_styling(self):
         self.setStyleSheet("background-color:aliceblue;")
-
-myapp = QApplication(sys.argv)
-win = LayersSelectorWidget()
-win.show()
-myapp.exec_()
-sys.exit(0)
