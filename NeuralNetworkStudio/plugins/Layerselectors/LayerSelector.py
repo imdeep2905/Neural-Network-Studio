@@ -36,22 +36,23 @@ class LayersList(QWidget):
         self.layer_list.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.layer_list.setWrapping(False)
         self.layer_list.setViewMode(self.layer_list.ListMode)
-        self.layer_list.setResizeMode(self.layer_list.Fixed)
+        #self.layer_list.setResizeMode(self.layer_list.Fixed)
         
         self.container_model = QStandardItemModel()
         for l in layers:
             self.container_model.appendRow(QStandardItem(QIcon(os.path.join(PATH,'LayersList_Layer_Icon.png')),l))
         
         self.layer_list.setModel(self.container_model)
-        self.layer_list.setMaximumSize(self.get_container_sizes())
-        self.layer_list.setMinimumSize(self.get_container_sizes())
+        #self.layer_list.setMaximumSize(self.get_container_sizes())
+        #self.layer_list.setMinimumSize(self.get_container_sizes())
         
         self.main_layout.addWidget(self.expand_button,0, Qt.AlignTop)
         self.main_layout.addWidget(self.layer_list, 0, Qt.AlignTop)
         self.expand_button.clicked.connect(self.expand)
         
         self.setLayout(self.main_layout)
-        self.resized_size = self.layer_list.maximumHeight()
+        self.resized_size = self.layer_list.sizeHintForRow(0) * self.container_model.rowCount() + 2 * self.layer_list.frameWidth()
+        self.layer_list.setMaximumHeight(self.resized_size)
         
         self.set_styling()
         
@@ -67,8 +68,8 @@ class LayersList(QWidget):
         else:
             self.currently_expanded = True
             self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Up.png')))
-            self.layer_list.setMinimumHeight(self.resized_size)
-            
+            self.layer_list.setMaximumHeight(self.resized_size)
+    """
     def get_container_sizes(self):
         w, h = 0, 0
         for i in range(self.container_model.columnCount()):
@@ -78,7 +79,7 @@ class LayersList(QWidget):
             for r in self.container_model.takeRow(i):
                 h += r.sizeHint().height()
         return QtCore.QSize(w, h)
-    
+    """
     def set_styling(self):
         self.setStyleSheet("background-color:white;")
         self.expand_button.setStyleSheet("background-color:lightgrey;text-align:left;")
@@ -139,3 +140,9 @@ class LayersSelectorWidget(QWidget):
         
     def set_styling(self):
         self.setStyleSheet("background-color:aliceblue;")
+
+myapp = QApplication(sys.argv)
+win = LayersSelectorWidget()
+win.show()
+myapp.exec_()
+sys.exit(0)
