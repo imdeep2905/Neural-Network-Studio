@@ -36,23 +36,24 @@ class LayersList(QWidget):
         self.layer_list.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.layer_list.setWrapping(False)
         self.layer_list.setViewMode(self.layer_list.ListMode)
-        #self.layer_list.setResizeMode(self.layer_list.Fixed)
         
         self.container_model = QStandardItemModel()
         for l in layers:
             self.container_model.appendRow(QStandardItem(QIcon(os.path.join(PATH,'LayersList_Layer_Icon.png')),l))
         
         self.layer_list.setModel(self.container_model)
-        #self.layer_list.setMaximumSize(self.get_container_sizes())
-        #self.layer_list.setMinimumSize(self.get_container_sizes())
         
         self.main_layout.addWidget(self.expand_button,0, Qt.AlignTop)
         self.main_layout.addWidget(self.layer_list, 0, Qt.AlignTop)
         self.expand_button.clicked.connect(self.expand)
         
         self.setLayout(self.main_layout)
-        self.resized_size = self.layer_list.sizeHintForRow(0) * self.container_model.rowCount() + 2 * self.layer_list.frameWidth()
+        self.resized_size = len(layers) * ( self.layer_list.sizeHintForRow(0) + self.layer_list.frameWidth() )
+        
         self.layer_list.setMaximumHeight(self.resized_size)
+        self.layer_list.setMinimumHeight(self.resized_size)
+        
+        self.setMinimumWidth(self.layer_list.frameWidth())
         
         self.set_styling()
         
@@ -62,27 +63,24 @@ class LayersList(QWidget):
     @QtCore.Slot()
     def expand(self):
         if self.currently_expanded:
+            self.layer_list.setMinimumHeight(0)
             self.currently_expanded = False
             self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Down.png')))
             self.layer_list.setMaximumHeight(0)
         else:
+            self.layer_list.setMinimumHeight(self.resized_size)
             self.currently_expanded = True
             self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Up.png')))
             self.layer_list.setMaximumHeight(self.resized_size)
-    """
-    def get_container_sizes(self):
-        w, h = 0, 0
-        for i in range(self.container_model.columnCount()):
-            pass
-            #w += self.container_model.takeColumn(i) 
-        for i in range(self.container_model.rowCount()):
-            for r in self.container_model.takeRow(i):
-                h += r.sizeHint().height()
-        return QtCore.QSize(w, h)
-    """
+
     def set_styling(self):
-        self.setStyleSheet("background-color:white;")
-        self.expand_button.setStyleSheet("background-color:lightgrey;text-align:left;")
+        self.setStyleSheet('''
+                           background-color:white;
+                           ''')
+        self.expand_button.setStyleSheet('''
+                                        background-color:#d6d2d2;
+                                        text-align:left;
+                                        ''')
 
 class LayersSelectorWidget(QWidget):
     '''
@@ -111,7 +109,7 @@ class LayersSelectorWidget(QWidget):
         ]
         self.main_layout = QVBoxLayout()
         for i in range(len(names)):
-            if i > 3:
+            if i > 1:
                 self.main_layout.addWidget(LayersList(names[i], layers[i], False))
             else:
                 self.main_layout.addWidget(LayersList(names[i], layers[i]))                
@@ -139,4 +137,6 @@ class LayersSelectorWidget(QWidget):
         self.set_styling()
         
     def set_styling(self):
-        self.setStyleSheet("background-color:aliceblue;")
+        self.setStyleSheet('''
+                           background-color:aliceblue;
+                           ''')
