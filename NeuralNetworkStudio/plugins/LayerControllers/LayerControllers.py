@@ -22,6 +22,7 @@ class DenseLayerControlWidget(QWidget):
         self.neuron = QLineEdit("0")
         self.activation = QComboBox()
         self.activation.addItems([
+            "None",
             "sigmoid",
             "tanh",
             "relu",
@@ -43,6 +44,7 @@ class DenseLayerControlWidget(QWidget):
         """
         self.kernel_initializer = QComboBox()
         self.kernel_initializer.addItems([
+            "glorot_uniform",
             "RandomUniform",
             "Zeros",
             "Ones",
@@ -54,7 +56,6 @@ class DenseLayerControlWidget(QWidget):
             "Identity",
             "lecun_uniform",
             "glorot_normal",
-            "glorot_uniform",
             "he_normal",
             "lecun_normal",
             "he_uniform",
@@ -63,6 +64,7 @@ class DenseLayerControlWidget(QWidget):
     
 
         self.kernel_initializer_stack = QStackedWidget()
+        self.kernel_initializer_stack.addWidget(glorotUniformUI())
         self.kernel_initializer_stack.addWidget(RandomUniformUI())
         self.kernel_initializer_stack.addWidget(ZerosUI())
         self.kernel_initializer_stack.addWidget(OnesUI())
@@ -74,7 +76,7 @@ class DenseLayerControlWidget(QWidget):
         self.kernel_initializer_stack.addWidget(IdentityUI())
         self.kernel_initializer_stack.addWidget(lecunUniformUI())
         self.kernel_initializer_stack.addWidget(glorotNormalUI())
-        self.kernel_initializer_stack.addWidget(glorotUniformUI())
+        
         self.kernel_initializer_stack.addWidget(heNormalUI())
         self.kernel_initializer_stack.addWidget(lecunNormalUI())
         self.kernel_initializer_stack.addWidget(heUniformUI())
@@ -84,8 +86,8 @@ class DenseLayerControlWidget(QWidget):
 
         """
         self.bias_initializer = QComboBox()
-        self.bias_initializer.addItems(["RandomUniform",
-                                        "Zeros",
+        self.bias_initializer.addItems(["Zeros",
+                                        "RandomUniform",
                                         "Ones",
                                         "Constant",
                                         "RandomNormal",
@@ -101,8 +103,8 @@ class DenseLayerControlWidget(QWidget):
                                         "he_uniform"])
         self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
         self.bias_initializer_stack = QStackedWidget()
-        self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(ZerosUI())
+        self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(OnesUI())
         self.bias_initializer_stack.addWidget(ConstantUI())
         self.bias_initializer_stack.addWidget(RandomNormalUI())
@@ -332,12 +334,13 @@ class Conv1DLayerControlWidget(QWidget):
         self.kernal_size = QLineEdit("(0)")
         self.strides = QLineEdit("1")
         self.padding = QComboBox()
-        self.padding.addItems(["same", "valid", "casual"])
+        self.padding.addItems(["valid","same", "casual"])
         self.data_format = QComboBox()
-        self.data_format.addItems(["channels_first", "channels_last"])
-        self.dilation_rate = QLineEdit("0")
+        self.data_format.addItems([, "channels_last""channels_first"])
+        self.dilation_rate = QLineEdit("1")
         self.activation = QComboBox()
         self.activation.addItems([
+            "None",
             "sigmoid",
             "tanh",
             "relu",
@@ -359,6 +362,7 @@ class Conv1DLayerControlWidget(QWidget):
         """
         self.kernel_initializer = QComboBox()
         self.kernel_initializer.addItems([
+            "glorot_uniform",
             "RandomUniform",
             "Zeros",
             "Ones",
@@ -370,7 +374,6 @@ class Conv1DLayerControlWidget(QWidget):
             "Identity",
             "lecun_uniform",
             "glorot_normal",
-            "glorot_uniform",
             "he_normal",
             "lecun_normal",
             "he_uniform",
@@ -379,6 +382,7 @@ class Conv1DLayerControlWidget(QWidget):
     
 
         self.kernel_initializer_stack = QStackedWidget()
+        self.kernel_initializer_stack.addWidget(glorotUniformUI())
         self.kernel_initializer_stack.addWidget(RandomUniformUI())
         self.kernel_initializer_stack.addWidget(ZerosUI())
         self.kernel_initializer_stack.addWidget(OnesUI())
@@ -390,7 +394,7 @@ class Conv1DLayerControlWidget(QWidget):
         self.kernel_initializer_stack.addWidget(IdentityUI())
         self.kernel_initializer_stack.addWidget(lecunUniformUI())
         self.kernel_initializer_stack.addWidget(glorotNormalUI())
-        self.kernel_initializer_stack.addWidget(glorotUniformUI())
+        
         self.kernel_initializer_stack.addWidget(heNormalUI())
         self.kernel_initializer_stack.addWidget(lecunNormalUI())
         self.kernel_initializer_stack.addWidget(heUniformUI())
@@ -400,8 +404,7 @@ class Conv1DLayerControlWidget(QWidget):
 
         """
         self.bias_initializer = QComboBox()
-        self.bias_initializer.addItems(["RandomUniform",
-                                        "Zeros",
+        self.bias_initializer.addItems(["Zeros","RandomUniform",
                                         "Ones",
                                         "Constant",
                                         "RandomNormal",
@@ -417,8 +420,8 @@ class Conv1DLayerControlWidget(QWidget):
                                         "he_uniform"])
         self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
         self.bias_initializer_stack = QStackedWidget()
-        self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(ZerosUI())
+        self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(OnesUI())
         self.bias_initializer_stack.addWidget(ConstantUI())
         self.bias_initializer_stack.addWidget(RandomNormalUI())
@@ -563,13 +566,17 @@ class Conv1DLayerControlWidget(QWidget):
     
 class Conv2DLayerControlWidget(Conv1DLayerControlWidget):
     def __init__(self):
+        self.strides.setText("(1,1)")
+        self.dilation_rate.setText("(1,1)")
         super().__init__()
-    
+        
     def parse_arguments(self):
         pass
 
 class Conv3DLayerControlWidget(Conv1DLayerControlWidget):
     def __init__(self):
+        self.strides.setText("(1,1,1)")
+        self.dilation_rate.setText("(1,1,1)")
         super().__init__()
     
     def parse_arguments(self):
@@ -586,12 +593,14 @@ class SeparableConv1DLayerControlWidget(QWidget):
         self.kernal_size = QLineEdit("(0)")
         self.strides = QLineEdit("1")
         self.padding = QComboBox()
-        self.padding.addItems(["same", "valid", "casual"])
+        self.padding.addItems(["valid","same", "casual"])
         self.data_format = QComboBox()
         self.data_format.addItems(["channels_first", "channels_last"])
-        self.dilation_rate = QLineEdit("0")
+        self.dilation_rate = QLineEdit("1")
+        self.depth_multiplier = QLineEdit("1");
         self.activation = QComboBox()
         self.activation.addItems([
+            "None",
             "sigmoid",
             "tanh",
             "relu",
@@ -611,7 +620,8 @@ class SeparableConv1DLayerControlWidget(QWidget):
 
         """
         self.bias_initializer = QComboBox()
-        self.bias_initializer.addItems(["RandomUniform",
+        self.bias_initializer.addItems(["glorot_uniform",
+                                        "RandomUniform",
                                         "Zeros",
                                         "Ones",
                                         "Constant",
@@ -622,12 +632,12 @@ class SeparableConv1DLayerControlWidget(QWidget):
                                         "Identity",
                                         "lecun_uniform",
                                         "glorot_normal",
-                                        "glorot_uniform",
                                         "he_normal",
                                         "lecun_normal",
                                         "he_uniform"])
         self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
         self.bias_initializer_stack = QStackedWidget()
+        self.bias_initializer_stack.addWidget(glorotUniformUI())
         self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(ZerosUI())
         self.bias_initializer_stack.addWidget(OnesUI())
@@ -639,7 +649,6 @@ class SeparableConv1DLayerControlWidget(QWidget):
         self.bias_initializer_stack.addWidget(IdentityUI())
         self.bias_initializer_stack.addWidget(lecunUniformUI())
         self.bias_initializer_stack.addWidget(glorotNormalUI())
-        self.bias_initializer_stack.addWidget(glorotUniformUI())
         self.bias_initializer_stack.addWidget(heNormalUI())
         self.bias_initializer_stack.addWidget(lecunNormalUI())
         self.bias_initializer_stack.addWidget(heUniformUI())
@@ -647,7 +656,8 @@ class SeparableConv1DLayerControlWidget(QWidget):
         depthwise_initializer
         """
         self.depthwise_initializer = QComboBox()
-        self.depthwise_initializer.addItems(["RandomUniform",
+        self.depthwise_initializer.addItems([
+                                        "glorot_uniform","RandomUniform",
                                         "Zeros",
                                         "Ones",
                                         "Constant",
@@ -658,12 +668,12 @@ class SeparableConv1DLayerControlWidget(QWidget):
                                         "Identity",
                                         "lecun_uniform",
                                         "glorot_normal",
-                                        "glorot_uniform",
                                         "he_normal",
                                         "lecun_normal",
                                         "he_uniform"])
         self.depthwise_initializer.currentIndexChanged[int].connect(lambda index : self.depthwise_initializer_stack.setCurrentIndex(index))
         self.depthwise_initializer_stack = QStackedWidget()
+        self.depthwise_initializer_stack.addWidget(glorotUniformUI())
         self.depthwise_initializer_stack.addWidget(RandomUniformUI())
         self.depthwise_initializer_stack.addWidget(ZerosUI())
         self.depthwise_initializer_stack.addWidget(OnesUI())
@@ -675,7 +685,6 @@ class SeparableConv1DLayerControlWidget(QWidget):
         self.depthwise_initializer_stack.addWidget(IdentityUI())
         self.depthwise_initializer_stack.addWidget(lecunUniformUI())
         self.depthwise_initializer_stack.addWidget(glorotNormalUI())
-        self.depthwise_initializer_stack.addWidget(glorotUniformUI())
         self.depthwise_initializer_stack.addWidget(heNormalUI())
         self.depthwise_initializer_stack.addWidget(lecunNormalUI())
         self.depthwise_initializer_stack.addWidget(heUniformUI())
@@ -683,8 +692,8 @@ class SeparableConv1DLayerControlWidget(QWidget):
         pointwise_initializer
         """
         self.pointwise_initializer = QComboBox()
-        self.pointwise_initializer.addItems(["RandomUniform",
-                                        "Zeros",
+        self.pointwise_initializer.addItems(["Zeros",
+                                        "RandomUniform",
                                         "Ones",
                                         "Constant",
                                         "RandomNormal",
@@ -700,8 +709,8 @@ class SeparableConv1DLayerControlWidget(QWidget):
                                         "he_uniform"])
         self.pointwise_initializer.currentIndexChanged[int].connect(lambda index : self.pointwise_initializer_stack.setCurrentIndex(index))
         self.pointwise_initializer_stack = QStackedWidget()
-        self.pointwise_initializer_stack.addWidget(RandomUniformUI())
         self.pointwise_initializer_stack.addWidget(ZerosUI())
+        self.pointwise_initializer_stack.addWidget(RandomUniformUI())
         self.pointwise_initializer_stack.addWidget(OnesUI())
         self.pointwise_initializer_stack.addWidget(ConstantUI())
         self.pointwise_initializer_stack.addWidget(RandomNormalUI())
@@ -826,43 +835,45 @@ class SeparableConv1DLayerControlWidget(QWidget):
         self.main_layout.addWidget(self.data_format, 4 ,1)
         self.main_layout.addWidget(QLabel("Dilation rate:"), 5, 0)
         self.main_layout.addWidget(self.dilation_rate, 5, 1)
-        self.main_layout.addWidget(QLabel("Activation"), 6, 0)
-        self.main_layout.addWidget(self.activation, 6 ,1)
-        self.main_layout.addWidget(QLabel("Use Bias:"), 7 , 0)
-        self.main_layout.addWidget(self.use_bias, 7, 1)
-        self.main_layout.addWidget(QLabel("depthwise_initializer"), 8, 0)
-        self.main_layout.addWidget(self.depthwise_initializer, 8, 1)
-        self.main_layout.addWidget(self.depthwise_initializer_stack, 9, 1)
-        self.main_layout.addWidget(QLabel("pointwise_initializer"), 10, 0)
-        self.main_layout.addWidget(self.pointwise_initializer, 10, 1)
-        self.main_layout.addWidget(self.pointwise_initializer_stack, 11 , 1)
-        self.main_layout.addWidget(QLabel("bias_initializer"), 12, 0)
-        self.main_layout.addWidget(self.bias_initializer, 12, 1)
-        self.main_layout.addWidget(self.bias_initializer_stack, 13 , 1)
-        self.main_layout.addWidget(QLabel("depthwise_regularizer"),14,0)
-        self.main_layout.addWidget(self.depthwise_regularizer,14,1)
-        self.main_layout.addWidget(self.depthwise_regularizer_stack,15,1)
+        self.main_layout.addWidget(QLabel("depth_multiplier"),6,0)
+        self.main_layout.addWidget(self.depth_multiplier,6,1)
+        self.main_layout.addWidget(QLabel("Activation"), 7, 0)
+        self.main_layout.addWidget(self.activation, 7 ,1)
+        self.main_layout.addWidget(QLabel("Use Bias:"), 8 , 0)
+        self.main_layout.addWidget(self.use_bias, 8, 1)
+        self.main_layout.addWidget(QLabel("depthwise_initializer"), 9, 0)
+        self.main_layout.addWidget(self.depthwise_initializer, 9, 1)
+        self.main_layout.addWidget(self.depthwise_initializer_stack, 10, 1)
+        self.main_layout.addWidget(QLabel("pointwise_initializer"), 11, 0)
+        self.main_layout.addWidget(self.pointwise_initializer, 11, 1)
+        self.main_layout.addWidget(self.pointwise_initializer_stack, 12 , 1)
+        self.main_layout.addWidget(QLabel("bias_initializer"), 13, 0)
+        self.main_layout.addWidget(self.bias_initializer, 13, 1)
+        self.main_layout.addWidget(self.bias_initializer_stack, 14 , 1)
+        self.main_layout.addWidget(QLabel("depthwise_regularizer"),15,0)
+        self.main_layout.addWidget(self.depthwise_regularizer,15,1)
+        self.main_layout.addWidget(self.depthwise_regularizer_stack,16,1)
 
-        self.main_layout.addWidget(QLabel("pointwise_regularizer"),16,0)
-        self.main_layout.addWidget(self.pointwise_regularizer,16,1)
-        self.main_layout.addWidget(self.pointwise_regularizer_stack,17,1)
+        self.main_layout.addWidget(QLabel("pointwise_regularizer"),17,0)
+        self.main_layout.addWidget(self.pointwise_regularizer,17,1)
+        self.main_layout.addWidget(self.pointwise_regularizer_stack,18,1)
 
-        self.main_layout.addWidget(QLabel("activity_regularizer"),18, 0)
-        self.main_layout.addWidget(self.activity_regularizer,18,1)
-        self.main_layout.addWidget(self.activity_regularizer_stack,19, 1)
-        self.main_layout.addWidget(QLabel("bias_regularizer"),18, 0)
-        self.main_layout.addWidget(self.bias_regularizer,18,1)
-        self.main_layout.addWidget(self.bias_regularizer_stack,19, 1)
+        self.main_layout.addWidget(QLabel("activity_regularizer"),19, 0)
+        self.main_layout.addWidget(self.activity_regularizer,19,1)
+        self.main_layout.addWidget(self.activity_regularizer_stack,20, 1)
+        self.main_layout.addWidget(QLabel("bias_regularizer"),21, 0)
+        self.main_layout.addWidget(self.bias_regularizer,21,1)
+        self.main_layout.addWidget(self.bias_regularizer_stack,22, 1)
         
-        self.main_layout.addWidget(QLabel("depthwise_constraint"),20,0)
-        self.main_layout.addWidget(self.depthwise_constraint,20,1)
-        self.main_layout.addWidget(self.depthwise_constraint_stack,21,1)
-        self.main_layout.addWidget(QLabel("pointwise_constraint"),22,0)
-        self.main_layout.addWidget(self.pointwise_constraint,22,1)
-        self.main_layout.addWidget(self.pointwise_constraint_stack,23,1)
-        self.main_layout.addWidget(QLabel("bias_constraint"),24,0)
-        self.main_layout.addWidget(self.bias_constraint,24,1)
-        self.main_layout.addWidget(self.bias_constraint_stack,25, 1)
+        self.main_layout.addWidget(QLabel("depthwise_constraint"),23,0)
+        self.main_layout.addWidget(self.depthwise_constraint,23,1)
+        self.main_layout.addWidget(self.depthwise_constraint_stack,24,1)
+        self.main_layout.addWidget(QLabel("pointwise_constraint"),25,0)
+        self.main_layout.addWidget(self.pointwise_constraint,25,1)
+        self.main_layout.addWidget(self.pointwise_constraint_stack,26,1)
+        self.main_layout.addWidget(QLabel("bias_constraint"),27,0)
+        self.main_layout.addWidget(self.bias_constraint,27,1)
+        self.main_layout.addWidget(self.bias_constraint_stack,28, 1)
         
         self.setLayout(self.main_layout)
         self.set_styling()
@@ -887,15 +898,16 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.kernal_size = QLineEdit("(0)")
-        self.strides = QLineEdit("1")
+        self.strides = QLineEdit("(1,1)")
         self.padding = QComboBox()
-        self.padding.addItems(["same", "valid", "casual"])
+        self.padding.addItems([ "valid","same", "casual"])
         self.depth_multiplier = QLineEdit("1")
         self.data_format = QComboBox()
-        self.data_format.addItems(["channels_first", "channels_last"])
-        self.dilation_rate = QLineEdit("0")
+        self.data_format.addItems(["channels_last","channels_first"])
+        self.dilation_rate = QLineEdit("(1,1)")
         self.activation = QComboBox()
         self.activation.addItems([
+            "None"
             "sigmoid",
             "tanh",
             "relu",
@@ -915,7 +927,8 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
 
         """
         self.bias_initializer = QComboBox()
-        self.bias_initializer.addItems(["RandomUniform",
+        self.bias_initializer.addItems(["glorot_uniform",
+                                        "RandomUniform",
                                         "Zeros",
                                         "Ones",
                                         "Constant",
@@ -926,12 +939,12 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
                                         "Identity",
                                         "lecun_uniform",
                                         "glorot_normal",
-                                        "glorot_uniform",
                                         "he_normal",
                                         "lecun_normal",
                                         "he_uniform"])
         self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
         self.bias_initializer_stack = QStackedWidget()
+        self.bias_initializer_stack.addWidget(glorotUniformUI())
         self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(ZerosUI())
         self.bias_initializer_stack.addWidget(OnesUI())
@@ -943,7 +956,6 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
         self.bias_initializer_stack.addWidget(IdentityUI())
         self.bias_initializer_stack.addWidget(lecunUniformUI())
         self.bias_initializer_stack.addWidget(glorotNormalUI())
-        self.bias_initializer_stack.addWidget(glorotUniformUI())
         self.bias_initializer_stack.addWidget(heNormalUI())
         self.bias_initializer_stack.addWidget(lecunNormalUI())
         self.bias_initializer_stack.addWidget(heUniformUI())
@@ -951,8 +963,8 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
         depthwise_initializer
         """
         self.depthwise_initializer = QComboBox()
-        self.depthwise_initializer.addItems(["RandomUniform",
-                                        "Zeros",
+        self.depthwise_initializer.addItems([ "Zeros",
+                                        "RandomUniform",
                                         "Ones",
                                         "Constant",
                                         "RandomNormal",
@@ -968,8 +980,8 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
                                         "he_uniform"])
         self.depthwise_initializer.currentIndexChanged[int].connect(lambda index : self.depthwise_initializer_stack.setCurrentIndex(index))
         self.depthwise_initializer_stack = QStackedWidget()
-        self.depthwise_initializer_stack.addWidget(RandomUniformUI())
         self.depthwise_initializer_stack.addWidget(ZerosUI())
+        self.depthwise_initializer_stack.addWidget(RandomUniformUI())
         self.depthwise_initializer_stack.addWidget(OnesUI())
         self.depthwise_initializer_stack.addWidget(ConstantUI())
         self.depthwise_initializer_stack.addWidget(RandomNormalUI())
@@ -1103,6 +1115,8 @@ class DepthwiseConv2DLayerControlWidget(QWidget):
         
 class Conv2DTransposeLayerControlWidget(Conv1DLayerControlWidget):
     def __init__(self):
+        self.strides.setText("(1,1)")
+        self.dilation_rate.setText("(1,1)")
         super().__init__()
     
     def init_GUI(self):
@@ -1248,7 +1262,7 @@ class GlobalMaxPooling1DLayerControlWidget(QWidget):
         super().__init__()
 
         self.data_format = QComboBox()
-        self.data_format.addItems(["None", "channels_last", "channels_first"])
+        self.data_format.addItems(["channels_last", "channels_first"])
         self.init_GUI()
 
 
@@ -1312,9 +1326,8 @@ class SimpleRNNLayerWidget(QWidget):
         super().__init__()
         self.neuron = QLineEdit("0")
         self.activation = QComboBox()
-        self.activation.addItems([
+        self.activation.addItems(["tanh",
             "sigmoid",
-            "tanh",
             "relu",
             "softmax",
             "linear",
@@ -1334,6 +1347,7 @@ class SimpleRNNLayerWidget(QWidget):
         """
         self.kernel_initializer = QComboBox()
         self.kernel_initializer.addItems([
+            "glorot_uniform",
             "RandomUniform",
             "Zeros",
             "Ones",
@@ -1345,7 +1359,6 @@ class SimpleRNNLayerWidget(QWidget):
             "Identity",
             "lecun_uniform",
             "glorot_normal",
-            "glorot_uniform",
             "he_normal",
             "lecun_normal",
             "he_uniform",
@@ -1354,6 +1367,7 @@ class SimpleRNNLayerWidget(QWidget):
     
 
         self.kernel_initializer_stack = QStackedWidget()
+        self.kernel_initializer_stack.addWidget(glorotUniformUI())
         self.kernel_initializer_stack.addWidget(RandomUniformUI())
         self.kernel_initializer_stack.addWidget(ZerosUI())
         self.kernel_initializer_stack.addWidget(OnesUI())
@@ -1365,7 +1379,6 @@ class SimpleRNNLayerWidget(QWidget):
         self.kernel_initializer_stack.addWidget(IdentityUI())
         self.kernel_initializer_stack.addWidget(lecunUniformUI())
         self.kernel_initializer_stack.addWidget(glorotNormalUI())
-        self.kernel_initializer_stack.addWidget(glorotUniformUI())
         self.kernel_initializer_stack.addWidget(heNormalUI())
         self.kernel_initializer_stack.addWidget(lecunNormalUI())
         self.kernel_initializer_stack.addWidget(heUniformUI())
@@ -1375,8 +1388,8 @@ class SimpleRNNLayerWidget(QWidget):
 
         """
         self.bias_initializer = QComboBox()
-        self.bias_initializer.addItems(["RandomUniform",
-                                        "Zeros",
+        self.bias_initializer.addItems(["Zeros",
+                                        "RandomUniform",
                                         "Ones",
                                         "Constant",
                                         "RandomNormal",
@@ -1392,8 +1405,8 @@ class SimpleRNNLayerWidget(QWidget):
                                         "he_uniform"])
         self.bias_initializer.currentIndexChanged[int].connect(lambda index : self.bias_initializer_stack.setCurrentIndex(index))
         self.bias_initializer_stack = QStackedWidget()
-        self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(ZerosUI())
+        self.bias_initializer_stack.addWidget(RandomUniformUI())
         self.bias_initializer_stack.addWidget(OnesUI())
         self.bias_initializer_stack.addWidget(ConstantUI())
         self.bias_initializer_stack.addWidget(RandomNormalUI())
@@ -1482,14 +1495,14 @@ class SimpleRNNLayerWidget(QWidget):
         recurrent_initializer
         """
         self.recurrent_initializer = QComboBox()
-        self.recurrent_initializer.addItems(["RandomUniform",
+        self.recurrent_initializer.addItems([
+                                        "Orthogonal","RandomUniform",
                                         "Zeros",
                                         "Ones",
                                         "Constant",
                                         "RandomNormal",
                                         "TruncatedNormal",
                                         "VarianceScaling",
-                                        "Orthogonal",
                                         "Identity",
                                         "lecun_uniform",
                                         "glorot_normal",
@@ -1499,6 +1512,7 @@ class SimpleRNNLayerWidget(QWidget):
                                         "he_uniform"])
         self.recurrent_initializer.currentIndexChanged[int].connect(lambda index : self.recurrent_initializer_stack.setCurrentIndex(index))
         self.recurrent_initializer_stack = QStackedWidget()
+        self.recurrent_initializer_stack.addWidget(OrthogonalUI())
         self.recurrent_initializer_stack.addWidget(RandomUniformUI())
         self.recurrent_initializer_stack.addWidget(ZerosUI())
         self.recurrent_initializer_stack.addWidget(OnesUI())
@@ -1506,7 +1520,6 @@ class SimpleRNNLayerWidget(QWidget):
         self.recurrent_initializer_stack.addWidget(RandomNormalUI())
         self.recurrent_initializer_stack.addWidget(TruncatedNormalUI())
         self.recurrent_initializer_stack.addWidget(VarianceScalingUI())
-        self.recurrent_initializer_stack.addWidget(OrthogonalUI())
         self.recurrent_initializer_stack.addWidget(IdentityUI())
         self.recurrent_initializer_stack.addWidget(lecunUniformUI())
         self.recurrent_initializer_stack.addWidget(glorotNormalUI())
@@ -2060,12 +2073,12 @@ class ConvLSTM2DLayerControlWidget(QWidget):
         super().__init__()
         self.filters = QLineEdit("2")
         self.kernel_size = QLineEdit("2")
-        self.strides = QLineEdit("2")
+        self.strides = QLineEdit("(1,1)")
         self.padding = QComboBox()
         self.padding.addItems(["valid","same"])
         self.data_format = QComboBox()
         self.data_format.addItems(["channels_last","channels_first"])
-        self.dilation_rate = QLineEdit("1")
+        self.dilation_rate = QLineEdit("(1,1)")
         self.activation = QComboBox()
         self.activation.addItems([
             "tanh",
@@ -2444,7 +2457,7 @@ class BatchNormalizationLayerControlWidget(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.axis = QLineEdit("-1")
         self.momentum = QLineEdit("0.99")
-        self.epsilon = 0.001
+        self.epsilon =QLineEdit("0.001")
         self.center = QComboBox()
         self.center.addItems(["True", "False"])
         self.scale = QComboBox()
@@ -2589,8 +2602,8 @@ class LayerNormalizationLayerControlWidget(QWidget):
 
         self.beta_initializer = QComboBox()
         self.beta_initializer.addItems([
-            "RandomUniform",
             "Zeros",
+            "RandomUniform",
             "Ones",
             "Constant",
             "RandomNormal",
@@ -2609,8 +2622,8 @@ class LayerNormalizationLayerControlWidget(QWidget):
     
 
         self.beta_stack = QStackedWidget()
-        self.beta_stack.addWidget(RandomUniformUI())
         self.beta_stack.addWidget(ZerosUI())
+        self.beta_stack.addWidget(RandomUniformUI())
         self.beta_stack.addWidget(OnesUI())
         self.beta_stack.addWidget(ConstantUI())
         self.beta_stack.addWidget(RandomNormalUI())
@@ -2629,9 +2642,9 @@ class LayerNormalizationLayerControlWidget(QWidget):
         """
         self.gamma_initializer = QComboBox()
         self.gamma_initializer.addItems([
+            "Ones",
             "RandomUniform",
             "Zeros",
-            "Ones",
             "Constant",
             "RandomNormal",
             "TruncatedNormal",
@@ -2649,9 +2662,9 @@ class LayerNormalizationLayerControlWidget(QWidget):
     
 
         self.gamma_stack = QStackedWidget()
+        self.gamma_stack.addWidget(OnesUI())
         self.gamma_stack.addWidget(RandomUniformUI())
         self.gamma_stack.addWidget(ZerosUI())
-        self.gamma_stack.addWidget(OnesUI())
         self.gamma_stack.addWidget(ConstantUI())
         self.gamma_stack.addWidget(RandomNormalUI())
         self.gamma_stack.addWidget(TruncatedNormalUI())
@@ -3036,7 +3049,7 @@ class RepeatVectorLayerControlWidget(QWidget):
 class PermuteLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.permute = QLineEdit("1")
+        self.permute = QLineEdit("{1)")
         self.init_GUI()
 
     def init_GUI(self):
@@ -3118,7 +3131,7 @@ class ZeroPadding1DLayerControlWidget(QWidget):
 class ZeroPadding2DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.padding = QLineEdit("1")
+        self.padding = QLineEdit("(1,1)")
         self.data_format = QComboBox()
         self.data_format.addItems(["channels_last","channels_first"])
         self.init_GUI()
@@ -3190,7 +3203,7 @@ class UpSampling3DLayerControlWidget(QWidget):
         self.main_layout.addRow(QLabel("size: "),self.size)
         self.main_layout.addRow(QLabel("data_format: "),self.data_format)
         self.setLayout(self.main_layout)
-        
+ """       
 class ZeroPadding1DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -3234,7 +3247,7 @@ class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
     
     def parse_arguments(self):
         pass
-
+"""
 #############################################################################
 
 ######################## Merging layers #################################### 
