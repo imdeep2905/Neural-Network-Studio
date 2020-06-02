@@ -2463,11 +2463,89 @@ class BatchNormalizationLayerControlWidget(QWidget):
         self.scale = QComboBox()
         self.scale.addItems(["True", "False"])
         self.beta_initializer = QComboBox()
-        self.beta_initializer.addItems(["zeroes", "ones"])
+        self.beta_initializer = QComboBox()
+        self.beta_initializer.addItems([
+            "Zeros",
+            "RandomUniform",
+            "Ones",
+            "Constant",
+            "RandomNormal",
+            "TruncatedNormal",
+            "VarianceScaling",
+            "Orthogonal",
+            "Identity",
+            "lecun_uniform",
+            "glorot_normal",
+            "glorot_uniform",
+            "he_normal",
+            "lecun_normal",
+            "he_uniform",
+            "CUSTOM_my1"])
+        self.beta_initializer.currentIndexChanged[int].connect(lambda index: self.beta_stack.setCurrentIndex(index))
+    
+
+        self.beta_stack = QStackedWidget()
+        self.beta_stack.addWidget(ZerosUI())
+        self.beta_stack.addWidget(RandomUniformUI())
+        self.beta_stack.addWidget(OnesUI())
+        self.beta_stack.addWidget(ConstantUI())
+        self.beta_stack.addWidget(RandomNormalUI())
+        self.beta_stack.addWidget(TruncatedNormalUI())
+        self.beta_stack.addWidget(VarianceScalingUI())
+        self.beta_stack.addWidget(OrthogonalUI())
+        self.beta_stack.addWidget(IdentityUI())
+        self.beta_stack.addWidget(lecunUniformUI())
+        self.beta_stack.addWidget(glorotNormalUI())
+        self.beta_stack.addWidget(glorotUniformUI())
+        self.beta_stack.addWidget(heNormalUI())
+        self.beta_stack.addWidget(lecunNormalUI())
+        self.beta_stack.addWidget(heUniformUI())
+        """
+        gamma_initializer
+        """
         self.gamma_initializer = QComboBox()
-        self.gamma_initializer.addItems(["ones", "zeroes"])
+        self.gamma_initializer.addItems([
+            "Ones",
+            "RandomUniform",
+            "Zeros",
+            "Constant",
+            "RandomNormal",
+            "TruncatedNormal",
+            "VarianceScaling",
+            "Orthogonal",
+            "Identity",
+            "lecun_uniform",
+            "glorot_normal",
+            "glorot_uniform",
+            "he_normal",
+            "lecun_normal",
+            "he_uniform",
+            "CUSTOM_my1"])
+        self.gamma_initializer.currentIndexChanged[int].connect(lambda index: self.gamma_stack.setCurrentIndex(index))
+    
+
+        self.gamma_stack = QStackedWidget()
+        self.gamma_stack.addWidget(OnesUI())
+        self.gamma_stack.addWidget(RandomUniformUI())
+        self.gamma_stack.addWidget(ZerosUI())
+        self.gamma_stack.addWidget(ConstantUI())
+        self.gamma_stack.addWidget(RandomNormalUI())
+        self.gamma_stack.addWidget(TruncatedNormalUI())
+        self.gamma_stack.addWidget(VarianceScalingUI())
+        self.gamma_stack.addWidget(OrthogonalUI())
+        self.gamma_stack.addWidget(IdentityUI())
+        self.gamma_stack.addWidget(lecunUniformUI())
+        self.gamma_stack.addWidget(glorotNormalUI())
+        self.gamma_stack.addWidget(glorotUniformUI())
+        self.gamma_stack.addWidget(heNormalUI())
+        self.gamma_stack.addWidget(lecunNormalUI())
+        self.gamma_stack.addWidget(heUniformUI())
+
+
         self.moving_mean_initializer = QComboBox()
         self.moving_mean_initializer.addItems(["zeroes", "ones"])
+
+        
         self.moving_variance_initializer= QComboBox()
         self.moving_variance_initializer.addItems(["ones", "zeroes"])
         """
