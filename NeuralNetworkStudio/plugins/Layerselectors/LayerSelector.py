@@ -6,13 +6,16 @@ TODO
 import os
 import sys 
 from pathlib import Path
-from PySide2.QtWidgets import QPushButton, QVBoxLayout, QApplication ,QListWidget,QScrollArea, QListView, QLabel, QWidget, QAbstractItemView, QSplitter 
+from PySide2.QtWidgets import QPushButton, QVBoxLayout, QApplication ,QListWidget,QScrollArea, QListView, QLabel, QWidget, QAbstractItemView, QSplitter, QLineEdit
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, Qt, QDrag
 from PySide2 import QtCore
 from PySide2 import QtGui
+from PySide2.QtCore import QSortFilterProxyModel, QRegExp
+
 
 PATH = os.path.join('.','img_src')
 print('LayerSelector Loaded with path:' , PATH)
+
         
 class LayersList(QWidget):
     '''
@@ -38,10 +41,16 @@ class LayersList(QWidget):
         self.layer_list.setViewMode(self.layer_list.ListMode)
         
         self.container_model = QStandardItemModel()
+        self.model = QSortFilterProxyModel()
+        self.model.setSourceModel(self.container_model)
+        self.model.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        #self.model.cas
+        filter.textChanged.connect(self.filterModel)
+        
         for l in layers:
             self.container_model.appendRow(QStandardItem(QIcon(os.path.join(PATH,'LayersList_Layer_Icon.png')),l))
         
-        self.layer_list.setModel(self.container_model)
+        self.layer_list.setModel(self.model)
         
         self.main_layout.addWidget(self.expand_button,0, Qt.AlignTop)
         self.main_layout.addWidget(self.layer_list, 0, Qt.AlignTop)
@@ -82,6 +91,13 @@ class LayersList(QWidget):
                                         text-align:left;
                                         ''')
 
+    def filterModel(self,text):
+        self.show()
+        self.model.setFilterRegExp(QRegExp(text,QtCore.Qt.CaseInsensitive))
+        self.layer_list.setMinimumHeight(self.resized_size)
+        if self.model.rowCount() == 0:
+            self.hide()
+
 class LayersSelectorWidget(QWidget):
     '''
     LayerChoiceWidget class provide widget plugin for picking layers.
@@ -108,6 +124,7 @@ class LayersSelectorWidget(QWidget):
             ['LocallyConnected1D', 'LocallyConnected2D']
         ]
         self.main_layout = QVBoxLayout()
+        self.main_layout.addWidget(filter)
         for i in range(len(names)):
             if i > 1:
                 self.main_layout.addWidget(LayersList(names[i], layers[i], False))
@@ -140,3 +157,11 @@ class LayersSelectorWidget(QWidget):
         self.setStyleSheet('''
                            background-color:aliceblue;
                            ''')
+                           
+myapp = QApplication(sys.argv)
+filter = QLineEdit()
+filter.setPlaceholderText("filter")
+win = LayersSelectorWidget()
+win.show()
+myapp.exec_()
+sys.exit(0)
