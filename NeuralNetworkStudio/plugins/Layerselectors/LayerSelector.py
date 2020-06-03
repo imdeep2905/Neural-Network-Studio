@@ -15,13 +15,13 @@ from PySide2.QtCore import QSortFilterProxyModel, QRegExp
 
 PATH = os.path.join('.','img_src')
 print('LayerSelector Loaded with path:' , PATH)
-
         
+
 class LayersList(QWidget):
     '''
     LayerList class which acts as collapsable list.
     '''
-    def __init__(self, name, layers, expand = True):
+    def __init__(self, name, layers, filter, expand = True):
         super().__init__()
         self.setWindowModality(QtCore.Qt.WindowModal)
         self.currently_expanded = True
@@ -45,7 +45,7 @@ class LayersList(QWidget):
         self.model.setSourceModel(self.container_model)
         self.model.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
         #self.model.cas
-        filter.textChanged.connect(self.filterModel)
+        filter.textChanged.connect(self.filter_model)
         
         for l in layers:
             self.container_model.appendRow(QStandardItem(QIcon(os.path.join(PATH,'LayersList_Layer_Icon.png')),l))
@@ -90,8 +90,8 @@ class LayersList(QWidget):
                                         background-color:#d6d2d2;
                                         text-align:left;
                                         ''')
-
-    def filterModel(self,text):
+    @QtCore.Slot()
+    def filter_model(self,text):
         self.show()
         self.model.setFilterRegExp(QRegExp(text,QtCore.Qt.CaseInsensitive))
         self.layer_list.setMinimumHeight(self.resized_size)
@@ -104,6 +104,8 @@ class LayersSelectorWidget(QWidget):
     '''
     def __init__(self):
         super().__init__()
+        filter = QLineEdit()
+        filter.setPlaceholderText("filter") 
         names = ['Core Layers',
                  'Convolution Layers',
                  'Pooling Layers',
@@ -127,9 +129,9 @@ class LayersSelectorWidget(QWidget):
         self.main_layout.addWidget(filter)
         for i in range(len(names)):
             if i > 1:
-                self.main_layout.addWidget(LayersList(names[i], layers[i], False))
+                self.main_layout.addWidget(LayersList(names[i], layers[i], filter, False))
             else:
-                self.main_layout.addWidget(LayersList(names[i], layers[i]))                
+                self.main_layout.addWidget(LayersList(names[i], layers[i], filter))                
         self.main_layout.setSpacing(0)
         self.main_layout.setAlignment(Qt.AlignTop)        
         self.main_layout.setMargin(0)
