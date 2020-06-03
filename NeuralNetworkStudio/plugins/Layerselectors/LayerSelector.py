@@ -158,10 +158,3 @@ class LayersSelectorWidget(QWidget):
                            background-color:aliceblue;
                            ''')
                            
-myapp = QApplication(sys.argv)
-filter = QLineEdit()
-filter.setPlaceholderText("filter")
-win = LayersSelectorWidget()
-win.show()
-myapp.exec_()
-sys.exit(0)
