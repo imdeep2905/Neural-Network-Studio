@@ -32,7 +32,7 @@ class LayersList(QWidget):
         
         self.expand_button = QPushButton(name)
         self.expand_button.setToolTip(f"List of {name} Layers")
-        self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Up.png')))
+        self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Down.png')))
         
         self.layer_list = QListView()
         self.layer_list.setDragEnabled(True)
@@ -74,12 +74,12 @@ class LayersList(QWidget):
         if self.currently_expanded:
             self.layer_list.setMinimumHeight(0)
             self.currently_expanded = False
-            self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Down.png')))
+            self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Up2.png')))
             self.layer_list.setMaximumHeight(0)
         else:
             self.layer_list.setMinimumHeight(self.resized_size)
             self.currently_expanded = True
-            self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Up.png')))
+            self.expand_button.setIcon(QIcon(os.path.join(PATH,'LayersList_Down.png')))
             self.layer_list.setMaximumHeight(self.resized_size)
 
     def set_styling(self):
@@ -94,7 +94,8 @@ class LayersList(QWidget):
     def filter_model(self,text):
         self.show()
         self.model.setFilterRegExp(QRegExp(text,QtCore.Qt.CaseInsensitive))
-        self.layer_list.setMinimumHeight(self.resized_size)
+        if not self.currently_expanded:
+            self.expand()
         if self.model.rowCount() == 0:
             self.hide()
 
