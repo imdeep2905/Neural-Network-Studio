@@ -336,7 +336,7 @@ class Conv1DLayerControlWidget(QWidget):
         self.padding = QComboBox()
         self.padding.addItems(["valid","same", "casual"])
         self.data_format = QComboBox()
-        self.data_format.addItems([, "channels_last""channels_first"])
+        self.data_format.addItems(["None", "channels_last","channels_first"])
         self.dilation_rate = QLineEdit("1")
         self.activation = QComboBox()
         self.activation.addItems([
@@ -566,9 +566,9 @@ class Conv1DLayerControlWidget(QWidget):
     
 class Conv2DLayerControlWidget(Conv1DLayerControlWidget):
     def __init__(self):
+        super().__init__()
         self.strides.setText("(1,1)")
         self.dilation_rate.setText("(1,1)")
-        super().__init__()
         
     def parse_arguments(self):
         pass
@@ -3281,7 +3281,7 @@ class UpSampling3DLayerControlWidget(QWidget):
         self.main_layout.addRow(QLabel("size: "),self.size)
         self.main_layout.addRow(QLabel("data_format: "),self.data_format)
         self.setLayout(self.main_layout)
- """       
+     
 class ZeroPadding1DLayerControlWidget(QWidget):
     def __init__(self):
         super().__init__()
@@ -3325,7 +3325,7 @@ class ZeroPadding3DLayerControlWidget(ZeroPadding2DLayerControlWidget):
     
     def parse_arguments(self):
         pass
-"""
+
 #############################################################################
 
 ######################## Merging layers #################################### 
